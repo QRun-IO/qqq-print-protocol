@@ -85,7 +85,7 @@ Content downloads derive authorization from the authenticated device and job ass
 
 ### Explicit device operator actions
 
-The additive operator-actions extension requires matching QBit and Windows connector builds. All routes use the existing device bearer credential and may access only that device's jobs/approved exposed printers:
+The additive operator-actions extension requires matching QBit and Windows connector builds. GET `/printing/v1/device/jobs/queued` returns `{ "jobs": [PrintJob, ...] }` for at most 50 queued jobs owned by the authenticated device, without document bytes; the companion combines these with local history for inspection and pre-dispatch cancellation. All routes use the existing device bearer credential and may access only that device's jobs/approved exposed printers:
 
 | POST route | Request | Response |
 | --- | --- | --- |
