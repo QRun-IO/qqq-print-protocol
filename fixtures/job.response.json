@@ -1,0 +1,15 @@
+{
+  "jobId": "job-example",
+  "deviceId": "device-example",
+  "printerId": "zebra-example",
+  "title": "QQQ cloud print test",
+  "format": "ZPL",
+  "contentSha256": "2f1db35f414c66525bef954e3c89288047463b289a74096bde3be98daef492c9",
+  "contentLength": 106,
+  "options": {
+    "copies": 1,
+    "scale": "ACTUAL_SIZE"
+  },
+  "createdAt": "2026-10-29T18:00:00Z",
+  "status": "CLAIMED"
+}

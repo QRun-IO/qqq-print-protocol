@@ -1,0 +1,20 @@
+// Shared correspondence between wire examples and schema definitions.
+export const fixtureTypes = {
+   'create-enrollment.request.json': 'CreateEnrollmentRequest',
+   'enrollment.response.json': 'EnrollmentCode',
+   'enroll.request.json': 'EnrollRequest',
+   'enroll.response.json': 'EnrollResponse',
+   'heartbeat.request.json': 'HeartbeatRequest',
+   'heartbeat.response.json': 'HeartbeatResponse',
+   'printers.request.json': 'PrinterInventory',
+   'approval.request.json': 'PrinterApproval',
+   'claim-empty.response.json': 'ClaimResponse',
+   'claim.response.json': 'ClaimResponse',
+   'job.response.json': 'PrintJob',
+   'submit.request.json': 'SubmitJobRequest',
+   'received.event.json': 'JobEvent',
+   'submitting.event.json': 'JobEvent',
+   'spooled.event.json': 'JobEvent',
+   'ack.response.json': 'Acknowledgment',
+   'error.response.json': 'Error'
+};

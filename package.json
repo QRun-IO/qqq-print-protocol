@@ -1,0 +1,17 @@
+{
+  "name": "@qrun-io/qqq-print-protocol",
+  "version": "0.1.0-rc.1",
+  "private": true,
+  "description": "Versioned wire contract and compatibility fixtures for QQQ cloud printing.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "check": "node tools/verify-schema.mjs && node tools/verify-fixtures.mjs",
+    "bundle": "node tools/bundle.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

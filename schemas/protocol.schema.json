@@ -1,0 +1,557 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qrun.io/schemas/printing/v1/protocol.schema.json",
+  "title": "QQQ Print Protocol v1",
+  "description": "Select the DTO with #/$defs/Name.",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "Format": {
+      "enum": [
+        "PDF",
+        "ZPL"
+      ]
+    },
+    "PrinterStatus": {
+      "enum": [
+        "READY",
+        "OFFLINE",
+        "PAUSED",
+        "ERROR",
+        "UNKNOWN"
+      ]
+    },
+    "JobStatus": {
+      "enum": [
+        "QUEUED",
+        "CLAIMED",
+        "RECEIVED",
+        "SUBMITTING",
+        "SPOOLED",
+        "SPOOLER_COMPLETED",
+        "FAILED",
+        "OUTCOME_UNKNOWN"
+      ]
+    },
+    "CreateEnrollmentRequest": {
+      "type": "object",
+      "properties": {
+        "facilityId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deviceName": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "facilityId",
+        "deviceName"
+      ],
+      "additionalProperties": true
+    },
+    "EnrollmentCode": {
+      "type": "object",
+      "properties": {
+        "enrollmentCode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "enrollmentCode",
+        "expiresAt"
+      ],
+      "additionalProperties": true
+    },
+    "EnrollRequest": {
+      "type": "object",
+      "properties": {
+        "enrollmentCode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deviceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agentVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "enrollmentCode",
+        "deviceName",
+        "agentVersion"
+      ],
+      "additionalProperties": true
+    },
+    "EnrollResponse": {
+      "type": "object",
+      "properties": {
+        "protocolVersion": {
+          "const": 1
+        },
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "deviceToken": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pollIntervalSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        }
+      },
+      "required": [
+        "protocolVersion",
+        "deviceId",
+        "deviceToken",
+        "pollIntervalSeconds"
+      ],
+      "additionalProperties": true
+    },
+    "HeartbeatRequest": {
+      "type": "object",
+      "properties": {
+        "agentVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "agentVersion"
+      ],
+      "additionalProperties": true
+    },
+    "HeartbeatResponse": {
+      "type": "object",
+      "properties": {
+        "serverTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "serverTime"
+      ],
+      "additionalProperties": true
+    },
+    "Acknowledgment": {
+      "type": "object",
+      "properties": {
+        "accepted": {
+          "const": true
+        }
+      },
+      "required": [
+        "accepted"
+      ],
+      "additionalProperties": true
+    },
+    "Printer": {
+      "type": "object",
+      "properties": {
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "driverName": {
+          "type": "string"
+        },
+        "portName": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PrinterStatus"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Format"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "printerId",
+        "name",
+        "driverName",
+        "portName",
+        "status",
+        "formats"
+      ],
+      "additionalProperties": true
+    },
+    "ManagedPrinter": {
+      "type": "object",
+      "properties": {
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "driverName": {
+          "type": "string"
+        },
+        "portName": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PrinterStatus"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Format"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Present in the latest locally selected printer exposure snapshot; independent of server approval."
+        }
+      },
+      "required": [
+        "printerId",
+        "name",
+        "driverName",
+        "portName",
+        "status",
+        "formats",
+        "enabled"
+      ],
+      "additionalProperties": true
+    },
+    "PrinterInventory": {
+      "type": "object",
+      "properties": {
+        "printers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Printer"
+          }
+        }
+      },
+      "required": [
+        "printers"
+      ],
+      "additionalProperties": true
+    },
+    "PrinterApproval": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": true
+    },
+    "PrintOptions": {
+      "type": "object",
+      "properties": {
+        "copies": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 1
+        },
+        "scale": {
+          "enum": [
+            "ACTUAL_SIZE",
+            "FIT"
+          ],
+          "default": "ACTUAL_SIZE"
+        },
+        "paperWidthMm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 2000
+        },
+        "paperHeightMm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 2000
+        }
+      },
+      "required": [],
+      "additionalProperties": true,
+      "dependentRequired": {
+        "paperWidthMm": [
+          "paperHeightMm"
+        ],
+        "paperHeightMm": [
+          "paperWidthMm"
+        ]
+      }
+    },
+    "SubmitJobRequest": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "format": {
+          "$ref": "#/$defs/Format"
+        },
+        "contentBase64": {
+          "type": "string",
+          "minLength": 1,
+          "contentEncoding": "base64"
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "options": {
+          "$ref": "#/$defs/PrintOptions"
+        }
+      },
+      "required": [
+        "deviceId",
+        "printerId",
+        "title",
+        "format",
+        "contentBase64",
+        "idempotencyKey"
+      ],
+      "additionalProperties": true
+    },
+    "PrintJob": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "$ref": "#/$defs/Id"
+        },
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "$ref": "#/$defs/Format"
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "contentLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20971520
+        },
+        "options": {
+          "$ref": "#/$defs/PrintOptions"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/$defs/JobStatus"
+        },
+        "message": {
+          "type": "string"
+        },
+        "spoolerJobId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "jobId",
+        "printerId",
+        "title",
+        "format",
+        "contentSha256",
+        "contentLength",
+        "options",
+        "createdAt",
+        "status"
+      ],
+      "additionalProperties": true
+    },
+    "ClaimResponse": {
+      "type": "object",
+      "properties": {
+        "job": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PrintJob"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "job"
+      ],
+      "additionalProperties": true
+    },
+    "JobEvent": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "$ref": "#/$defs/Id"
+        },
+        "status": {
+          "enum": [
+            "RECEIVED",
+            "SUBMITTING",
+            "SPOOLED",
+            "SPOOLER_COMPLETED",
+            "FAILED",
+            "OUTCOME_UNKNOWN"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "spoolerJobId": {
+          "type": "string",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "eventId",
+        "status"
+      ],
+      "additionalProperties": true
+    },
+    "Device": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "deviceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "facilityId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agentVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "deviceId",
+        "deviceName",
+        "facilityId",
+        "agentVersion"
+      ],
+      "additionalProperties": true
+    },
+    "DeviceList": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Device"
+          }
+        }
+      },
+      "required": [
+        "devices"
+      ],
+      "additionalProperties": true
+    },
+    "PrinterList": {
+      "type": "object",
+      "properties": {
+        "printers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ManagedPrinter"
+          }
+        }
+      },
+      "required": [
+        "printers"
+      ],
+      "additionalProperties": true
+    },
+    "JobList": {
+      "type": "object",
+      "properties": {
+        "jobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PrintJob"
+          }
+        }
+      },
+      "required": [
+        "jobs"
+      ],
+      "additionalProperties": true
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

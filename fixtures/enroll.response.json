@@ -1,0 +1,6 @@
+{
+  "protocolVersion": 1,
+  "deviceId": "device-example",
+  "deviceToken": "EXAMPLE-NOT-A-REAL-TOKEN",
+  "pollIntervalSeconds": 5
+}
