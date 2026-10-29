@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The first implementation uses outbound HTTPS polling. WebSockets are unnecessary for this happy path. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Distribution version: **0.1.0-rc.1**, an initial prerelease. Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Distribution version: **0.1.1-rc.1**, a prerelease with additive operator actions. Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Use Node.js 24+ to run the development checks:
 
@@ -83,6 +83,20 @@ Content downloads derive authorization from the authenticated device and job ass
 
 ## Minimal delivery rules
 
+### Explicit device operator actions
+
+The additive operator-actions extension requires matching QBit and Windows connector builds. All routes use the existing device bearer credential and may access only that device's jobs/approved exposed printers:
+
+| POST route | Request | Response |
+| --- | --- | --- |
+| `/printing/v1/device/test-print` | `DeviceTestPrintRequest` | New `PrintJob` containing a server-generated test document |
+| `/printing/v1/device/jobs/{jobId}/retry` | `DeviceRetryRequest` | New `PrintJob`; the original receipt remains unchanged |
+| `/printing/v1/device/jobs/{jobId}/cancel` | Empty JSON object | `Acknowledgment`, only while the job is still QUEUED |
+
+Test/retry requests carry a stable requestId for transport retries. The key includes device and original job where applicable. Retrying FAILED is explicit; SPOOLED, SPOOLER_COMPLETED and OUTCOME_UNKNOWN additionally require confirmDuplicateRisk=true after the operator inspects output. Cancel is serialized against claim and refuses CLAIMED or later work. A pre-dispatch cancel is recorded as FAILED with an operator-cancellation message, preserving the v1 status vocabulary. Once Windows has accepted a job, a separate local spooler cancellation can only request a stop; it cannot guarantee no output. It must verify the spooler document identity before acting on a reused numeric spool ID.
+
+The companion never automatically retries an operator print action after a timeout. It instructs the operator to inspect QQQ job history before submitting again. A server without these additive routes returns 404 and the companion reports that the printing QBit needs updating.
+
 States: `QUEUED → CLAIMED → RECEIVED → SUBMITTING → SPOOLED`. The connector may report `FAILED` for definite failure or `OUTCOME_UNKNOWN` for an ambiguous submission. `SPOOLER_COMPLETED` is reserved for observed spooler completion; it is not required in the happy-path implementation.
 
 Claim may return the same outstanding CLAIMED job when an earlier response was lost. Never automatically return an already RECEIVED/SUBMITTING/SPOOLED job as new work. The local journal deduplicates by jobId. Repeated eventIds with the same body are accepted without a second transition; conflicting reuse returns 409. Late events must not regress the state. An HTTP retry must reuse its eventId.
@@ -105,6 +119,6 @@ Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
 
 ## Verification
 
-`npm run check` compiles all 25 JSON Schema 2020-12 definitions with Ajv and validates all 17 fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
+`npm run check` compiles all 27 JSON Schema 2020-12 definitions with Ajv and validates all 19 fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
 
 `node tools/verify-fixtures.mjs` remains a dependency-free subset check. Java and .NET implementations should consume these exact fixtures in protocol tests, pinned to a reviewed immutable protocol commit. The Java HTTP round trip and .NET fixture compatibility checks passed during initial development. CI configuration is included; a local check does not imply that GitHub CI has run.

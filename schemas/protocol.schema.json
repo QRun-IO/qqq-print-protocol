@@ -4,6 +4,23 @@
   "title": "QQQ Print Protocol v1",
   "description": "Select the DTO with #/$defs/Name.",
   "$defs": {
+    "DeviceTestPrintRequest": {
+      "type": "object",
+      "required": ["printerId", "format", "requestId"],
+      "properties": {
+        "printerId": { "$ref": "#/$defs/Id" },
+        "format": { "$ref": "#/$defs/Format" },
+        "requestId": { "$ref": "#/$defs/Id" }
+      }
+    },
+    "DeviceRetryRequest": {
+      "type": "object",
+      "required": ["requestId"],
+      "properties": {
+        "requestId": { "$ref": "#/$defs/Id" },
+        "confirmDuplicateRisk": { "type": "boolean" }
+      }
+    },
     "Id": {
       "type": "string",
       "minLength": 1,

@@ -1,5 +1,7 @@
 // Shared correspondence between wire examples and schema definitions.
 export const fixtureTypes = {
+   'device-test.request.json': 'DeviceTestPrintRequest',
+   'device-retry.request.json': 'DeviceRetryRequest',
    'create-enrollment.request.json': 'CreateEnrollmentRequest',
    'enrollment.response.json': 'EnrollmentCode',
    'enroll.request.json': 'EnrollRequest',
