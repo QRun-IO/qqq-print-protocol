@@ -42,6 +42,7 @@ function validate(value, rule, path)
    {
       assert(Array.isArray(value), `${path}: expected array`);
       if(rule.minItems !== undefined) assert(value.length >= rule.minItems, path);
+      if(rule.maxItems !== undefined) assert(value.length <= rule.maxItems, path);
       if(rule.uniqueItems) assert.equal(new Set(value.map(item => JSON.stringify(item))).size, value.length, path);
       value.forEach((item, index) => validate(item, rule.items, `${path}[${index}]`));
    }
@@ -81,4 +82,8 @@ assert.deepEqual(fixtures['job.response.json'], job);
 assert.throws(() => validate({ copies: 0 }, schema.$defs.PrintOptions, 'invalidCopies'));
 assert.throws(() => validate({ paperWidthMm: 100 }, schema.$defs.PrintOptions, 'missingHeight'));
 assert.throws(() => validate({ eventId: 'test', status: 'PRINTED' }, schema.$defs.JobEvent, 'invalidStatus'));
+assert.throws(() => validate({ name: 'x'.repeat(513) }, schema.$defs.DeviceProfile, 'oversizedName'));
+assert.throws(() => validate({ description: 'x'.repeat(4097) }, schema.$defs.DeviceProfile, 'oversizedDescription'));
+assert.throws(() => validate({ location: 'x'.repeat(513) }, schema.$defs.DeviceProfile, 'oversizedLocation'));
+validate({ name: '', description: null }, schema.$defs.DeviceProfile, 'clearAndPreserve');
 console.log(`Validated ${Object.keys(fixtures).length} protocol fixtures, content integrity, and invalid-input checks.`);

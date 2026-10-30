@@ -105,6 +105,20 @@ A business idempotency key is scoped to the authorized tenant. The same key plus
 
 Once spool submission may have occurred, never blindly submit again after restart. Retain OUTCOME_UNKNOWN for review. The first implementation need not implement automated reconciliation, cluster leases, cancellation or failover to preserve this rule.
 
+## Client names, descriptions and locations
+
+This additive v1 extension keeps device IDs and printer IDs stable. The Windows client owns these labels; QQQ displays the synchronized values in its native record forms and selectors. Server approval and local printer exposure remain separate controls.
+
+`POST /printing/v1/device/heartbeat` accepts optional `profile: { name, description, location }`. Printer inventory entries accept optional `displayName`, `description` and `location`; their existing `name` remains the physical Windows queue name. Missing or null metadata fields preserve the previous value, supporting older clients. Explicit empty strings clear fields; an empty friendly name falls back to the computer or physical queue name. Friendly names and locations allow 512 characters, descriptions 4096, physical computer/queue names and job titles 1024. No field changes printer routing identity. Over-limit values return 400.
+
+Management device responses additionally include `computerName` and `profile`. Managed printer responses include the three optional profile fields. Descriptions may contain line breaks. Client labels are operational data, not credentials, and must not be interpreted as HTML or SQL.
+
+## Bounded job history
+
+`GET /printing/v1/admin/jobs?limit=200&before=<nextCursor>` returns `{ jobs: [PrintJob, ...], nextCursor: string|null }`. The default and maximum limit is 200, minimum 1. Pass the opaque cursor unchanged to obtain the next older page; a null cursor means the end. The tenant remains bound to administrator authorization, never to cursor contents. Lists exclude document bytes. This keyset pagination is additive; clients reading only `jobs` retain their previous bounded first-page behavior.
+
+Device queued inspection remains the oldest 50 QUEUED jobs. Claim returns a single eligible job; content is downloaded separately after claim. A local list is a bounded operational window, not a statement that older history or a larger backlog does not exist.
+
 ## Errors
 
 Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
@@ -119,6 +133,6 @@ Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
 
 ## Verification
 
-`npm run check` compiles all 27 JSON Schema 2020-12 definitions with Ajv and validates all 19 fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
+`npm run check` compiles every JSON Schema 2020-12 definition with Ajv and validates all shared fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
 
 `node tools/verify-fixtures.mjs` remains a dependency-free subset check. Java and .NET implementations should consume these exact fixtures in protocol tests, pinned to a reviewed immutable protocol commit. The Java HTTP round trip and .NET fixture compatibility checks passed during initial development. CI configuration is included; a local check does not imply that GitHub CI has run.

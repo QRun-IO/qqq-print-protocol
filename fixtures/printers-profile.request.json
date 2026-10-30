@@ -1,0 +1,15 @@
+{
+  "printers": [
+    {
+      "printerId": "stable-queue-id",
+      "name": "ZDesigner ZD421-203dpi ZPL",
+      "driverName": "ZDesigner",
+      "portName": "USB001",
+      "status": "READY",
+      "formats": ["ZPL"],
+      "displayName": "Shipping labels",
+      "description": "4 by 6 shipping labels",
+      "location": "Packing station 12"
+    }
+  ]
+}

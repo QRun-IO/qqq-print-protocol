@@ -1,5 +1,8 @@
 # TODO
 
+- [x] Run `npm run check` for the additive profile and history-pagination extension:28 definitions,21 fixtures passed.
+- [ ] Pin downstream fixtures to its reviewed commit and verify remote CI.
+
 - [x] Freeze v1 endpoints and cross-language DTO names.
 - [x] Create JSON schema and enrollment/inventory/job/event fixtures.
 - [x] Verify sample content integrity and fixture structure.
