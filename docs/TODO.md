@@ -1,7 +1,7 @@
 # TODO
 
 - [x] Run `npm run check` for the additive profile and history-pagination extension:28 definitions,21 fixtures passed.
-- [ ] Pin downstream fixtures to its reviewed commit and verify remote CI.
+- [x] Both downstream fixture pins use a0de93b; remote CI41126317410 passed.
 
 - [x] Freeze v1 endpoints and cross-language DTO names.
 - [x] Create JSON schema and enrollment/inventory/job/event fixtures.
