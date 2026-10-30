@@ -20,8 +20,19 @@
         },
         "requestId": {
           "$ref": "#/$defs/Id"
+        },
+        "testProfile": {
+          "$ref": "#/$defs/TestPrintProfile"
         }
-      }
+      },
+      "anyOf": [
+        { "type": "object", "properties": { "format": { "const": "PDF" } } },
+        { "type": "object", "properties": { "format": { "const": "ZPL" }, "testProfile": { "enum": ["LABEL_4X6_203", "LABEL_4X6_300", "LABEL_4X6_600"] } } }
+      ]
+    },
+    "TestPrintProfile": {
+      "description": "Optional test-document media and label resolution. Omitted defaults: PDF LETTER, ZPL LABEL_4X6_203. This does not change a Windows queue's configured stock.",
+      "enum": ["LETTER", "A4", "LABEL_4X6_203", "LABEL_4X6_300", "LABEL_4X6_600"]
     },
     "DeviceRetryRequest": {
       "type": "object",

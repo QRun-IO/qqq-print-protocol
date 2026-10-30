@@ -21,4 +21,11 @@ for(const [file, type] of Object.entries(fixtureTypes))
    const validate = ajv.compile({ $ref: `${schema.$id}#/$defs/${type}` });
    assert(validate(value), `${file}: ${ajv.errorsText(validate.errors)}`);
 }
+const validateTest = ajv.compile({ $ref: `${schema.$id}#/$defs/DeviceTestPrintRequest` });
+const testRequest = { printerId: 'printer-zebra', format: 'ZPL', requestId: 'test-1' };
+assert(validateTest(testRequest), 'Existing requests without a profile remain valid.');
+assert(validateTest({ ...testRequest, testProfile: 'LABEL_4X6_300' }));
+assert(!validateTest({ ...testRequest, testProfile: 'LETTER' }));
+assert(!validateTest({ ...testRequest, testProfile: null }));
+assert(!validateTest({ format: 'PDF' }));
 console.log(`Compiled ${Object.keys(schema.$defs).length} JSON Schema 2020-12 definitions; ${Object.keys(fixtureTypes).length} fixtures passed full schema validation.`);

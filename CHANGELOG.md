@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3-rc.1 — 2026-10-30
+
+- Optional testProfile selects Letter, A4 or 4 × 6 label layouts at 203/300/600 dpi without changing wire v1.
+- Existing requests remain valid; incompatible ZPL media, null/unknown profiles and missing request identity are rejected.
+- Schema gate covers 29 definitions and 22 fixtures, including explicit 300-dpi test requests.
+
+
 ## 0.1.2-rc.1 — 2026-10-30
 
 - Optional v1 heartbeat device profile and printer display-name/description/location fields, preserving physical queue names and identifiers.

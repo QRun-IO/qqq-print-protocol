@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The first implementation uses outbound HTTPS polling. WebSockets are unnecessary for this happy path. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Distribution version: **0.1.1-rc.1**, a prerelease with additive operator actions. Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Distribution version: **0.1.3-rc.1**, a prerelease with additive test-document profiles. Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Use Node.js 24+ to run the development checks:
 
@@ -136,3 +136,11 @@ Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
 `npm run check` compiles every JSON Schema 2020-12 definition with Ajv and validates all shared fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
 
 `node tools/verify-fixtures.mjs` remains a dependency-free subset check. Java and .NET implementations should consume these exact fixtures in protocol tests, pinned to a reviewed immutable protocol commit. The Java HTTP round trip and .NET fixture compatibility checks passed during initial development. CI configuration is included; a local check does not imply that GitHub CI has run.
+
+## Branded test-document profiles
+
+`DeviceTestPrintRequest` optionally includes `testProfile`. PDF accepts `LETTER`, `A4`, or a `LABEL_4X6_*` profile (all label profiles produce the same 101.6 × 152.4 mm PDF). ZPL accepts `LABEL_4X6_203`, `LABEL_4X6_300`, or `LABEL_4X6_600`; the suffix selects the printer resolution in dots per inch. Use possible-value selectors in operator interfaces and match the loaded stock and device resolution. The profile defines document layout; it does not reconfigure Windows paper stock.
+
+Requests that omit the field retain compatible defaults: PDF uses Letter, ZPL uses 4 × 6 at 203 dpi. An explicit null, unknown profile, or Letter/A4 with ZPL is invalid. A stable requestId protects transport retries; changing document media is a new operator request. Each action queues one test on each explicitly selected destination, subject to the existing exposure and approval checks. No discovery or connection event automatically prints.
+
+The QQQ implementation generates branded diagnostic content using an embedded warehouse-readable font for PDFs and rasterized glyphs in printer-ready ZPL. This avoids relying on resident printer fonts for identification text. Physical legibility, alignment and barcode readability still require output inspection.

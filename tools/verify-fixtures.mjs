@@ -20,7 +20,6 @@ function validate(value, rule, path)
          try { validate(value, candidate, path); return true; }
          catch { return false; }
       }), `${path}: no anyOf variant matched`);
-      return;
    }
    if(rule.const !== undefined) assert.deepEqual(value, rule.const, path);
    if(rule.enum) assert(rule.enum.includes(value), `${path}: invalid enum`);
@@ -86,4 +85,10 @@ assert.throws(() => validate({ name: 'x'.repeat(513) }, schema.$defs.DeviceProfi
 assert.throws(() => validate({ description: 'x'.repeat(4097) }, schema.$defs.DeviceProfile, 'oversizedDescription'));
 assert.throws(() => validate({ location: 'x'.repeat(513) }, schema.$defs.DeviceProfile, 'oversizedLocation'));
 validate({ name: '', description: null }, schema.$defs.DeviceProfile, 'clearAndPreserve');
+const brandedTest = fixtures['device-test-profile.request.json'];
+assert.throws(() => validate({ ...brandedTest, testProfile: 'LETTER' }, schema.$defs.DeviceTestPrintRequest, 'incompatibleLabelMedia'));
+assert.throws(() => validate({ ...brandedTest, testProfile: 'UNKNOWN' }, schema.$defs.DeviceTestPrintRequest, 'unknownTestProfile'));
+assert.throws(() => validate({ ...brandedTest, testProfile: null }, schema.$defs.DeviceTestPrintRequest, 'nullTestProfile'));
+assert.throws(() => validate({ format: 'PDF' }, schema.$defs.DeviceTestPrintRequest, 'missingTestIdentity'));
+validate({ ...brandedTest, format: 'PDF', testProfile: 'A4' }, schema.$defs.DeviceTestPrintRequest, 'a4TestPage');
 console.log(`Validated ${Object.keys(fixtures).length} protocol fixtures, content integrity, and invalid-input checks.`);

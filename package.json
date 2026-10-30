@@ -1,6 +1,6 @@
 {
   "name": "@qrun-io/qqq-print-protocol",
-  "version": "0.1.2-rc.1",
+  "version": "0.1.3-rc.1",
   "private": true,
   "description": "Versioned wire contract and compatibility fixtures for QQQ cloud printing.",
   "license": "Apache-2.0",
