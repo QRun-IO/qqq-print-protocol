@@ -1,5 +1,7 @@
 # Session state
 
+2026-10-30 audit: pending 0.1.4-rc.1 changes release engineering only, preserving wire v1 compatibility. Release publication now requires reusable security checks, promotes the verified archive, verifies checksums and requests GitHub build provenance. Disable npm cache in the release-producing workflow to avoid cache poisoning. Published baseline remains 0.1.3-rc.1; hosted validation/provenance and independent security scan remain pending. User-confirmed laser PDF and Zebra ZPL/PDF evidence is recorded in the implementation repositories.
+
 2026-10-30 source 0.1.2-rc.1: additive v1 DeviceProfile in heartbeat, optional printer displayName/description/location, explicit null-preserve/empty-clear behavior, 512/4096/1024 character bounds and admin keyset job history cursor documented. Added two shared profile fixtures and boundary invalid-input checks. `npm run check` passed: 28 schema definitions,21 fixtures plus integrity/invalid-input checks. Both implementations pin fixtures to a0de93b. Exact-source GitHub CI41126317410 passed; release publication is coordinated by root. Existing wire IDs and physical printer name semantics remain unchanged.
 
 2026-10-29: v1 happy-path contract created for QQQ 4.1+ and AppKit Windows connector. HTTPS polling; device enrollment, discovery/approval, PDF/ZPL job submission, claims, content and events. No commits or publication.

@@ -1,5 +1,9 @@
 # TODO
 
+- [ ] Verify security-gated artifact promotion and public build provenance for 0.1.4-rc.1.
+- [x] Shared contract v1 remains unchanged during the retention/storage and Windows audit fixes.
+- [x] User confirmed laser PDF and Zebra ZPL/PDF output with the previous implementation releases; barcode scanning remains unverified.
+
 - [x] Run `npm run check` for the additive profile and history-pagination extension:28 definitions,21 fixtures passed.
 - [x] Both downstream fixture pins use a0de93b; remote CI41126317410 passed.
 
