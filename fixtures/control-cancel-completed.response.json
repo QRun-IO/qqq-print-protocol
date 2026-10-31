@@ -1,0 +1,16 @@
+{
+  "commandId": "command-cancel-1",
+  "requestId": "action-cancel-spool-1",
+  "action": "CANCEL_SPOOL",
+  "createdAt": "2026-10-31T16:00:00Z",
+  "expiresAt": "2026-10-31T16:15:00Z",
+  "jobId": "job-example-1",
+  "issuedAt": "2026-10-31T16:00:00Z",
+  "deviceId": "device-example-1",
+  "status": "SUCCEEDED",
+  "receipt": {
+    "receiptId": "receipt-cancel-requested-1",
+    "outcome": "CANCEL_REQUESTED",
+    "completedAt": "2026-10-31T16:00:05Z"
+  }
+}

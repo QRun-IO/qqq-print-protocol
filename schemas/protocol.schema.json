@@ -4,6 +4,16 @@
   "title": "QQQ Print Protocol v1",
   "description": "Select the DTO with #/$defs/Name.",
   "$defs": {
+    "PrintingSessionIdentity": {
+      "type": "object",
+      "required": ["principalId", "tenantId"],
+      "properties": {
+        "principalId": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "tenantId": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "deviceId": { "$ref": "#/$defs/Id" }
+      },
+      "additionalProperties": true
+    },
     "DeviceTestPrintRequest": {
       "type": "object",
       "required": [
@@ -26,13 +36,40 @@
         }
       },
       "anyOf": [
-        { "type": "object", "properties": { "format": { "const": "PDF" } } },
-        { "type": "object", "properties": { "format": { "const": "ZPL" }, "testProfile": { "enum": ["LABEL_4X6_203", "LABEL_4X6_300", "LABEL_4X6_600"] } } }
+        {
+          "type": "object",
+          "properties": {
+            "format": {
+              "const": "PDF"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "format": {
+              "const": "ZPL"
+            },
+            "testProfile": {
+              "enum": [
+                "LABEL_4X6_203",
+                "LABEL_4X6_300",
+                "LABEL_4X6_600"
+              ]
+            }
+          }
+        }
       ]
     },
     "TestPrintProfile": {
       "description": "Optional test-document media and label resolution. Omitted defaults: PDF LETTER, ZPL LABEL_4X6_203. This does not change a Windows queue's configured stock.",
-      "enum": ["LETTER", "A4", "LABEL_4X6_203", "LABEL_4X6_300", "LABEL_4X6_600"]
+      "enum": [
+        "LETTER",
+        "A4",
+        "LABEL_4X6_203",
+        "LABEL_4X6_300",
+        "LABEL_4X6_600"
+      ]
     },
     "DeviceRetryRequest": {
       "type": "object",
@@ -618,6 +655,9 @@
         },
         "profile": {
           "$ref": "#/$defs/DeviceProfile"
+        },
+        "control": {
+          "$ref": "#/$defs/DeviceControlStatus"
         }
       },
       "required": [
@@ -655,8 +695,13 @@
         },
         "nextCursor": {
           "anyOf": [
-            { "type": "string", "maxLength": 12000 },
-            { "type": "null" }
+            {
+              "type": "string",
+              "maxLength": 12000
+            },
+            {
+              "type": "null"
+            }
           ]
         }
       },
@@ -749,6 +794,460 @@
       },
       "additionalProperties": true,
       "description": "Client-authoritative labels. Null or omitted preserves metadata; empty text clears the field. Empty name falls back to the technical computer name."
+    },
+    "ControlTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 40,
+      "pattern": "Z$",
+      "description": "RFC 3339 UTC timestamp, ending in uppercase Z."
+    },
+    "ControlCapability": {
+      "enum": [
+        "REFRESH_INVENTORY",
+        "CANCEL_SPOOL"
+      ]
+    },
+    "ProtocolVersionResponse": {
+      "type": "object",
+      "required": [
+        "protocolVersion"
+      ],
+      "properties": {
+        "protocolVersion": {
+          "const": 1
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DeviceDesiredState": {
+      "type": "object",
+      "required": [
+        "revision",
+        "dispatchPaused",
+        "connectionState"
+      ],
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "dispatchPaused": {
+          "type": "boolean"
+        },
+        "connectionState": {
+          "enum": [
+            "CONNECTED",
+            "DISCONNECTED"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "DeviceControlStatus": {
+      "type": "object",
+      "required": [
+        "supported",
+        "capabilities",
+        "lastAppliedRevision",
+        "desiredState"
+      ],
+      "properties": {
+        "supported": {
+          "type": "boolean"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ControlCapability"
+          },
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "lastPollAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "lastAppliedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "desiredState": {
+          "$ref": "#/$defs/DeviceDesiredState"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DeviceControlPollRequest": {
+      "type": "object",
+      "required": [
+        "controlVersion",
+        "agentVersion",
+        "capabilities",
+        "lastAppliedRevision"
+      ],
+      "properties": {
+        "controlVersion": {
+          "const": 1
+        },
+        "agentVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ControlCapability"
+          },
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "lastAppliedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": false
+    },
+    "DeviceCommand": {
+      "type": "object",
+      "required": [
+        "commandId",
+        "requestId",
+        "action",
+        "createdAt",
+        "expiresAt"
+      ],
+      "properties": {
+        "commandId": {
+          "$ref": "#/$defs/Id"
+        },
+        "requestId": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "enum": [
+            "REFRESH_INVENTORY",
+            "CANCEL_SPOOL"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "jobId": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "jobId"
+          ],
+          "properties": {
+            "action": {
+              "const": "CANCEL_SPOOL"
+            },
+            "jobId": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "enum": [
+                "REFRESH_INVENTORY"
+              ]
+            },
+            "jobId": false
+          }
+        }
+      ]
+    },
+    "DeviceControlPollResponse": {
+      "type": "object",
+      "required": [
+        "controlVersion",
+        "serverTime",
+        "pollIntervalSeconds",
+        "desiredState",
+        "commands"
+      ],
+      "properties": {
+        "controlVersion": {
+          "const": 1
+        },
+        "serverTime": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "pollIntervalSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        },
+        "desiredState": {
+          "$ref": "#/$defs/DeviceDesiredState"
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DeviceCommand"
+          },
+          "maxItems": 20
+        }
+      },
+      "additionalProperties": true
+    },
+    "DeviceCommandReceipt": {
+      "type": "object",
+      "required": [
+        "receiptId",
+        "outcome",
+        "completedAt"
+      ],
+      "properties": {
+        "receiptId": {
+          "$ref": "#/$defs/Id"
+        },
+        "outcome": {
+          "enum": [
+            "INVENTORY_REFRESHED",
+            "CANCEL_REQUESTED",
+            "ALREADY_ABSENT",
+            "OWNERSHIP_MISMATCH",
+            "UNSUPPORTED",
+            "FAILED",
+            "EXPIRED",
+            "OUTCOME_UNKNOWN"
+          ]
+        },
+        "completedAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      },
+      "additionalProperties": false
+    },
+    "AdminDeviceActionRequest": {
+      "type": "object",
+      "required": [
+        "requestId",
+        "issuedAt",
+        "action"
+      ],
+      "properties": {
+        "requestId": {
+          "$ref": "#/$defs/Id"
+        },
+        "issuedAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "action": {
+          "enum": [
+            "PAUSE_DISPATCH",
+            "RESUME_DISPATCH",
+            "DISCONNECT",
+            "RECONNECT",
+            "REVOKE",
+            "REFRESH_INVENTORY",
+            "CLEAR_QUEUE",
+            "CANCEL_SPOOL"
+          ]
+        },
+        "jobId": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "jobId"
+          ],
+          "properties": {
+            "action": {
+              "const": "CANCEL_SPOOL"
+            },
+            "jobId": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "enum": [
+                "PAUSE_DISPATCH",
+                "RESUME_DISPATCH",
+                "DISCONNECT",
+                "RECONNECT",
+                "REVOKE",
+                "REFRESH_INVENTORY",
+                "CLEAR_QUEUE"
+              ]
+            },
+            "jobId": false
+          }
+        }
+      ]
+    },
+    "DeviceActionRecord": {
+      "type": "object",
+      "required": [
+        "commandId",
+        "requestId",
+        "issuedAt",
+        "deviceId",
+        "action",
+        "status",
+        "createdAt",
+        "expiresAt"
+      ],
+      "properties": {
+        "commandId": {
+          "$ref": "#/$defs/Id"
+        },
+        "requestId": {
+          "$ref": "#/$defs/Id"
+        },
+        "issuedAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "enum": [
+            "PAUSE_DISPATCH",
+            "RESUME_DISPATCH",
+            "DISCONNECT",
+            "RECONNECT",
+            "REVOKE",
+            "REFRESH_INVENTORY",
+            "CLEAR_QUEUE",
+            "CANCEL_SPOOL"
+          ]
+        },
+        "status": {
+          "enum": [
+            "PENDING",
+            "SUCCEEDED",
+            "FAILED",
+            "EXPIRED",
+            "OUTCOME_UNKNOWN"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "jobId": {
+          "$ref": "#/$defs/Id"
+        },
+        "resultCode": {
+          "enum": [
+            "DESIRED_STATE_UPDATED",
+            "CREDENTIAL_REVOKED",
+            "QUEUED_JOBS_CANCELLED"
+          ]
+        },
+        "cancelledJobCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "receipt": {
+          "$ref": "#/$defs/DeviceCommandReceipt"
+        }
+      },
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "jobId"
+          ],
+          "properties": {
+            "action": {
+              "const": "CANCEL_SPOOL"
+            },
+            "jobId": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "enum": [
+                "PAUSE_DISPATCH",
+                "RESUME_DISPATCH",
+                "DISCONNECT",
+                "RECONNECT",
+                "REVOKE",
+                "REFRESH_INVENTORY",
+                "CLEAR_QUEUE"
+              ]
+            },
+            "jobId": false
+          }
+        }
+      ]
+    },
+    "DeviceActionList": {
+      "type": "object",
+      "required": [
+        "commands",
+        "nextCursor"
+      ],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DeviceActionRecord"
+          },
+          "maxItems": 200
+        },
+        "nextCursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
     }
   }
 }
