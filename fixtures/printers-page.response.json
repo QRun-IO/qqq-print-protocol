@@ -1,0 +1,15 @@
+{
+  "printers": [
+    {
+      "printerId": "printer-zebra",
+      "name": "Packing Zebra",
+      "driverName": "Synthetic ZPL driver",
+      "portName": "SYNTHETIC",
+      "status": "READY",
+      "formats": ["ZPL"],
+      "enabled": true,
+      "available": true
+    }
+  ],
+  "nextCursor": null
+}

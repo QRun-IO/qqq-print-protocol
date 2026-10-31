@@ -4,7 +4,8 @@
 
 - Gate publication on security checks, promote the tested archive and verify packaged checksums.
 - Add GitHub build provenance attestations and disable npm caching in the release-producing job.
-- Preserve the v1 wire contract and compatibility fixtures unchanged.
+- Add optional management printer pagination with bounded pages and compatible cursor-free responses; retain wire v1.
+- Document capacity rejection and document-expiration responses without changing existing device requests.
 
 ## 0.1.3-rc.1 — 2026-10-30
 

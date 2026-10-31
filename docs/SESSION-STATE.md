@@ -1,6 +1,14 @@
-# Session state
+# Session state — 2026-10-30
 
-2026-10-30 audit: pending 0.1.4-rc.1 changes release engineering only, preserving wire v1 compatibility. Release publication now requires reusable security checks, promotes the verified archive, verifies checksums and requests GitHub build provenance. Disable npm cache in the release-producing workflow to avoid cache poisoning. Published baseline remains 0.1.3-rc.1; hosted validation/provenance and independent security scan remain pending. User-confirmed laser PDF and Zebra ZPL/PDF evidence is recorded in the implementation repositories.
+## Audit candidate 0.1.4-rc.1
+
+Wire v1 remains compatible. Optional management printer pagination adds bounded pages and an opaque nextCursor; existing cursor-free responses remain valid. Capacity and document-expiration errors are documented. `npm run check` passes **29 definitions and 23 fixtures**, including cursor type/length and page-overflow regressions.
+
+Draft PR #2 contains release integrity and fail-closed CodeQL evidence guards that passed hosted checks at 6aefdaf; final contract/documentation edits still require fresh checks. Publication promotes verified archives and includes provenance. No audit release has been published. Windows/server security remediation and installed/deployment qualification remain coordinated release gates. The independent baseline scan completed without a distinct protocol finding.
+
+Master communications are in `R:\agent-comms\qqq-cloud-printing.md`; both other masters acknowledged ownership and retention boundaries.
+
+## Historical checkpoints
 
 2026-10-30 source 0.1.2-rc.1: additive v1 DeviceProfile in heartbeat, optional printer displayName/description/location, explicit null-preserve/empty-clear behavior, 512/4096/1024 character bounds and admin keyset job history cursor documented. Added two shared profile fixtures and boundary invalid-input checks. `npm run check` passed: 28 schema definitions,21 fixtures plus integrity/invalid-input checks. Both implementations pin fixtures to a0de93b. Exact-source GitHub CI41126317410 passed; release publication is coordinated by root. Existing wire IDs and physical printer name semantics remain unchanged.
 

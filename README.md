@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The first implementation uses outbound HTTPS polling. WebSockets are unnecessary for this happy path. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Distribution version: **0.1.3-rc.1**, a prerelease with additive test-document profiles. Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Source distribution version: **0.1.4-rc.1** (unreleased audit update). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Use Node.js 24+ to run the development checks:
 
@@ -41,7 +41,7 @@ The host application authenticates management requests and determines authorized
 | GET `/device/jobs/{jobId}/content` | none | 200 binary content |
 | POST `/device/jobs/{jobId}/events` | `JobEvent` | 200 `Acknowledgment` |
 | GET `/admin/devices` | none | 200 `{ "devices": [Device] }` |
-| GET `/admin/devices/{deviceId}/printers` | none | 200 `{ "printers": [ManagedPrinter] }` |
+| GET `/admin/devices/{deviceId}/printers` | optional `limit`, `before` query parameters | 200 `PrinterList` |
 | PUT `/admin/devices/{deviceId}/printers/{printerId}` | `{ "enabled": true }` | 200 `Acknowledgment` |
 | POST `/admin/jobs` | `SubmitJobRequest` | 200 `PrintJob`, including identical idempotent replay |
 | GET `/admin/jobs` | none | 200 `{ "jobs": [PrintJob] }` |
@@ -119,6 +119,8 @@ Management device responses additionally include `computerName` and `profile`. M
 
 Device queued inspection remains the oldest 50 QUEUED jobs. Claim returns a single eligible job; content is downloaded separately after claim. A local list is a bounded operational window, not a statement that older history or a larger backlog does not exist.
 
+`GET /printing/v1/admin/devices/{deviceId}/printers?limit=200&before=<nextCursor>` returns `{ printers: [ManagedPrinter, ...], nextCursor: string|null }`. Limit defaults to 200 and must be between 1 and 200. Pages follow ascending display name and stable row identity; pass the opaque cursor unchanged. The host rechecks device and tenant scope on every page. Existing clients can continue reading the bounded `printers` array. Discovery snapshots still contain at most 200 queues; configurable cumulative history limits prevent repeated fresh IDs from growing inventory indefinitely, while preserving approved and job-referenced records.
+
 ## Errors
 
 Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
@@ -128,7 +130,9 @@ Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
 * 403: authenticated identity lacks permission.
 * 404: unknown object or object outside the device's scope (avoid cross-device disclosure).
 * 409: idempotency conflict, enrollment already used, invalid lifecycle transition.
+* 410: the delivery document expired under the host retention policy. Submit a new document explicitly; an existing idempotent receipt remains valid.
 * 413: document or request exceeds configured limit.
+* 429: host queue, retained-document, inventory or request-rate capacity is exhausted. Respect the host's capacity policy; retry the same request identity with bounded backoff after capacity becomes available. Do not create fresh identities to evade limits.
 * 503: transient server failure; retry transport operations with bounded backoff. A timeout does not prove a physical print failed.
 
 ## Verification
