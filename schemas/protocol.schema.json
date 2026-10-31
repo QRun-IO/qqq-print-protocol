@@ -650,7 +650,14 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/ManagedPrinter"
-          }
+          },
+          "maxItems": 200
+        },
+        "nextCursor": {
+          "anyOf": [
+            { "type": "string", "maxLength": 12000 },
+            { "type": "null" }
+          ]
         }
       },
       "required": [

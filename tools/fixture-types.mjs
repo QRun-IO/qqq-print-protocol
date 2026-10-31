@@ -12,6 +12,7 @@ export const fixtureTypes = {
    'heartbeat.request.json': 'HeartbeatRequest',
    'heartbeat.response.json': 'HeartbeatResponse',
    'printers.request.json': 'PrinterInventory',
+   'printers-page.response.json': 'PrinterList',
    'approval.request.json': 'PrinterApproval',
    'claim-empty.response.json': 'ClaimResponse',
    'claim.response.json': 'ClaimResponse',

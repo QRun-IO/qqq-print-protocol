@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4-rc.1 — 2026-10-30
+
+- Gate publication on security checks, promote the tested archive and verify packaged checksums.
+- Add GitHub build provenance attestations and disable npm caching in the release-producing job.
+- Add optional management printer pagination with bounded pages and compatible cursor-free responses; retain wire v1.
+- Document capacity rejection and document-expiration responses without changing existing device requests.
+
 ## 0.1.3-rc.1 — 2026-10-30
 
 - Optional testProfile selects Letter, A4 or 4 × 6 label layouts at 203/300/600 dpi without changing wire v1.
