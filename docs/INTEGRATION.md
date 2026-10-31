@@ -14,7 +14,7 @@ If a consumer builds outside a multi-checkout workspace, download the release ar
 
 ## Versioning
 
-Wire protocol v1 is selected by the `/printing/v1` path and enrollment response `protocolVersion: 1`. Distribution version `0.1.0-rc.1` identifies the specification/fixture bundle; it does not change that wire version.
+Wire protocol v1 is selected by the `/printing/v1` path and enrollment response `protocolVersion: 1`. Published distribution version `0.1.4-rc.1` identifies the specification/fixture bundle; it does not change that wire version. The Windows and QBit release numbers are independent of both. Current clients validate the wire major at enrollment; runtime contract minor/patch discovery, feature negotiation and a served OpenAPI definition are not implemented.
 
 Additive optional response fields can remain v1. Required new inputs, renamed fields, removed enum values or changed semantics require explicit compatibility design and usually a new path version. Feature negotiation may be added later; consumers must not assume unadvertised capabilities.
 

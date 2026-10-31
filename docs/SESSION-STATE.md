@@ -1,5 +1,11 @@
 # Session state — 2026-10-30
 
+## Published release checkpoint — 2026-10-31
+
+The compatible contract bundle [v0.1.4-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.1.4-rc.1) is published. Earlier candidate and publication-pending entries below describe their original checkpoint. The coordinated Windows and QBit audit prereleases are also published; machine installation, local-host acceptance, physical output and production storage qualification have their own evidence and must not be inferred from this contract release.
+
+The wire remains `/printing/v1` with integer protocolVersion validation. Distribution SemVer does not provide runtime feature negotiation. No API behavior or schema changed in this documentation follow-up.
+
 ## Audit candidate 0.1.4-rc.1
 
 Wire v1 remains compatible. Optional management printer pagination adds bounded pages and an opaque nextCursor; existing cursor-free responses remain valid. Capacity and document-expiration errors are documented. `npm run check` passes **29 definitions and 23 fixtures**, including cursor type/length and page-overflow regressions.
