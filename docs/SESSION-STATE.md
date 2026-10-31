@@ -4,7 +4,9 @@
 
 Wire v1 remains compatible. Optional management printer pagination adds bounded pages and an opaque nextCursor; existing cursor-free responses remain valid. Capacity and document-expiration errors are documented. `npm run check` passes **29 definitions and 23 fixtures**, including cursor type/length and page-overflow regressions.
 
-Draft PR #2 contains release integrity and fail-closed CodeQL evidence guards that passed hosted checks at 6aefdaf; final contract/documentation edits still require fresh checks. Publication promotes verified archives and includes provenance. No audit release has been published. Windows/server security remediation and installed/deployment qualification remain coordinated release gates. The independent baseline scan completed without a distinct protocol finding.
+Draft PR #2 passed every required hosted check at `7f3fa6b`: schema/fixture validation, security, CodeQL and PR checks. The downloaded CI archive checksum was verified. Publication promotes the tested archive and includes provenance; tagged publication and verification of the public attestation are the remaining protocol release steps. The independent baseline scan completed without a distinct protocol finding, and the five Windows/server findings were remediated and independently reviewed.
+
+Protocol publication is independent of machine installation. Windows installed-upgrade and deployed QQQ/S3 qualification remain separate system gates; publishing this compatible contract does not establish those outcomes. Main-branch required checks apply to administrators too.
 
 Master communications are in `R:\agent-comms\qqq-cloud-printing.md`; both other masters acknowledged ownership and retention boundaries.
 

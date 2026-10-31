@@ -1,8 +1,8 @@
 # TODO
 
 - [ ] Verify security-gated artifact promotion and public build provenance for 0.1.4-rc.1.
-- [x] Audit PR #2 at 2e871e6 passes all hosted checks; verify downloaded CI archive checksum. Tagged release and published attestation remain pending.
-- [x] Shared contract v1 remains unchanged during the retention/storage and Windows audit fixes.
+- [x] Audit PR #2 at 7f3fa6b passes all hosted checks; downloaded CI archive checksum verified. Tagged release and published attestation remain pending.
+- [x] Shared wire v1 remains compatible during the retention/storage and Windows audit fixes, including optional bounded printer pagination.
 - [x] User confirmed laser PDF and Zebra ZPL/PDF output with the previous implementation releases; barcode scanning remains unverified.
 
 - [x] Run `npm run check` for the additive profile and history-pagination extension:28 definitions,21 fixtures passed.
@@ -14,10 +14,11 @@
 - [x] Consume shared fixtures in Java HTTP tests.
 - [x] Consume shared fixtures in .NET tests.
 - [x] Verify live local server/connector round trip and user-confirmed real laser output, including installed LocalSystem service.
-- [ ] Verify Zebra hardware when available.
+- [x] User confirmed built-in Zebra ZPL and PDF output with the previous implementation releases; scanning and measured alignment remain separate checks.
 - [x] Add public repository documentation, license, schema validation CI and release archive tooling.
-- [ ] Verify GitHub CI after maintainer publication.
+- [x] Verify required GitHub schema, security, CodeQL and PR checks on the final audit source.
 
-WebSocket notifications, automatic reconciliation, cancellation, destination CRUD and fleet-scale behavior are outside this initial wire contract.
+WebSocket notifications, automatic uncertain-outcome reconciliation, destination CRUD and sustained fleet throughput qualification remain outside this prerelease. The documented explicit cancellation and retry endpoints are implemented.
 
-- [ ] Complete independent review and deployment qualification after the five baseline security findings are remediated; current details are in SESSION-STATE.md.
+- [x] Complete the independent baseline scan and current-source review of its five Windows/server findings and remediations; no distinct protocol finding was reported.
+- [ ] Complete installed Windows and deployed QQQ/S3 qualification separately; see each implementation repository for those acceptance gates.

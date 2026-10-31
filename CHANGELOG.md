@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.4-rc.1 — unreleased
+## 0.1.4-rc.1 — 2026-10-30
 
 - Gate publication on security checks, promote the tested archive and verify packaged checksums.
 - Add GitHub build provenance attestations and disable npm caching in the release-producing job.
