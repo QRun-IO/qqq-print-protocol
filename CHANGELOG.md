@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — proposed 0.2.0-rc.1
+
+- Add optional wire-v1 device-control discovery and independent control polling.
+- Specify server dispatch/connection controls, irreversible credential revocation,
+  inventory refresh, queued-only cancellation, and exact owned spool cancellation.
+- Define expiring commands, durable replayable receipts, bounded history, and
+  timestamped admin requests that cannot execute again after retention pruning.
+- Add synthetic schema fixtures and invalid-input checks; physical output and
+  consumer implementation acceptance remain separate gates.
+- Specify the native semantic printing API, standard QQQ session authorization,
+  secondary bound-device proof and authoritative session identity fixtures.
+
 ## 0.1.4-rc.1 — 2026-10-30
 
 - Gate publication on security checks, promote the tested archive and verify packaged checksums.
@@ -12,7 +24,6 @@
 - Optional testProfile selects Letter, A4 or 4 × 6 label layouts at 203/300/600 dpi without changing wire v1.
 - Existing requests remain valid; incompatible ZPL media, null/unknown profiles and missing request identity are rejected.
 - Schema gate covers 29 definitions and 22 fixtures, including explicit 300-dpi test requests.
-
 
 ## 0.1.2-rc.1 — 2026-10-30
 

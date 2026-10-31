@@ -1,0 +1,27 @@
+{
+  "controlVersion": 1,
+  "serverTime": "2026-10-31T16:00:00Z",
+  "pollIntervalSeconds": 5,
+  "desiredState": {
+    "revision": 1,
+    "dispatchPaused": true,
+    "connectionState": "CONNECTED"
+  },
+  "commands": [
+    {
+      "commandId": "command-refresh-1",
+      "requestId": "action-refresh-inventory-1",
+      "action": "REFRESH_INVENTORY",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z"
+    },
+    {
+      "commandId": "command-cancel-1",
+      "requestId": "action-cancel-spool-1",
+      "action": "CANCEL_SPOOL",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "jobId": "job-example-1"
+    }
+  ]
+}

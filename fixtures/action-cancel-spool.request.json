@@ -1,0 +1,6 @@
+{
+  "requestId": "action-cancel-spool-1",
+  "issuedAt": "2026-10-31T16:00:00Z",
+  "action": "CANCEL_SPOOL",
+  "jobId": "job-example-1"
+}

@@ -1,0 +1,60 @@
+{
+  "commands": [
+    {
+      "commandId": "command-refresh-1",
+      "requestId": "action-refresh-inventory-1",
+      "action": "REFRESH_INVENTORY",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "issuedAt": "2026-10-31T16:00:00Z",
+      "deviceId": "device-example-1",
+      "status": "PENDING"
+    },
+    {
+      "commandId": "command-cancel-1",
+      "requestId": "action-cancel-spool-1",
+      "action": "CANCEL_SPOOL",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "jobId": "job-example-1",
+      "issuedAt": "2026-10-31T16:00:00Z",
+      "deviceId": "device-example-1",
+      "status": "PENDING"
+    },
+    {
+      "commandId": "command-clear_queue-1",
+      "requestId": "action-clear-queue-1",
+      "issuedAt": "2026-10-31T16:00:00Z",
+      "deviceId": "device-example-1",
+      "action": "CLEAR_QUEUE",
+      "status": "SUCCEEDED",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "resultCode": "QUEUED_JOBS_CANCELLED",
+      "cancelledJobCount": 7
+    },
+    {
+      "commandId": "command-pause_dispatch-1",
+      "requestId": "action-pause-dispatch-1",
+      "issuedAt": "2026-10-31T16:00:00Z",
+      "deviceId": "device-example-1",
+      "action": "PAUSE_DISPATCH",
+      "status": "SUCCEEDED",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "resultCode": "DESIRED_STATE_UPDATED"
+    },
+    {
+      "commandId": "command-revoke-1",
+      "requestId": "action-revoke-1",
+      "issuedAt": "2026-10-31T16:00:00Z",
+      "deviceId": "device-example-1",
+      "action": "REVOKE",
+      "status": "SUCCEEDED",
+      "createdAt": "2026-10-31T16:00:00Z",
+      "expiresAt": "2026-10-31T16:15:00Z",
+      "resultCode": "CREDENTIAL_REVOKED"
+    }
+  ],
+  "nextCursor": null
+}

@@ -23,7 +23,7 @@ The release archive and `SHA256SUMS` are written to `dist/`. Schema/fixture cons
 
 ## Conventions
 
-Base path: `/printing/v1`. JSON uses UTF-8, camelCase properties, uppercase enum strings, and RFC 3339 UTC timestamps. IDs are opaque case-sensitive strings using URL-safe characters. Consumers ignore unknown response fields for compatible additions. Breaking changes require a new path version. Configure the complete server origin; production requires HTTPS. Explicit localhost-only development may use HTTP.
+Primary new-client base: `/qqq/v1/qbit/printing`, discovered as QQQ semantic extension `printing` version `1.0.0`, using standard QQQ user authentication and secondary device proof. See [QQQ authentication](docs/QQQ-AUTHENTICATION.md). The routes below describe explicit legacy compatibility at `/printing/v1`; native authentication failure never silently selects that transport. JSON uses UTF-8, camelCase properties, uppercase enum strings, and RFC 3339 UTC timestamps. IDs are opaque case-sensitive strings using URL-safe characters. Consumers ignore unknown response fields for compatible additions. Breaking changes require a new major contract. Configure the complete server origin; production requires HTTPS. Explicit localhost-only development may use HTTP.
 
 Use `Content-Type: application/json` except the content-download response. All authenticated endpoints require `Authorization: Bearer <token>`. Device tokens and admin credentials are distinct; a device token must never authorize `/admin` operations. Enrollment uses only the single-use code in its request body. Never put credentials in query strings or log them.
 
@@ -48,6 +48,13 @@ The host application authenticates management requests and determines authorized
 | GET `/admin/jobs/{jobId}` | none | 200 `PrintJob` |
 
 Device lists and job lists are scoped by host authorization. Listing pagination and destination/profile CRUD are beyond this first wire contract. Native application code may submit through the QBit service rather than the management HTTP API.
+
+The additive [device-control contract](docs/DEVICE-CONTROLS.md) defines capability
+discovery, dispatch pause/resume, operational disconnect/reconnect, permanent
+credential revocation, inventory refresh, queued-job clearing, and exact owned
+Windows spool cancellation. It uses durable request identities, bounded command
+polling, and explicit receipts. This is source under development for a proposed
+`0.2.0-rc.1` distribution; the published version above remains unchanged.
 
 ## DTOs
 

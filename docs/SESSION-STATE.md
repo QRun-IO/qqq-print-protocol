@@ -1,4 +1,33 @@
-# Session state — 2026-10-30
+# Session state — 2026-10-31
+
+## Standard-session primary transport
+
+The new Windows client uses discovered semantic extension `printing` version
+`1.0.0` at `/qqq/v1/qbit/printing`, channel `api/qqq-print-agent`, with standard
+QQQ sessions and secondary device proof. Legacy bearer transport is explicit
+compatibility only. See `QQQ-AUTHENTICATION.md` for current-user/device binding,
+server-owned refresh and the exact private desktop callback. Authentication and
+consumer integration gates are pending; schema validation is not browser-login
+or deployment acceptance. Root added the authoritative printing-session identity
+contract and reran all42definitions/54fixtures successfully.
+
+## Device-control contract under review
+
+Isolated branch `feat/server-device-controls-20261031` adds the frozen wire-v1
+control contract in `docs/DEVICE-CONTROLS.md`. Server and Windows owners received
+the same route, action, state, and receipt names. Admin requests require stable
+`requestId` plus `issuedAt`; the age check prevents stale re-execution after
+terminal history expires. Permanent revocation, desired-state observation,
+queued-only clear, and exact owned spool cancellation remain distinct.
+
+Node 24.22.0 local `npm run check` passed 41 schema definitions and 52 fixtures,
+including legacy discovery and invalid control targets, commands, timestamps,
+capabilities, response bounds, and receipt claims. The strict schema gate first
+caught a missing branch-local property declaration; it was corrected before the
+passing run. These are protocol checks, not live consumer or printer acceptance.
+The proposed package version is `0.2.0-rc.1`; package metadata remains at the
+published version pending coordinated review. No commit, push, release, install,
+network service call, or physical print occurred in this work.
 
 ## Published release checkpoint — 2026-10-31
 
