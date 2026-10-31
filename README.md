@@ -53,7 +53,7 @@ The additive [device-control contract](docs/DEVICE-CONTROLS.md) defines capabili
 discovery, dispatch pause/resume, operational disconnect/reconnect, permanent
 credential revocation, inventory refresh, queued-job clearing, and exact owned
 Windows spool cancellation. It uses durable request identities, bounded command
-polling, and explicit receipts. This is source under development for a proposed
+polling, and explicit receipts. These additions are prepared for the
 `0.2.0-rc.1` distribution; the published version above remains unchanged.
 
 ## DTOs
