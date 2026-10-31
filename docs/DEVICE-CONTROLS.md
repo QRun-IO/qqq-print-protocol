@@ -21,6 +21,11 @@ host-authorized administrator scope and device bearer credentials. Compatibility
 is explicit and is never a silent fallback for a missing or denied native route.
 Neither request bodies nor cursor contents grant authority.
 
+Legacy device-token authentication is valid only for eligible unbound migration
+identities. Account-bound devices must use native user sessions; a bound token
+alone is denied even when the legacy endpoint remains registered. Native hosts
+disable legacy enrollment unless a legacy-only deployment explicitly enables it.
+
 | Method and path | Request | Response |
 | --- | --- | --- |
 | GET `/version` | None | `ProtocolVersionResponse` |

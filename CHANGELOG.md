@@ -11,6 +11,9 @@
   consumer implementation acceptance remain separate gates.
 - Specify the native semantic printing API, standard QQQ session authorization,
   secondary bound-device proof and authoritative session identity fixtures.
+- Require bound devices to use native user sessions on every device route;
+  legacy compatibility cannot downgrade secondary proof into primary authority.
+  Native hosts disable legacy enrollment by default.
 
 ## 0.1.4-rc.1 — 2026-10-30
 
