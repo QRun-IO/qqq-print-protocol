@@ -1,6 +1,9 @@
 # Changelog
 
-## 0.3.0-rc.1 — Unreleased
+## 0.3.0-rc.1 — 2026-10-31
+
+Upgrade the server before the matching Windows connector. Native printing API
+2.0 requires synchronized authenticated WSS; the wire payload version remains 1.
 
 - Define printing semantic extension 2.0 with an authenticated outbound WebSocket
   for direct controls, events, receipts and job notifications; prohibit polling

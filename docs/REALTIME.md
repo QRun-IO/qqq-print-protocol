@@ -1,7 +1,7 @@
 # Realtime printing — semantic extension 2.0
 
-This is the contract for the unreleased `0.3.0-rc.1` realtime implementation.
-It does not establish publication or installed acceptance. Existing job states, command outcomes,
+This is the contract for the `0.3.0-rc.1` realtime release candidate.
+Contract publication does not establish installed acceptance. Existing job states, command outcomes,
 current-user authorization and durable idempotency rules remain authoritative.
 
 Native printing extension **2.0.0** makes an authenticated synchronized WebSocket

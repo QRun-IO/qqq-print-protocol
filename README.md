@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The coordinated [realtime extension 2.0](docs/REALTIME.md) uses a client-initiated authenticated WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Current source: **0.3.0-rc.1 — unreleased**. Published source distribution: [**0.2.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.2.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Current release candidate: [**0.3.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Previous distribution: [**0.2.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.2.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Use Node.js 24+ to run the development checks:
 
@@ -23,7 +23,7 @@ The release archive and `SHA256SUMS` are written to `dist/`. Schema/fixture cons
 
 ## Conventions
 
-The realtime implementation requires printing semantic extension `>=2.0.0 <3.0.0`; wire payload version remains `1`. Its settings, frames, replay rules and required consumer acceptance are in [REALTIME.md](docs/REALTIME.md). This source addition is not yet a published or installed release. The HTTP polling sequence below documents the earlier 1.0/explicit compatibility transport, not a fallback for a realtime client.
+The realtime implementation requires printing semantic extension `>=2.0.0 <3.0.0`; wire payload version remains `1`. Its settings, frames, replay rules and required consumer acceptance are in [REALTIME.md](docs/REALTIME.md). Upgrade the server before the matching Windows connector; installed and physical-output acceptance remain separate from this contract release. The HTTP polling sequence below documents the earlier 1.0/explicit compatibility transport, not a fallback for a realtime client.
 
 Primary native base: `/qqq/v1/qbit/printing`, discovered as QQQ semantic extension `printing`, using standard QQQ user authentication and secondary device proof. Realtime requires extension `2.0.0`; the earlier HTTP transport uses `1.0.0`. See [QQQ authentication](docs/QQQ-AUTHENTICATION.md). The routes below describe explicit legacy compatibility at `/printing/v1`; native authentication failure never silently selects that transport. JSON uses UTF-8, camelCase properties, uppercase enum strings, and RFC 3339 UTC timestamps. IDs are opaque case-sensitive strings using URL-safe characters. Consumers ignore unknown response fields for compatible additions. Breaking changes require a new major contract. Configure the complete server origin; production requires HTTPS. Explicit localhost-only development may use HTTP.
 

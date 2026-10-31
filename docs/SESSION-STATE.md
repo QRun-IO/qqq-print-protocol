@@ -10,8 +10,8 @@ settings include a default single configurable download lane, 100 MiB PDF,
 with declared client ceilings and explicit validation.
 Slow-transfer control delivery, lost-connection replay, claim reconciliation and
 no-duplicate-submission checks are required consumer acceptance, not claims made
-by schema validation. Source package `0.3.0-rc.1` is unreleased; no live changes or
-publication. See [the complete contract](REALTIME.md).
+by schema validation. Release candidate `0.3.0-rc.1` is described in
+[the complete contract](REALTIME.md); this source checkpoint records no live changes.
 
 The native API major is 2 because an authenticated synchronized WebSocket is now
 mandatory for claims that 1.0 clients could previously make over HTTP alone.
@@ -24,7 +24,8 @@ for this source: 71 JSON Schema definitions and 73 synthetic fixtures, including
 the final native submission deadline, all 23 required settings, invalid policy
 bounds, directional frames and exact replay. The eight changed Markdown documents
 passed Markdown lint; `git diff --check` passed. The local archive is preparation
-only; the reviewed commit, consumer pins and hosted release gates remain pending.
+only; both consumers pin reviewed protocol commit `df3729ac632d4a34a3fb8423acef465042a624fc`.
+Tag publication and asset provenance must be checked on the release workflow.
 
 ## Historical 0.2 implementation checkpoint — standard-session transport
 

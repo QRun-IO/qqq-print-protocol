@@ -18,8 +18,8 @@ The coordinated realtime client requires printing semantic extension
 `>=2.0.0 <3.0.0` and the authenticated `qqq-printing.v1` WebSocket subprotocol.
 Wire payload version remains 1. [REALTIME.md](REALTIME.md) defines the new frames,
 configurable policy, streaming limits and runtime acceptance expectations.
-The source package is `0.3.0-rc.1`, unreleased. Its fixtures do not establish a
-published package or installed behavior.
+The release candidate is [0.3.0-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1).
+Upgrade the server before the Windows connector; fixtures do not establish installed behavior.
 
 Historical HTTP wire protocol v1 is selected by the `/printing/v1` path and enrollment response `protocolVersion: 1`. Published distribution version `0.2.0-rc.1` identifies the specification/fixture bundle; it does not change that wire version. The Windows and QBit release numbers are independent of both. Native clients use the discovered printing extension semantic version; the realtime contract above adds its explicit version/capability gate without redefining core discovery.
 

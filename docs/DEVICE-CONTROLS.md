@@ -8,7 +8,7 @@ transport and are never a fallback for a realtime client.
 This extension provides server dispatch controls and two bounded Windows agent
 commands. Its additive payloads preserve existing print job states and old
 request bodies. These domain controls were published in package `0.2.0-rc.1`;
-their realtime transport is part of unreleased `0.3.0-rc.1`. This contract does
+their realtime transport is part of release candidate `0.3.0-rc.1`. This contract does
 not establish deployment or production readiness.
 
 ## Discovery and routes

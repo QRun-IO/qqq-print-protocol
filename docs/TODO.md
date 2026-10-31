@@ -1,6 +1,6 @@
 # TODO
 
-## Realtime 0.3.0-rc.1 — unreleased
+## Realtime 0.3.0-rc.1 release candidate
 
 - [x] Freeze printing extension 2.0, authenticated realtime frames and independent
   streamed HTTPS documents with no polling fallback.
@@ -8,7 +8,7 @@
   timeout, client ceilings and explicit policy refusal.
 - [x] Pass 71 schema definitions, 73 fixtures, local bundle creation, Markdown
   lint and whitespace checks without changing runtime or publishing assets.
-- [ ] Review and commit the protocol, then pin that immutable commit in both
+- [x] Review and commit the protocol, then pin that immutable commit in both
   consumer CI workflows.
 - [ ] Complete consumer transport/replay, slow-transfer control, concurrency and
   authorization acceptance before release; schema checks do not establish them.
