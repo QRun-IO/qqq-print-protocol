@@ -73,3 +73,13 @@ uncertain outcomes for explicit recovery.
 Legacy `/printing/v1` bearer transport remains explicit compatibility for old
 integrations. It is not the new client's primary security boundary, and failure
 of native discovery or authentication never silently activates it.
+
+Once a device is bound to a QQQ principal, its token must be rejected by legacy
+device routes. The same secondary proof cannot be used to bypass user permissions
+through an older endpoint. Existing unbound devices may remain eligible for an
+explicit migration policy until they are associated with an account.
+
+Native hosts disable legacy enrollment by default: an enrollment code cannot
+create a bearer-only identity through the old route. Legacy-only hosts may
+explicitly enable that separate compatibility flow. Native enrollment continues
+to require the current QQQ user, facility permissions and atomic account binding.

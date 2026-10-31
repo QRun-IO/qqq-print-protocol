@@ -9,7 +9,11 @@ compatibility only. See `QQQ-AUTHENTICATION.md` for current-user/device binding,
 server-owned refresh and the exact private desktop callback. Authentication and
 consumer integration gates are pending; schema validation is not browser-login
 or deployment acceptance. Root added the authoritative printing-session identity
-contract and reran all42definitions/54fixtures successfully.
+contract and verified all 42 definitions and 54 fixtures successfully. The native
+authentication boundary also rejects bound device tokens on legacy routes and
+disables legacy enrollment by default in native hosts; only eligible unbound
+identities retain explicit migration compatibility. This clarification changes
+no schema, fixture or consumer pin.
 
 ## Device-control contract under review
 
