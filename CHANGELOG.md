@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — proposed 0.2.0-rc.1
+## 0.2.0-rc.1 — 2026-10-31
 
 - Add optional wire-v1 device-control discovery and independent control polling.
 - Specify server dispatch/connection controls, irreversible credential revocation,
