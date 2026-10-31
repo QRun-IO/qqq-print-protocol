@@ -1,6 +1,33 @@
 # Session state — 2026-10-31
 
-## Standard-session primary transport
+## Realtime contract implementation
+
+Isolated branch `feat/realtime-printing-20261031` defines printing extension 2.0,
+authenticated client-initiated WSS, direct controls/events/receipts and streamed
+same-origin HTTPS documents without job/control polling or fallback. The frozen
+settings include a default single configurable download lane, 100 MiB PDF,
+20 MiB ZPL, 100 copies and a configurable 120-second native submission deadline,
+with declared client ceilings and explicit validation.
+Slow-transfer control delivery, lost-connection replay, claim reconciliation and
+no-duplicate-submission checks are required consumer acceptance, not claims made
+by schema validation. Release candidate `0.3.0-rc.1` is described in
+[the complete contract](REALTIME.md); this source checkpoint records no live changes.
+
+The native API major is 2 because an authenticated synchronized WebSocket is now
+mandatory for claims that 1.0 clients could previously make over HTTP alone.
+Product 0.3, framework `/qqq/v1`, wire payload v1 and the v1 subprotocol remain
+unchanged. A new fixture covers the standard printing extension descriptor;
+historical legacy discovery fixtures remain unchanged.
+
+Locked offline dependency restore, `npm run check` and `npm run bundle` passed
+for this source: 71 JSON Schema definitions and 73 synthetic fixtures, including
+the final native submission deadline, all 23 required settings, invalid policy
+bounds, directional frames and exact replay. The eight changed Markdown documents
+passed Markdown lint; `git diff --check` passed. The local archive is preparation
+only; both consumers pin reviewed protocol commit `df3729ac632d4a34a3fb8423acef465042a624fc`.
+Tag publication and asset provenance must be checked on the release workflow.
+
+## Historical 0.2 implementation checkpoint — standard-session transport
 
 The new Windows client uses discovered semantic extension `printing` version
 `1.0.0` at `/qqq/v1/qbit/printing`, channel `api/qqq-print-agent`, with standard
@@ -15,7 +42,7 @@ disables legacy enrollment by default in native hosts; only eligible unbound
 identities retain explicit migration compatibility. This clarification changes
 no schema, fixture or consumer pin.
 
-## Device-control contract under review
+## Historical 0.2 implementation checkpoint — device-control review
 
 Isolated branch `feat/server-device-controls-20261031` adds the frozen wire-v1
 control contract in `docs/DEVICE-CONTROLS.md`. Server and Windows owners received

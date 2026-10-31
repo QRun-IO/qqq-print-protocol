@@ -52,6 +52,14 @@ function validate(value, rule, path)
       if(rule.minItems !== undefined) assert(value.length >= rule.minItems, path);
       if(rule.maxItems !== undefined) assert(value.length <= rule.maxItems, path);
       if(rule.uniqueItems) assert.equal(new Set(value.map(item => JSON.stringify(item))).size, value.length, path);
+      if(rule.contains)
+      {
+         assert(value.some(item =>
+         {
+            try { validate(item, rule.contains, path); return true; }
+            catch { return false; }
+         }), `${path}: required array member missing`);
+      }
       value.forEach((item, index) => validate(item, rule.items, `${path}[${index}]`));
    }
    if(rule.type === 'string')

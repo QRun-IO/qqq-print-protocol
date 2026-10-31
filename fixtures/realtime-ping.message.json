@@ -1,0 +1,5 @@
+{
+  "type": "PING",
+  "messageId": "ping-connection-1",
+  "payload": {}
+}

@@ -1,0 +1,9 @@
+{
+  "type": "DESIRED_STATE",
+  "messageId": "state-revision-1",
+  "payload": {
+    "revision": 1,
+    "dispatchPaused": true,
+    "connectionState": "CONNECTED"
+  }
+}

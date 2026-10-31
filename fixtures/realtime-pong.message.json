@@ -1,0 +1,7 @@
+{
+  "type": "PONG",
+  "messageId": "pong-connection-1",
+  "payload": {
+    "serverTime": "2026-10-31T22:00:00Z"
+  }
+}

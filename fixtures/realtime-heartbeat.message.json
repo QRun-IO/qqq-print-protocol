@@ -1,0 +1,12 @@
+{
+  "type": "HEARTBEAT",
+  "messageId": "heartbeat-connection-1",
+  "payload": {
+    "agentVersion": "0.3.0-rc.1",
+    "profile": {
+      "name": "Example workstation",
+      "description": "Synthetic contract fixture",
+      "location": "Example facility"
+    }
+  }
+}

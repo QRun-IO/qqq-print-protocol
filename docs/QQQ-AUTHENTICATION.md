@@ -2,14 +2,24 @@
 
 The new Windows client uses the QQQ semantic UI/UX API. Package versions, wire
 payload version `1` and the printing extension semantic version are separate
-contracts. This document describes implementation in progress, not an accepted
-Authentik deployment or a published feature release.
+contracts. The standard-session contract was published in `0.2.0-rc.1`; realtime
+transport is part of release candidate `0.3.0-rc.1`. This document does not establish an
+accepted Authentik deployment.
 
 ## Discovery and sign-in
 
+Require printing extension `>=2.0.0 <3.0.0` before opening the realtime channel
+or dispatching work. Standard discovery and sign-in may accept compatible 1.x
+and 2.x extensions; a successful 1.x login does not permit realtime dispatch or
+polling fallback. Published 0.2 clients used native printing extension 1.0 and
+cannot satisfy the new mandatory channel prerequisite. The standard descriptor
+is unchanged; `realtime-v1` is mandatory in WebSocket HELLO. See
+[realtime authentication and transport](REALTIME.md).
+
 Read public `/qqq/v1/version` before sending credentials. Require core semantic
 API version `>=1.8.0 <2.0.0`, the `api` channel and printing extension version
-`>=1.0.0 <2.0.0`.
+`>=1.0.0 <3.0.0` for the shared authentication client. Realtime operation still
+requires the stricter 2.x gate above.
 Use client channel `api/qqq-print-agent` and read
 `/qqq/v1/metaData/authentication`. Do not infer server authentication from a URL,
 brand, a saved token or a previous deployment.

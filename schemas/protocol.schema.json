@@ -4,6 +4,17 @@
   "title": "QQQ Print Protocol v1",
   "description": "Select the DTO with #/$defs/Name.",
   "$defs": {
+    "PrintingRealtimeExtensionDiscovery": {
+      "description": "The existing core extensions entry required by realtime clients; this does not redefine the core discovery document or its API version.",
+      "type": "object",
+      "required": ["name", "version", "pathPrefix"],
+      "properties": {
+        "name": { "type": "string", "const": "printing" },
+        "version": { "type": "string", "pattern": "^2\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$", "maxLength": 100 },
+        "pathPrefix": { "type": "string", "const": "/qbit/printing" }
+      },
+      "additionalProperties": true
+    },
     "PrintingSessionIdentity": {
       "type": "object",
       "required": ["principalId", "tenantId"],
@@ -444,7 +455,7 @@
         "copies": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 100,
+          "maximum": 32767,
           "default": 1
         },
         "scale": {
@@ -544,7 +555,8 @@
         "contentLength": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 20971520
+          "maximum": 2147483647,
+          "description": "Syntactic ceiling; the discovered transport's effective format policy and declared client capability impose the actual limit."
         },
         "options": {
           "$ref": "#/$defs/PrintOptions"
@@ -1248,6 +1260,769 @@
         }
       },
       "additionalProperties": true
+    },
+    "RealtimeSettingsMessage": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "SETTINGS"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeSettings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeSettings": {
+      "description": "Authoritative operational settings. Cross-field and declared-client-ceiling validation in REALTIME.md is also required.",
+      "type": "object",
+      "required": [
+        "revision",
+        "maxCopies",
+        "maxPdfBytes",
+        "maxZplBytes",
+        "maxFrameBytes",
+        "maxQueuedFrames",
+        "maxQueuedFrameBytes",
+        "maxConcurrentDownloads",
+        "maxConcurrentPrints",
+        "maxStagedBytes",
+        "maxDownloadBytesPerSecond",
+        "requestTimeoutMillis",
+        "downloadConnectTimeoutMillis",
+        "downloadIdleTimeoutMillis",
+        "downloadTimeoutMillis",
+        "webSocketHandshakeTimeoutMillis",
+        "heartbeatIntervalSeconds",
+        "heartbeatTimeoutSeconds",
+        "reconnectMinDelayMillis",
+        "reconnectMaxDelayMillis",
+        "reconnectJitterPercent",
+        "ackTimeoutMillis",
+        "nativeSubmissionTimeoutMillis"
+      ],
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "maxCopies": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767,
+          "default": 100
+        },
+        "maxPdfBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647,
+          "default": 104857600
+        },
+        "maxZplBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647,
+          "default": 20971520
+        },
+        "maxFrameBytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 16777216,
+          "default": 1048576
+        },
+        "maxQueuedFrames": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 4096,
+          "default": 64
+        },
+        "maxQueuedFrameBytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 67108864,
+          "default": 4194304
+        },
+        "maxConcurrentDownloads": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16,
+          "default": 1
+        },
+        "maxConcurrentPrints": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16,
+          "default": 1
+        },
+        "maxStagedBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "default": 536870912
+        },
+        "maxDownloadBytesPerSecond": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647,
+          "default": 0,
+          "description": "Aggregate content-download bandwidth; zero explicitly means unlimited."
+        },
+        "requestTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "downloadConnectTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "downloadIdleTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 3600000,
+          "default": 30000
+        },
+        "downloadTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 86400000,
+          "default": 600000
+        },
+        "webSocketHandshakeTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "heartbeatIntervalSeconds": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 300,
+          "default": 20
+        },
+        "heartbeatTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 900,
+          "default": 60
+        },
+        "reconnectMinDelayMillis": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 60000,
+          "default": 1000
+        },
+        "reconnectMaxDelayMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "reconnectJitterPercent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50,
+          "default": 20
+        },
+        "ackTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 15000
+        },
+        "nativeSubmissionTimeoutMillis": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 86400000,
+          "default": 120000,
+          "description": "Deadline for the isolated native printer submission; timeout cannot establish that no output was submitted."
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeClientLimits": {
+      "type": "object",
+      "required": [
+        "maxCopies",
+        "maxPdfBytes",
+        "maxZplBytes",
+        "maxFrameBytes",
+        "maxQueuedFrames",
+        "maxQueuedFrameBytes",
+        "maxConcurrentDownloads",
+        "maxConcurrentPrints",
+        "maxStagedBytes"
+      ],
+      "properties": {
+        "maxCopies": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767
+        },
+        "maxPdfBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxZplBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxFrameBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxQueuedFrames": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxQueuedFrameBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxConcurrentDownloads": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxConcurrentPrints": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxStagedBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeEmpty": {
+      "type": "object",
+      "required": [],
+      "properties": {},
+      "additionalProperties": false
+    },
+    "RealtimeHelloPayload": {
+      "type": "object",
+      "required": [
+        "agentVersion",
+        "capabilities",
+        "lastAppliedRevision",
+        "lastSettingsRevision",
+        "limits"
+      ],
+      "properties": {
+        "agentVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "realtime-v1",
+              "REFRESH_INVENTORY",
+              "CANCEL_SPOOL"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "contains": {
+            "const": "realtime-v1"
+          }
+        },
+        "lastAppliedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "lastSettingsRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "limits": {
+          "$ref": "#/$defs/RealtimeClientLimits"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeWelcomePayload": {
+      "type": "object",
+      "required": [
+        "connectionId",
+        "serverTime",
+        "desiredState",
+        "settings"
+      ],
+      "properties": {
+        "connectionId": {
+          "$ref": "#/$defs/Id"
+        },
+        "serverTime": {
+          "$ref": "#/$defs/ControlTimestamp"
+        },
+        "desiredState": {
+          "$ref": "#/$defs/DeviceDesiredState"
+        },
+        "settings": {
+          "$ref": "#/$defs/RealtimeSettings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeStateAppliedPayload": {
+      "type": "object",
+      "required": [
+        "lastAppliedRevision",
+        "lastSettingsRevision"
+      ],
+      "properties": {
+        "lastAppliedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "lastSettingsRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeJobEventPayload": {
+      "type": "object",
+      "required": [
+        "jobId",
+        "event"
+      ],
+      "properties": {
+        "jobId": {
+          "$ref": "#/$defs/Id"
+        },
+        "event": {
+          "$ref": "#/$defs/JobEvent"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeCommandReceiptPayload": {
+      "type": "object",
+      "required": [
+        "commandId",
+        "receipt"
+      ],
+      "properties": {
+        "commandId": {
+          "$ref": "#/$defs/Id"
+        },
+        "receipt": {
+          "$ref": "#/$defs/DeviceCommandReceipt"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeAckPayload": {
+      "type": "object",
+      "required": [
+        "acknowledgedMessageId"
+      ],
+      "properties": {
+        "acknowledgedMessageId": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeErrorPayload": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimePongPayload": {
+      "type": "object",
+      "required": [
+        "serverTime"
+      ],
+      "properties": {
+        "serverTime": {
+          "$ref": "#/$defs/ControlTimestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeHello": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "HELLO"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeHelloPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeStateApplied": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "STATE_APPLIED"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeStateAppliedPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeJobEvent": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "JOB_EVENT"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeJobEventPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeCommandReceipt": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "COMMAND_RECEIPT"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeCommandReceiptPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeHeartbeat": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "HEARTBEAT"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/HeartbeatRequest"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeInventory": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "INVENTORY"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/PrinterInventory"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimePing": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "PING"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeWelcome": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "WELCOME"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeWelcomePayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeDesiredState": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "DESIRED_STATE"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/DeviceDesiredState"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeJobAvailable": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "JOB_AVAILABLE"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeCommand": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "COMMAND"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/DeviceCommand"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeAck": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "ACK"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeAckPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeError": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "ERROR"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimeErrorPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimePong": {
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "PONG"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimePongPayload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RealtimeClientMessage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RealtimeHello"
+        },
+        {
+          "$ref": "#/$defs/RealtimeStateApplied"
+        },
+        {
+          "$ref": "#/$defs/RealtimeJobEvent"
+        },
+        {
+          "$ref": "#/$defs/RealtimeCommandReceipt"
+        },
+        {
+          "$ref": "#/$defs/RealtimeHeartbeat"
+        },
+        {
+          "$ref": "#/$defs/RealtimeInventory"
+        },
+        {
+          "$ref": "#/$defs/RealtimePing"
+        }
+      ]
+    },
+    "RealtimeServerMessage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RealtimeWelcome"
+        },
+        {
+          "$ref": "#/$defs/RealtimeDesiredState"
+        },
+        {
+          "$ref": "#/$defs/RealtimeJobAvailable"
+        },
+        {
+          "$ref": "#/$defs/RealtimeCommand"
+        },
+        {
+          "$ref": "#/$defs/RealtimeSettingsMessage"
+        },
+        {
+          "$ref": "#/$defs/RealtimeAck"
+        },
+        {
+          "$ref": "#/$defs/RealtimeError"
+        },
+        {
+          "$ref": "#/$defs/RealtimePong"
+        }
+      ]
     }
   }
 }

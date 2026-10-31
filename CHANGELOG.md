@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.3.0-rc.1 — 2026-10-31
+
+Upgrade the server before the matching Windows connector. Native printing API
+2.0 requires synchronized authenticated WSS; the wire payload version remains 1.
+
+- Define printing semantic extension 2.0 with an authenticated outbound WebSocket
+  for direct controls, events, receipts and job notifications; prohibit polling
+  fallback while retaining existing wire-v1 domain payloads.
+- Mark the mandatory channel prerequisite for native claims as a breaking API
+  change from extension 1.0; framework `/qqq/v1` and the v1 subprotocol stay unchanged.
+- Specify durable reconnect reconciliation, exact ACK replay and independent
+  same-origin HTTPS streaming for large documents.
+- Add validated administrator settings and declared client ceilings for document
+  sizes, copies, queues, concurrency, bandwidth, liveness and timeouts, including
+  the native submission deadline.
+- Add strict frame/settings schemas, synthetic fixtures and negative validation.
+  Consumer transport, installed UI and physical output acceptance remain separate.
+
 ## 0.2.0-rc.1 — 2026-10-31
 
 - Add optional wire-v1 device-control discovery and independent control polling.

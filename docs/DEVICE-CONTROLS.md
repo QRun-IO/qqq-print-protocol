@@ -1,9 +1,15 @@
 # Device controls — additive wire v1
 
+For the coordinated printing extension 2.0 implementation, these domain state,
+command and receipt semantics use [direct realtime frames](REALTIME.md).
+The HTTP polling routes below describe the earlier 1.0/explicit compatibility
+transport and are never a fallback for a realtime client.
+
 This extension provides server dispatch controls and two bounded Windows agent
 commands. Its additive payloads preserve existing print job states and old
-request bodies. Package version `0.2.0-rc.1` is the proposed coordinated release;
-this document does not claim publication, deployment, or production readiness.
+request bodies. These domain controls were published in package `0.2.0-rc.1`;
+their realtime transport is part of release candidate `0.3.0-rc.1`. This contract does
+not establish deployment or production readiness.
 
 ## Discovery and routes
 

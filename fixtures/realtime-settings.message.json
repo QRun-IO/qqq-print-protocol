@@ -1,0 +1,29 @@
+{
+  "type": "SETTINGS",
+  "messageId": "settings-revision-2",
+  "payload": {
+    "revision": 2,
+    "maxPdfBytes": 104857600,
+    "maxZplBytes": 20971520,
+    "maxFrameBytes": 1048576,
+    "maxQueuedFrames": 64,
+    "maxQueuedFrameBytes": 4194304,
+    "maxConcurrentDownloads": 2,
+    "maxConcurrentPrints": 1,
+    "maxStagedBytes": 536870912,
+    "maxDownloadBytesPerSecond": 0,
+    "requestTimeoutMillis": 30000,
+    "downloadConnectTimeoutMillis": 30000,
+    "downloadIdleTimeoutMillis": 30000,
+    "downloadTimeoutMillis": 600000,
+    "webSocketHandshakeTimeoutMillis": 30000,
+    "heartbeatIntervalSeconds": 20,
+    "heartbeatTimeoutSeconds": 60,
+    "reconnectMinDelayMillis": 1000,
+    "reconnectMaxDelayMillis": 30000,
+    "reconnectJitterPercent": 20,
+    "ackTimeoutMillis": 15000,
+    "maxCopies": 100,
+    "nativeSubmissionTimeoutMillis": 120000
+  }
+}
