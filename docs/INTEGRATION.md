@@ -15,7 +15,7 @@ If a consumer builds outside a multi-checkout workspace, download the release ar
 ## Versioning
 
 The coordinated realtime client requires printing semantic extension
-`>=1.1.0 <2.0.0` and the authenticated `qqq-printing.v1` WebSocket subprotocol.
+`>=2.0.0 <3.0.0` and the authenticated `qqq-printing.v1` WebSocket subprotocol.
 Wire payload version remains 1. [REALTIME.md](REALTIME.md) defines the new frames,
 configurable policy, streaming limits and runtime acceptance expectations.
 The source package is `0.3.0-rc.1`, unreleased. Its fixtures do not establish a

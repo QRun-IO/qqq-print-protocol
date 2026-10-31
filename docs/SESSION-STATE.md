@@ -2,7 +2,7 @@
 
 ## Realtime contract implementation
 
-Isolated branch `feat/realtime-printing-20261031` defines printing extension 1.1,
+Isolated branch `feat/realtime-printing-20261031` defines printing extension 2.0,
 authenticated client-initiated WSS, direct controls/events/receipts and streamed
 same-origin HTTPS documents without job/control polling or fallback. The frozen
 settings include a default single configurable download lane, 100 MiB PDF,
@@ -13,8 +13,14 @@ no-duplicate-submission checks are required consumer acceptance, not claims made
 by schema validation. Source package `0.3.0-rc.1` is unreleased; no live changes or
 publication. See [the complete contract](REALTIME.md).
 
+The native API major is 2 because an authenticated synchronized WebSocket is now
+mandatory for claims that 1.0 clients could previously make over HTTP alone.
+Product 0.3, framework `/qqq/v1`, wire payload v1 and the v1 subprotocol remain
+unchanged. A new fixture covers the standard printing extension descriptor;
+historical legacy discovery fixtures remain unchanged.
+
 Locked offline dependency restore, `npm run check` and `npm run bundle` passed
-for this source: 70 JSON Schema definitions and 72 synthetic fixtures, including
+for this source: 71 JSON Schema definitions and 73 synthetic fixtures, including
 the final native submission deadline, all 23 required settings, invalid policy
 bounds, directional frames and exact replay. The eight changed Markdown documents
 passed Markdown lint; `git diff --check` passed. The local archive is preparation

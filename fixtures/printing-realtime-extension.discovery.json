@@ -1,0 +1,5 @@
+{
+  "name": "printing",
+  "version": "2.0.0",
+  "pathPrefix": "/qbit/printing"
+}

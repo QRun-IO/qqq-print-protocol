@@ -4,6 +4,17 @@
   "title": "QQQ Print Protocol v1",
   "description": "Select the DTO with #/$defs/Name.",
   "$defs": {
+    "PrintingRealtimeExtensionDiscovery": {
+      "description": "The existing core extensions entry required by realtime clients; this does not redefine the core discovery document or its API version.",
+      "type": "object",
+      "required": ["name", "version", "pathPrefix"],
+      "properties": {
+        "name": { "type": "string", "const": "printing" },
+        "version": { "type": "string", "pattern": "^2\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$", "maxLength": 100 },
+        "pathPrefix": { "type": "string", "const": "/qbit/printing" }
+      },
+      "additionalProperties": true
+    },
     "PrintingSessionIdentity": {
       "type": "object",
       "required": ["principalId", "tenantId"],

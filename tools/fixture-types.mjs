@@ -1,5 +1,6 @@
 // Shared correspondence between wire examples and schema definitions.
 export const fixtureTypes = {
+   'printing-realtime-extension.discovery.json': 'PrintingRealtimeExtensionDiscovery',
    'version-legacy.response.json': 'ProtocolVersionResponse',
    'version-controls.response.json': 'ProtocolVersionResponse',
    'control-poll.request.json': 'DeviceControlPollRequest',

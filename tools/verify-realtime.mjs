@@ -11,6 +11,16 @@ const fixture = name => JSON.parse(readFileSync(new URL(`../fixtures/${name}`, i
 const valid = (type, value) => ajv.validate(`${schema.$id}#/$defs/${type}`, value);
 const settings = fixture('realtime-settings.payload.json');
 const hello = fixture('realtime-hello.message.json');
+const extension = fixture('printing-realtime-extension.discovery.json');
+assert(valid('PrintingRealtimeExtensionDiscovery', extension), ajv.errorsText());
+assert.equal(extension.version, '2.0.0');
+assert(valid('PrintingRealtimeExtensionDiscovery', { ...extension, version: '2.7.3' }));
+for(const version of ['1.0.0', '1.1.0', '3.0.0', '2.0', '2.01.0', '2.0.0-rc.1', null])
+{
+   assert(!valid('PrintingRealtimeExtensionDiscovery', { ...extension, version }), 'Only the compatible stable native major is accepted.');
+}
+assert(!valid('PrintingRealtimeExtensionDiscovery', { ...extension, name: 'another-extension' }));
+assert(!valid('PrintingRealtimeExtensionDiscovery', { ...extension, pathPrefix: '/printing/v1' }));
 
 /*******************************************************************************
  ** Cross-field policy relationships require semantic checks beyond JSON Schema.

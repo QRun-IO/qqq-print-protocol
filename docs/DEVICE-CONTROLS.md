@@ -1,6 +1,6 @@
 # Device controls — additive wire v1
 
-For the coordinated printing extension 1.1 implementation, these domain state,
+For the coordinated printing extension 2.0 implementation, these domain state,
 command and receipt semantics use [direct realtime frames](REALTIME.md).
 The HTTP polling routes below describe the earlier 1.0/explicit compatibility
 transport and are never a fallback for a realtime client.

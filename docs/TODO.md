@@ -2,11 +2,11 @@
 
 ## Realtime 0.3.0-rc.1 — unreleased
 
-- [x] Freeze printing extension 1.1, authenticated realtime frames and independent
+- [x] Freeze printing extension 2.0, authenticated realtime frames and independent
   streamed HTTPS documents with no polling fallback.
 - [x] Define all 23 required settings, including configurable native submission
   timeout, client ceilings and explicit policy refusal.
-- [x] Pass 70 schema definitions, 72 fixtures, local bundle creation, Markdown
+- [x] Pass 71 schema definitions, 73 fixtures, local bundle creation, Markdown
   lint and whitespace checks without changing runtime or publishing assets.
 - [ ] Review and commit the protocol, then pin that immutable commit in both
   consumer CI workflows.

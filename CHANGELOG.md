@@ -2,9 +2,11 @@
 
 ## 0.3.0-rc.1 — Unreleased
 
-- Define printing semantic extension 1.1 with an authenticated outbound WebSocket
+- Define printing semantic extension 2.0 with an authenticated outbound WebSocket
   for direct controls, events, receipts and job notifications; prohibit polling
   fallback while retaining existing wire-v1 domain payloads.
+- Mark the mandatory channel prerequisite for native claims as a breaking API
+  change from extension 1.0; framework `/qqq/v1` and the v1 subprotocol stay unchanged.
 - Specify durable reconnect reconciliation, exact ACK replay and independent
   same-origin HTTPS streaming for large documents.
 - Add validated administrator settings and declared client ceilings for document

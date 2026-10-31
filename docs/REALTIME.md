@@ -1,15 +1,26 @@
-# Realtime printing — semantic extension 1.1
+# Realtime printing — semantic extension 2.0
 
 This is the contract for the unreleased `0.3.0-rc.1` realtime implementation.
 It does not establish publication or installed acceptance. Existing job states, command outcomes,
 current-user authorization and durable idempotency rules remain authoritative.
 
+Native printing extension **2.0.0** makes an authenticated synchronized WebSocket
+a prerequisite for claiming jobs. Published extension 1.0 clients could claim
+over HTTP alone, so this changes existing behavior and requires a major version
+under [Semantic Versioning](https://semver.org/#spec-item-8). A coordinated upgrade
+does not make that change backward compatible. Product `0.3.0-rc.1`, framework
+`/qqq/v1`, wire payload v1 and subprotocol `qqq-printing.v1` remain independent.
+
 ## Discovery and connection
 
-Require QQQ printing semantic extension `>=1.1.0 <2.0.0`, discovered through
+Require QQQ printing semantic extension `>=2.0.0 <3.0.0`, discovered through
 `/qqq/v1/version`, and the existing core API/channel/authentication gates.
-A 1.0 server is upgrade-required for this client. Do not infer support from a
+A 1.x server is upgrade-required for this client. Do not infer support from a
 socket accepting a connection, a saved version, or a prior enrollment.
+
+`printing-realtime-extension.discovery.json` shows the existing core `extensions`
+entry for printing 2.0.0, not a replacement schema for the core discovery document.
+Its descriptor uses the unchanged name `printing` and path prefix `/qbit/printing`.
 
 The client opens one persistent WebSocket to the configured QQQ origin:
 
