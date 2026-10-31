@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The first implementation uses outbound HTTPS polling. WebSockets are unnecessary for this happy path. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Published source distribution: [**0.1.4-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.1.4-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Published source distribution: [**0.2.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.2.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Use Node.js 24+ to run the development checks:
 
@@ -53,8 +53,8 @@ The additive [device-control contract](docs/DEVICE-CONTROLS.md) defines capabili
 discovery, dispatch pause/resume, operational disconnect/reconnect, permanent
 credential revocation, inventory refresh, queued-job clearing, and exact owned
 Windows spool cancellation. It uses durable request identities, bounded command
-polling, and explicit receipts. These additions are prepared for the
-`0.2.0-rc.1` distribution; the published version above remains unchanged.
+polling, and explicit receipts. These additions are included in the
+`0.2.0-rc.1` distribution, with 42 definitions and 54 validated fixtures.
 
 ## DTOs
 
