@@ -1,0 +1,18 @@
+{
+  "type": "INVENTORY",
+  "messageId": "inventory-connection-1",
+  "payload": {
+    "printers": [
+      {
+        "printerId": "laser-example",
+        "name": "Local Laser",
+        "driverName": "Example Laser Driver",
+        "portName": "USB001",
+        "status": "READY",
+        "formats": [
+          "PDF"
+        ]
+      }
+    ]
+  }
+}

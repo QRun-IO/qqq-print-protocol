@@ -1,0 +1,7 @@
+{
+  "type": "ACK",
+  "messageId": "ack-event-spooled-1",
+  "payload": {
+    "acknowledgedMessageId": "event-spooled-1"
+  }
+}

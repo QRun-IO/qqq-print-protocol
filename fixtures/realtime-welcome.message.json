@@ -1,0 +1,38 @@
+{
+  "type": "WELCOME",
+  "messageId": "welcome-connection-1",
+  "payload": {
+    "connectionId": "connection-example-1",
+    "serverTime": "2026-10-31T22:00:00Z",
+    "desiredState": {
+      "revision": 0,
+      "dispatchPaused": false,
+      "connectionState": "CONNECTED"
+    },
+    "settings": {
+      "revision": 1,
+      "maxPdfBytes": 104857600,
+      "maxZplBytes": 20971520,
+      "maxFrameBytes": 1048576,
+      "maxQueuedFrames": 64,
+      "maxQueuedFrameBytes": 4194304,
+      "maxConcurrentDownloads": 1,
+      "maxConcurrentPrints": 1,
+      "maxStagedBytes": 536870912,
+      "maxDownloadBytesPerSecond": 0,
+      "requestTimeoutMillis": 30000,
+      "downloadConnectTimeoutMillis": 30000,
+      "downloadIdleTimeoutMillis": 30000,
+      "downloadTimeoutMillis": 600000,
+      "webSocketHandshakeTimeoutMillis": 30000,
+      "heartbeatIntervalSeconds": 20,
+      "heartbeatTimeoutSeconds": 60,
+      "reconnectMinDelayMillis": 1000,
+      "reconnectMaxDelayMillis": 30000,
+      "reconnectJitterPercent": 20,
+      "ackTimeoutMillis": 15000,
+      "maxCopies": 100,
+      "nativeSubmissionTimeoutMillis": 120000
+    }
+  }
+}

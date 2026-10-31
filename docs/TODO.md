@@ -1,5 +1,24 @@
 # TODO
 
+## Realtime 0.3.0-rc.1 — unreleased
+
+- [x] Freeze printing extension 1.1, authenticated realtime frames and independent
+  streamed HTTPS documents with no polling fallback.
+- [x] Define all 23 required settings, including configurable native submission
+  timeout, client ceilings and explicit policy refusal.
+- [x] Pass 70 schema definitions, 72 fixtures, local bundle creation, Markdown
+  lint and whitespace checks without changing runtime or publishing assets.
+- [ ] Review and commit the protocol, then pin that immutable commit in both
+  consumer CI workflows.
+- [ ] Complete consumer transport/replay, slow-transfer control, concurrency and
+  authorization acceptance before release; schema checks do not establish them.
+- [ ] Complete installed UI and physical output acceptance separately.
+
+## Historical 0.2 and earlier implementation checkpoints
+
+The entries below retain their original checkpoint status. They do not describe
+the current realtime release's completion or publication.
+
 - [ ] Qualify semantic discovery, current-user authorization, device binding,
   session renewal and the shared native PKCE callback in both consumers.
 

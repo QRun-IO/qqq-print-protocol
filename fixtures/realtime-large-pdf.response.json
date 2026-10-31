@@ -1,0 +1,15 @@
+{
+  "jobId": "large-pdf-example",
+  "deviceId": "device-example",
+  "printerId": "laser-example",
+  "title": "Synthetic 100 MiB metadata example; no document included",
+  "format": "PDF",
+  "contentSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contentLength": 104857600,
+  "options": {
+    "copies": 1,
+    "scale": "ACTUAL_SIZE"
+  },
+  "createdAt": "2026-10-31T22:00:00Z",
+  "status": "CLAIMED"
+}

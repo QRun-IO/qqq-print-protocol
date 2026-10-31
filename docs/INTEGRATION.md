@@ -14,15 +14,22 @@ If a consumer builds outside a multi-checkout workspace, download the release ar
 
 ## Versioning
 
-Wire protocol v1 is selected by the `/printing/v1` path and enrollment response `protocolVersion: 1`. Published distribution version `0.1.4-rc.1` identifies the specification/fixture bundle; it does not change that wire version. The Windows and QBit release numbers are independent of both. Current clients validate the wire major at enrollment; runtime contract minor/patch discovery, feature negotiation and a served OpenAPI definition are not implemented.
+The coordinated realtime client requires printing semantic extension
+`>=1.1.0 <2.0.0` and the authenticated `qqq-printing.v1` WebSocket subprotocol.
+Wire payload version remains 1. [REALTIME.md](REALTIME.md) defines the new frames,
+configurable policy, streaming limits and runtime acceptance expectations.
+The source package is `0.3.0-rc.1`, unreleased. Its fixtures do not establish a
+published package or installed behavior.
+
+Historical HTTP wire protocol v1 is selected by the `/printing/v1` path and enrollment response `protocolVersion: 1`. Published distribution version `0.2.0-rc.1` identifies the specification/fixture bundle; it does not change that wire version. The Windows and QBit release numbers are independent of both. Native clients use the discovered printing extension semantic version; the realtime contract above adds its explicit version/capability gate without redefining core discovery.
 
 Additive optional response fields can remain v1. Required new inputs on existing routes, renamed fields, removed enum values or changed semantics require explicit compatibility design and usually a new path version. Consumers must not assume unadvertised capabilities.
 
-The proposed `0.2.0-rc.1` extension adds explicit `device-control-v1` discovery and
+The published `0.2.0-rc.1` extension adds explicit `device-control-v1` discovery and
 new control routes without adding required fields to existing requests. See the
 [device-control contract](DEVICE-CONTROLS.md) for state, commands, receipts,
 timestamped idempotency, and legacy behavior. Source fixtures do not establish
-consumer implementation or installation. Pin the eventual reviewed protocol
+consumer implementation or installation. Pin the reviewed protocol
 commit with matching server and Windows compatibility tests before shipping.
 
 Claim acknowledgment means local receipt; SPOOLED means Windows accepted the document. Neither proves physical output. Cross-language compatibility tests should assert these distinctions as well as spelling, JSON casing, formats, option defaults and content integrity.
