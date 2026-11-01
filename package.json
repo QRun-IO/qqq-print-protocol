@@ -10,10 +10,19 @@
   },
   "scripts": {
     "check": "node tools/verify-schema.mjs && node tools/verify-fixtures.mjs",
-    "bundle": "node tools/bundle.mjs"
+    "bundle": "node tools/bundle.mjs",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "ajv": "8.20.0",
-    "ajv-formats": "3.0.1"
-  }
+    "ajv-formats": "3.0.1",
+    "@eslint/js": "10.0.1",
+    "typescript": "6.0.3",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@types/node": "24.10.1",
+    "typescript-eslint": "8.72.1",
+    "eslint": "10.14.0"
+  },
+  "packageManager": "npm@11.19.1"
 }
