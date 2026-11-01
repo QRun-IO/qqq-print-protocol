@@ -22,7 +22,11 @@
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "24.10.1",
     "typescript-eslint": "8.72.1",
-    "eslint": "10.14.0"
+    "eslint": "10.14.0",
+    "pyright": "1.1.414"
+  },
+  "overrides": {
+    "minimatch": "11.0.1"
   },
   "packageManager": "npm@11.19.1"
 }
