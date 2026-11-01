@@ -122,6 +122,15 @@ assert.throws(() => validate({ ...brandedTest, testProfile: 'UNKNOWN' }, schema.
 assert.throws(() => validate({ ...brandedTest, testProfile: null }, schema.$defs.DeviceTestPrintRequest, 'nullTestProfile'));
 assert.throws(() => validate({ format: 'PDF' }, schema.$defs.DeviceTestPrintRequest, 'missingTestIdentity'));
 validate({ ...brandedTest, format: 'PDF', testProfile: 'A4' }, schema.$defs.DeviceTestPrintRequest, 'a4TestPage');
+for(const testProfile of ['LABEL_4X2_203', 'LABEL_4X2_300', 'LABEL_4X2_600', 'LABEL_4X1_203', 'LABEL_4X1_300', 'LABEL_4X1_600'])
+{
+   validate({ ...brandedTest, testProfile }, schema.$defs.DeviceTestPrintRequest, `zplShortLabel${testProfile}`);
+   validate({ ...brandedTest, format: 'PDF', testProfile }, schema.$defs.DeviceTestPrintRequest, `pdfShortLabel${testProfile}`);
+}
+assert.throws(() => validate({ ...brandedTest, testProfile: 'LABEL_4X3_300' }, schema.$defs.DeviceTestPrintRequest, 'unsupportedLabelHeight'));
+// Short PDF labels use explicit actual-size job paper, never a conflicting media selection.
+validate({ copies: 1, scale: 'ACTUAL_SIZE', paperWidthMm: 101.6, paperHeightMm: 25.4 }, schema.$defs.PrintOptions, 'fourByOneJobPaper');
+validate({ copies: 1, scale: 'ACTUAL_SIZE', paperWidthMm: 101.6, paperHeightMm: 50.8 }, schema.$defs.PrintOptions, 'fourByTwoJobPaper');
 const clear = fixtures['action-clear-queue.request.json'];
 assert.throws(() => validate({ ...clear, issuedAt: undefined }, schema.$defs.AdminDeviceActionRequest, 'missingIssuedAt'));
 assert.throws(() => validate({ ...clear, jobId: 'job-example-1' }, schema.$defs.AdminDeviceActionRequest, 'clearCannotTargetSpool'));

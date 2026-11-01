@@ -37,6 +37,7 @@ export const fixtureTypes = {
    'printers-profile.request.json': 'PrinterInventory',
    'device-test.request.json': 'DeviceTestPrintRequest',
    'device-test-profile.request.json': 'DeviceTestPrintRequest',
+   'device-test-profile-4x1.request.json': 'DeviceTestPrintRequest',
    'device-retry.request.json': 'DeviceRetryRequest',
    'create-enrollment.request.json': 'CreateEnrollmentRequest',
    'enrollment.response.json': 'EnrollmentCode',
