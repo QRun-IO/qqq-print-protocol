@@ -10,7 +10,7 @@ dimension options. These tests establish the draft wire shape only.
 
 Matching Windows discovery/revalidation, least-privilege operator catalog and
 submission, and atomic retained-source adoption are active in separate consumer
-branches. The server source targets extension 2.2.0; no compatible published
+branches. The server source targets extension 2.3.0 (2.2.0 is rendering on protected main); no compatible published
 consumer tuple is qualified yet. The installed 0.3.2 client does not advertise
 this capability. No physical output was submitted.
 
