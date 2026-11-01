@@ -8,8 +8,8 @@
 ## Release cohort integration (0.4.0-rc.1, unreleased)
 
 - [x] Integrate short-label (4 × 2 / 4 × 1) test profiles, fixture and job-paper assertions with the strictly typed tools in source.
-- [ ] Record the merged-tree `npm run check` (expect 76 definitions / 79 fixtures), `npm run typecheck` and `npm run lint` results.
-- [ ] Pin the final protocol commit in both consumers, then observe hosted CI.
+- [x] Pass the merged-tree `npm run check` (76 definitions / 79 fixtures), `npm run typecheck`, `npm run lint` and `npm run bundle`.
+- [ ] Pin the final protocol commit in both consumers, then observe hosted Gitea CI.
 - [ ] Complete installed client and physical short-label acceptance separately; schema checks do not establish them.
 
 ## Echo media integration

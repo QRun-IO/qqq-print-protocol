@@ -12,12 +12,12 @@ is never combined with `mediaProfile`. The strictly typed tools keep every exist
 invalid-input check and add the short-label positive, unsupported-height and
 job-paper assertions. Expected totals are 76 schema definitions and 79 fixtures.
 
-State: implemented in source. The F06 tooling gates passed on the base commit; the
-merged-tree `npm run check`, `npm run typecheck` and `npm run lint` results are
-recorded only after the requested post-merge run. Hosted CI, consumer pin updates,
-installed-client acceptance and physical output are pending; nothing here claims
-them. The consumer repositories pin this protocol by immutable commit after the
-final protocol commit exists.
+State: implemented and locally verified on the merged tree. `npm run check` passed
+76 schema definitions and 79 fixtures, and `npm run typecheck`, `npm run lint` and
+`npm run bundle` all exited 0. Hosted Gitea CI, consumer pin updates, installed-client
+acceptance and physical output are pending; nothing here claims them. The consumer
+repositories pin this protocol by immutable commit after the final protocol commit
+exists.
 
 ## Echo printer media contract in progress (earlier checkpoint)
 
