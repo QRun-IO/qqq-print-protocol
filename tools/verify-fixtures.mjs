@@ -21,6 +21,17 @@ function validate(value, rule, path)
    {
       return validate(value, schema.$defs[rule.$ref.split('/').at(-1)], path);
    }
+   if(rule.not)
+   {
+      let matches = true;
+      try { validate(value, rule.not, path); }
+      catch { matches = false; }
+      assert(!matches, `${path}: forbidden combination`);
+   }
+   if(rule.required && !rule.type)
+   {
+      for(const name of rule.required) assert(name in value, `${path}.${name}: required`);
+   }
    if(rule.anyOf)
    {
       assert(rule.anyOf.some(candidate =>
@@ -120,3 +131,18 @@ assert.throws(() => validate({ ...clear, action: 'CANCEL_SPOOL' }, schema.$defs.
 assert.throws(() => validate({ ...fixtures['control-poll.request.json'], capabilities: ['CANCEL_SPOOL', 'CANCEL_SPOOL'] }, schema.$defs.DeviceControlPollRequest, 'duplicateCapability'));
 assert.throws(() => validate({ ...fixtures['control-cancel-requested.receipt.json'], outcome: 'PRINT_RECALLED' }, schema.$defs.DeviceCommandReceipt, 'unsupportedPaperClaim'));
 console.log(`Validated ${Object.keys(fixtures).length} protocol fixtures, content integrity, and invalid-input checks.`);
+
+const media = fixtures['printer-media-profile.response.json'];
+for(const invalid of [{ dpiX: 0 }, { widthMicrons: 0 }, { revision: 'not-a-revision' }, { applyMode: 'CHANGE_STOCK' }])
+{
+   assert.throws(() => validate({ ...media, ...invalid }, schema.$defs.PrinterMediaProfile, 'invalidMedia'));
+}
+const selection = fixtures['media-profile-options.request.json'];
+assert.throws(() => validate({ ...selection, paperWidthMm: 100, paperHeightMm: 150 }, schema.$defs.PrintOptions, 'ambiguousMedia'));
+
+const operatorRequest = fixtures['operator-submit.request.json'];
+for(const invalid of [{ requestId: 'x'.repeat(129) }, { requestId: 'echo/scan' }, { actorId: 'forged' }, { tenantId: 'forged' }])
+{
+   assert.throws(() => validate({ ...operatorRequest, ...invalid }, schema.$defs.OperatorSubmitJobRequest, 'invalidOperatorRequest'));
+}
+validate({ ...operatorRequest, requestId: 'x'.repeat(128) }, schema.$defs.OperatorSubmitJobRequest, 'maximumRequestKey');

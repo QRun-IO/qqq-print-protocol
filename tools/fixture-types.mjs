@@ -75,5 +75,10 @@ export const fixtureTypes = {
    'realtime-inventory.message.json': 'RealtimeInventory',
    'realtime-ping.message.json': 'RealtimePing',
    'realtime-pong.message.json': 'RealtimePong',
-   'realtime-large-pdf.response.json': 'PrintJob'
+   'realtime-large-pdf.response.json': 'PrintJob',
+   'printer-media-profile.response.json': 'PrinterMediaProfile',
+   'media-profile-options.request.json': 'PrintOptions',
+   'operator-printers.response.json': 'OperatorPrinterList',
+   'operator-submit.request.json': 'OperatorSubmitJobRequest',
+   'realtime-media-hello.message.json': 'RealtimeHello'
 };

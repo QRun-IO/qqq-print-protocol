@@ -87,3 +87,25 @@ const history = control('control-commands-page.response.json');
 assert(!validControl('DeviceActionList', { ...history, commands: Array(201).fill(history.commands[0]) }));
 assert(!validControl('DeviceActionList', { ...history, nextCursor: 'x'.repeat(12001) }));
 console.log(`Compiled ${Object.keys(schema.$defs).length} JSON Schema 2020-12 definitions; ${Object.keys(fixtureTypes).length} fixtures passed full schema validation.`);
+
+const media = control('printer-media-profile.response.json');
+for(const invalid of [{ dpiX: 0 }, { widthMicrons: 0 }, { revision: 'not-a-revision' }, { applyMode: 'CHANGE_STOCK' }])
+{
+   assert(!validControl('PrinterMediaProfile', { ...media, ...invalid }));
+}
+const selection = control('media-profile-options.request.json');
+assert(!validControl('PrintOptions', { ...selection, paperWidthMm: 100, paperHeightMm: 150 }));
+assert(!validControl('PrinterMediaSelection', { ...selection.mediaProfile, futureOption: true }));
+
+const operatorRequest = control('operator-submit.request.json');
+for(const invalid of [{ requestId: 'x'.repeat(129) }, { requestId: 'echo/scan' }, { actorId: 'forged' }, { tenantId: 'forged' }])
+{
+   assert(!validControl('OperatorSubmitJobRequest', { ...operatorRequest, ...invalid }));
+}
+assert(validControl('OperatorSubmitJobRequest', { ...operatorRequest, requestId: 'x'.repeat(128) }));
+
+const catalogEntry = control('operator-printers.response.json').printers[0];
+assert(validControl('OperatorPrinter', { ...catalogEntry, deviceName: 'x'.repeat(1024) }));
+assert(!validControl('OperatorPrinter', { ...catalogEntry, deviceName: 'x'.repeat(1025) }));
+assert(validControl('PrinterMediaProfile', { ...media, id: 'x'.repeat(128), futureMetadata: { supported: true } }));
+assert(!validControl('PrinterMediaProfile', { ...media, id: 'x'.repeat(129) }));

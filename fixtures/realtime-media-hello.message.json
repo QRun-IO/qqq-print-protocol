@@ -1,0 +1,26 @@
+{
+  "type": "HELLO",
+  "messageId": "hello-connection-1",
+  "payload": {
+    "agentVersion": "0.3.0-rc.1",
+    "capabilities": [
+      "realtime-v1",
+      "REFRESH_INVENTORY",
+      "CANCEL_SPOOL",
+      "printer-media-v1"
+    ],
+    "lastAppliedRevision": 0,
+    "lastSettingsRevision": 0,
+    "limits": {
+      "maxPdfBytes": 536870912,
+      "maxZplBytes": 104857600,
+      "maxFrameBytes": 16777216,
+      "maxQueuedFrames": 4096,
+      "maxQueuedFrameBytes": 67108864,
+      "maxConcurrentDownloads": 16,
+      "maxConcurrentPrints": 16,
+      "maxStagedBytes": 4294967296,
+      "maxCopies": 32767
+    }
+  }
+}

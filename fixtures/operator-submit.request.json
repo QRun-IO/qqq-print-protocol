@@ -1,0 +1,14 @@
+{
+  "requestId": "echo:scan-example",
+  "printerRowId": "printer-row-example",
+  "title": "Echo sample",
+  "format": "ZPL",
+  "contentBase64": "XlhBXkZPMjAsMjBeRkRURVNUXkZTXlha",
+  "options": {
+    "copies": 1,
+    "mediaProfile": {
+      "id": "media-default",
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  }
+}

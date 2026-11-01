@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0-rc.1 — unreleased
+
+- Add bounded machine-default media profiles and exact job profile/revision
+  selection; refuse ambiguous dimension overrides.
+- Define the least-privilege operator catalog, submit and read-only request
+  recovery contracts, including stable actor-scoped request keys.
+- Add `printer-media-v1` capability negotiation; selected-profile jobs require
+  a supporting current client, including after capability downgrade/reconnect.
+- Retain wire version 1 and the realtime transport. Printing extension 2.2.0
+  advertises the additive native routes. Consumer runtime, installed and physical
+  acceptance remain required before a coordinated release.
+
 ## 0.3.0-rc.1 — 2026-10-31
 
 Upgrade the server before the matching Windows connector. Native printing API

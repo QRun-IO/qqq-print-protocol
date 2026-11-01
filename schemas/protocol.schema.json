@@ -268,6 +268,7 @@
     "Printer": {
       "type": "object",
       "properties": {
+        "mediaProfiles": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/PrinterMediaProfile" } },
         "printerId": {
           "$ref": "#/$defs/Id"
         },
@@ -342,6 +343,7 @@
     "ManagedPrinter": {
       "type": "object",
       "properties": {
+        "mediaProfiles": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/PrinterMediaProfile" } },
         "printerId": {
           "$ref": "#/$defs/Id"
         },
@@ -449,9 +451,170 @@
       ],
       "additionalProperties": true
     },
-    "PrintOptions": {
+    "OperatorPrinter": {
       "type": "object",
       "properties": {
+        "printerRowId": {
+          "$ref": "#/$defs/Id"
+        },
+        "deviceId": {
+          "$ref": "#/$defs/Id"
+        },
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 1024,
+          "minLength": 1
+        },
+        "deviceName": {
+          "type": "string",
+          "maxLength": 1024,
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "status": {
+          "$ref": "#/$defs/PrinterStatus"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Format"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "mediaProfiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PrinterMediaProfile"
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "printerRowId",
+        "deviceId",
+        "printerId",
+        "name",
+        "deviceName",
+        "status",
+        "formats",
+        "mediaProfiles"
+      ],
+      "additionalProperties": true
+    },
+    "OperatorPrinterList": {
+      "type": "object",
+      "properties": {
+        "printers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OperatorPrinter"
+          },
+          "maxItems": 200
+        },
+        "nextCursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "printers",
+        "nextCursor"
+      ],
+      "additionalProperties": true
+    },
+    "OperatorSubmitJobRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "printerRowId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 1024,
+          "minLength": 1
+        },
+        "format": {
+          "$ref": "#/$defs/Format"
+        },
+        "contentBase64": {
+          "type": "string",
+          "minLength": 1,
+          "contentEncoding": "base64"
+        },
+        "options": {
+          "$ref": "#/$defs/PrintOptions"
+        }
+      },
+      "required": [
+        "requestId",
+        "printerRowId",
+        "title",
+        "format",
+        "contentBase64"
+      ],
+      "additionalProperties": false
+    },
+    "PrinterMediaProfile": {
+      "type": "object",
+      "description": "Configured Windows queue defaults; physical stock is not sensed.",
+      "properties": {
+        "id": { "$ref": "#/$defs/Id" },
+        "revision": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "widthMicrons": { "type": "integer", "minimum": 1, "maximum": 2000000 },
+        "heightMicrons": { "type": "integer", "minimum": 1, "maximum": 2000000 },
+        "dpiX": { "type": "integer", "minimum": 1, "maximum": 9600 },
+        "dpiY": { "type": "integer", "minimum": 1, "maximum": 9600 },
+        "source": { "type": "string", "const": "WINDOWS_QUEUE_DEFAULT" },
+        "applyMode": { "type": "string", "const": "DRIVER_DEFAULT" }
+      },
+      "required": ["id", "revision", "name", "widthMicrons", "heightMicrons", "dpiX", "dpiY", "source", "applyMode"],
+      "additionalProperties": true
+    },
+    "PrinterMediaSelection": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "#/$defs/Id" },
+        "revision": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "required": ["id", "revision"],
+      "additionalProperties": false
+    },
+    "PrintOptions": {
+      "not": {
+        "properties": { "mediaProfile": true },
+        "required": ["mediaProfile"],
+        "anyOf": [
+          { "properties": { "paperWidthMm": true }, "required": ["paperWidthMm"] },
+          { "properties": { "paperHeightMm": true }, "required": ["paperHeightMm"] }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "mediaProfile": { "$ref": "#/$defs/PrinterMediaSelection" },
         "copies": {
           "type": "integer",
           "minimum": 1,
@@ -817,7 +980,8 @@
     "ControlCapability": {
       "enum": [
         "REFRESH_INVENTORY",
-        "CANCEL_SPOOL"
+        "CANCEL_SPOOL",
+        "printer-media-v1"
       ]
     },
     "ProtocolVersionResponse": {
@@ -884,7 +1048,7 @@
           "items": {
             "$ref": "#/$defs/ControlCapability"
           },
-          "maxItems": 2,
+          "maxItems": 3,
           "uniqueItems": true
         },
         "lastPollAt": {
@@ -923,7 +1087,7 @@
           "items": {
             "$ref": "#/$defs/ControlCapability"
           },
-          "maxItems": 2,
+          "maxItems": 3,
           "uniqueItems": true
         },
         "lastAppliedRevision": {
@@ -1541,11 +1705,12 @@
             "enum": [
               "realtime-v1",
               "REFRESH_INVENTORY",
-              "CANCEL_SPOOL"
+              "CANCEL_SPOOL",
+              "printer-media-v1"
             ]
           },
           "minItems": 1,
-          "maxItems": 3,
+          "maxItems": 4,
           "uniqueItems": true,
           "contains": {
             "const": "realtime-v1"

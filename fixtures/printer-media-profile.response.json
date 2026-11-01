@@ -1,0 +1,11 @@
+{
+  "id": "media-default",
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "name": "Configured 4 x 6 inches",
+  "widthMicrons": 101600,
+  "heightMicrons": 152400,
+  "dpiX": 300,
+  "dpiY": 300,
+  "source": "WINDOWS_QUEUE_DEFAULT",
+  "applyMode": "DRIVER_DEFAULT"
+}

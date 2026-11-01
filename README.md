@@ -4,6 +4,14 @@ Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit
 
 Current release candidate: [**0.3.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Previous distribution: [**0.2.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.2.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
+The next candidate, **0.4.0-rc.1**, adds the [printer media and operator
+contract](docs/PRINTER-MEDIA.md) for printing semantic extension **2.2.0**. It is
+under consumer qualification and is not a published release. Media profiles
+represent configured Windows queue defaults with exact revision binding;
+operator access uses normal current-user and tenant authorization without
+granting device management. The installed 0.3.2 client does not support these
+profiles. Wire version 1 and the client-initiated realtime transport stay the same.
+
 Use Node.js 24+ to run the development checks:
 
 ```sh
