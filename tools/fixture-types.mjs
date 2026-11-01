@@ -1,3 +1,6 @@
+// Copyright 2026 Kingsrook, LLC
+// SPDX-License-Identifier: Apache-2.0
+
 // Shared correspondence between wire examples and schema definitions.
 export const fixtureTypes = {
    'printing-realtime-extension.discovery.json': 'PrintingRealtimeExtensionDiscovery',
