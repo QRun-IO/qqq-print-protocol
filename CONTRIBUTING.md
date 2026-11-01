@@ -1,6 +1,6 @@
 # Contributing
 
-Use Node.js 24 or newer. Install the locked development dependencies with `npm ci`, then run `npm run check`. The runtime protocol has no JavaScript dependency; Ajv and ajv-formats are development-only JSON Schema validators.
+Use Node.js 24 or newer. Install the locked development dependencies with `npm ci`, then run `npm run check` (`npm test` is the standard entry point for the same check). The runtime protocol has no JavaScript dependency; Ajv and ajv-formats are development-only JSON Schema validators.
 
 Make changes through a pull request. Describe the client/server behavior affected and update README, schema, fixtures and changelog together. Keep credentials, customer documents, printer addresses and machine-specific data out of fixtures. Samples must remain synthetic.
 

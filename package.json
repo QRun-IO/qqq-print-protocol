@@ -10,6 +10,7 @@
   },
   "scripts": {
     "check": "node tools/verify-schema.mjs && node tools/verify-fixtures.mjs",
+    "test": "npm run check",
     "bundle": "node tools/bundle.mjs",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit"
