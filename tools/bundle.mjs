@@ -16,7 +16,7 @@ if(process.env.GITHUB_REF_TYPE === 'tag')
 }
 mkdirSync(new URL('../dist/', import.meta.url), { recursive: true });
 const name = `qqq-print-protocol-${manifest.version}.tar.gz`;
-const files = ['README.md', 'LICENSE', 'NOTICE', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md', 'package.json', 'package-lock.json', 'schemas', 'fixtures', 'tools', 'docs/INTEGRATION.md', 'docs/DEVICE-CONTROLS.md', 'docs/QQQ-AUTHENTICATION.md', 'docs/REALTIME.md'];
+const files = ['README.md', 'LICENSE', 'NOTICE', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md', 'package.json', 'package-lock.json', 'schemas', 'fixtures', 'tools', 'docs/INTEGRATION.md', 'docs/DEVICE-CONTROLS.md', 'docs/QQQ-AUTHENTICATION.md', 'docs/REALTIME.md', 'docs/PRINTER-MEDIA.md'];
 const result = spawnSync('tar', ['-czf', `dist/${name}`, ...files], { cwd: root, stdio: 'inherit', shell: false });
 if(result.error) throw result.error;
 assert.equal(result.status, 0, 'Archive creation failed.');

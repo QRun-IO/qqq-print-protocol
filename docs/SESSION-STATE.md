@@ -1,4 +1,18 @@
-# Session state — 2026-10-31
+# Session state — 2026-11-01
+
+## Echo printer media contract in progress
+
+Isolated branch `feat/echo-media-contract-20261101` adds configured Windows
+queue-default profiles and an exact ID/revision job selection. See
+[Printer media contract](PRINTER-MEDIA.md). Strict schema checks pass 76
+definitions and 78 synthetic fixtures, including invalid media and conflicting
+dimension options. These tests establish the draft wire shape only.
+
+Matching Windows discovery/revalidation, least-privilege operator catalog and
+submission, and atomic retained-source adoption are active in separate consumer
+branches. The server source targets extension 2.2.0; no compatible published
+consumer tuple is qualified yet. The installed 0.3.2 client does not advertise
+this capability. No physical output was submitted.
 
 ## Realtime contract implementation
 

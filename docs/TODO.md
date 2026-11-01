@@ -1,5 +1,14 @@
 # TODO
 
+## Echo media integration
+
+- [x] Define bounded queue-default profile and exact revision selection schemas.
+- [x] Validate positive fixtures and reject invalid/ambiguous options.
+- [ ] Qualify matching client discovery and stale-profile refusal before spooling.
+- [ ] Qualify current-user operator catalog, submission and replay authorization.
+- [ ] Qualify atomic retained-source acceptance and lost-response reconciliation.
+- [ ] Publish the reviewed immutable contract and compatible consumer tuple.
+
 ## Realtime 0.3.0-rc.1 release candidate
 
 - [x] Freeze printing extension 2.0, authenticated realtime frames and independent
