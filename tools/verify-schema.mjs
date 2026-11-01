@@ -30,6 +30,10 @@ const validateTest = ajv.compile({ $ref: `${schema.$id}#/$defs/DeviceTestPrintRe
 const testRequest = { printerId: "printer-zebra", format: "ZPL", requestId: "test-1" };
 assert(validateTest(testRequest), "Existing requests without a profile remain valid.");
 assert(validateTest({ ...testRequest, testProfile: "LABEL_4X6_300" }));
+assert(validateTest({ ...testRequest, testProfile: "LABEL_4X1_203" }));
+assert(validateTest({ ...testRequest, testProfile: "LABEL_4X2_600" }));
+assert(validateTest({ ...testRequest, format: "PDF", testProfile: "LABEL_4X2_300" }));
+assert(!validateTest({ ...testRequest, testProfile: "LABEL_4X3_300" }));
 assert(!validateTest({ ...testRequest, testProfile: "LETTER" }));
 assert(!validateTest({ ...testRequest, testProfile: null }));
 assert(!validateTest({ format: "PDF" }));
