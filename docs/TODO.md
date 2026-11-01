@@ -1,5 +1,10 @@
 # TODO
 
+## Script quality gates
+
+- [x] Pin Ruff, strict Pyright, ESLint/Stylistic and strict checkJs with locked restores; reject untracked-scope Python/JavaScript and zero-file Pyright runs; negative tool probes pass locally.
+- [ ] Observe the new `verify` job steps pass on hosted CI before relying on them.
+
 ## Echo media integration
 
 - [x] Define bounded queue-default profile and exact revision selection schemas.
