@@ -1,11 +1,11 @@
 # Changelog
 
-## 1.0.0 — source prepared; not yet published
+## 1.0.0
 
 Distribution version 1.0.0 of the contract and fixtures from 0.4.0-rc.1. The wire
 protocol stays **v1** and the printing extension stays **2.3.0** with the client-initiated
 realtime transport; no schema or fixture changes. 1.0.0 is a distribution version, not a
-wire change. Nothing is published until the tagged release workflow succeeds.
+wire change.
 
 ## 0.4.0-rc.1 — unreleased
 

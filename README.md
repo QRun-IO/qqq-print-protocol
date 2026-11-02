@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The coordinated [realtime extension 2.0](docs/REALTIME.md) uses a client-initiated authenticated WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Source version **1.0.0** is prepared for publication and is not yet published. Latest published distribution: [**0.4.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.4.0-rc.1); earlier: [**0.3.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Distribution version: **1.0.0**. Earlier release candidates: [0.4.0-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.4.0-rc.1) and [0.3.0-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 Version **0.4.0-rc.1** added the [printer media and operator
 contract](docs/PRINTER-MEDIA.md) for printing semantic extension **2.3.0** (see the
