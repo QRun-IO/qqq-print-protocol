@@ -2,8 +2,8 @@
 
 ## Release-cohort integration (branch `release/printing-cohort-20261101`)
 
-Unreleased cohort: protocol package `0.4.0-rc.1`, wire v1, native printing extension
-2.3.0. This branch integrates the script-quality tooling (locked Ruff/Pyright,
+Cohort: protocol package `1.0.0` (source prepared, not yet published; `0.4.0-rc.1` is the
+latest published), wire v1, native printing extension 2.3.0. This branch integrates the script-quality tooling (locked Ruff/Pyright,
 ESLint/Stylistic, strict `checkJs`, the `uri-js` license guard) with the short-label
 test profiles. Short labels add `LABEL_4X2_*` and `LABEL_4X1_*` (203/300/600 dpi)
 for ZPL and PDF, a `device-test-profile-4x1.request.json` fixture, and explicit

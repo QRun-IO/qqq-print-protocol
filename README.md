@@ -2,12 +2,12 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The coordinated [realtime extension 2.0](docs/REALTIME.md) uses a client-initiated authenticated WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Current release candidate: [**0.3.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Previous distribution: [**0.2.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.2.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Source version **1.0.0** is prepared for publication and is not yet published. Latest published distribution: [**0.4.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.4.0-rc.1); earlier: [**0.3.0-rc.1**](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
-The next candidate, **0.4.0-rc.1**, adds the [printer media and operator
+Version **0.4.0-rc.1** added the [printer media and operator
 contract](docs/PRINTER-MEDIA.md) for printing semantic extension **2.3.0** (see the
-[extension version registry](docs/VERSIONS.md); 2.2 is rendering only). It is
-under consumer qualification and is not a published release. Media profiles
+[extension version registry](docs/VERSIONS.md); 2.2 is rendering only), which 1.0.0
+carries unchanged. Media profiles
 represent configured Windows queue defaults with exact revision binding;
 operator access uses normal current-user and tenant authorization without
 granting device management. The installed 0.3.2 client does not support these
