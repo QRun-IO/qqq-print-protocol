@@ -1,0 +1,13 @@
+{
+  "type": "JOB_EVENT",
+  "messageId": "event-spooled-1",
+  "payload": {
+    "jobId": "job-example-1",
+    "event": {
+      "eventId": "event-spooled-1",
+      "status": "SPOOLED",
+      "message": "Windows accepted the job; physical output is not confirmed.",
+      "spoolerJobId": "17"
+    }
+  }
+}
