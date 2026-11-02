@@ -1,0 +1,9 @@
+{
+  "type": "ERROR",
+  "messageId": "event-spooled-1",
+  "payload": {
+    "code": "PERMISSION_DENIED",
+    "message": "Current printing permission is required.",
+    "retryable": false
+  }
+}

@@ -1,5 +1,35 @@
 # TODO
 
+## Realtime 0.3.0-rc.1 release candidate
+
+- [x] Freeze printing extension 2.0, authenticated realtime frames and independent
+  streamed HTTPS documents with no polling fallback.
+- [x] Define all 23 required settings, including configurable native submission
+  timeout, client ceilings and explicit policy refusal.
+- [x] Pass 71 schema definitions, 73 fixtures, local bundle creation, Markdown
+  lint and whitespace checks without changing runtime or publishing assets.
+- [x] Review and commit the protocol, then pin that immutable commit in both
+  consumer CI workflows.
+- [ ] Complete consumer transport/replay, slow-transfer control, concurrency and
+  authorization acceptance before release; schema checks do not establish them.
+- [ ] Complete installed UI and physical output acceptance separately.
+
+## Historical 0.2 and earlier implementation checkpoints
+
+The entries below retain their original checkpoint status. They do not describe
+the current realtime release's completion or publication.
+
+- [ ] Qualify semantic discovery, current-user authorization, device binding,
+  session renewal and the shared native PKCE callback in both consumers.
+
+- [x] Freeze additive device-control routes, desired state, actions and receipts
+  with both consumer owners; document bounded timestamped idempotency.
+- [x] Validate 41 definitions and 52 synthetic fixtures with Node 24.22.0.
+- [ ] Review matching server and Windows state, authority, replay, expiry, and
+  exact spool-ownership tests before adopting the new immutable protocol pin.
+- [ ] Coordinate proposed `0.2.0-rc.1` version and release after feature gates;
+  no production 1.0 or installation qualification follows from schema checks.
+
 - [ ] Verify security-gated artifact promotion and public build provenance for 0.1.4-rc.1.
 - [x] Audit PR #2 at 7f3fa6b passes all hosted checks; downloaded CI archive checksum verified. Tagged release and published attestation remain pending.
 - [x] Shared wire v1 remains compatible during the retention/storage and Windows audit fixes, including optional bounded printer pagination.
