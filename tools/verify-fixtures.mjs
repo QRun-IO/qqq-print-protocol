@@ -1,3 +1,6 @@
+// Copyright 2026 Kingsrook, LLC
+// SPDX-License-Identifier: Apache-2.0
+
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -9,6 +12,11 @@ const root = new URL('../fixtures/', import.meta.url);
 // Validate the schema keywords used by this contract without installing dependencies.
 function validate(value, rule, path)
 {
+   if(typeof rule === 'boolean')
+   {
+      assert(rule, `${path}: forbidden property`);
+      return;
+   }
    if(rule.$ref)
    {
       return validate(value, schema.$defs[rule.$ref.split('/').at(-1)], path);
@@ -20,7 +28,6 @@ function validate(value, rule, path)
          try { validate(value, candidate, path); return true; }
          catch { return false; }
       }), `${path}: no anyOf variant matched`);
-      return;
    }
    if(rule.const !== undefined) assert.deepEqual(value, rule.const, path);
    if(rule.enum) assert(rule.enum.includes(value), `${path}: invalid enum`);
@@ -29,6 +36,10 @@ function validate(value, rule, path)
    {
       assert(value !== null && typeof value === 'object' && !Array.isArray(value), `${path}: expected object`);
       for(const name of rule.required ?? []) assert(name in value, `${path}.${name}: required`);
+      if(rule.additionalProperties === false)
+      {
+         for(const name of Object.keys(value)) assert(name in (rule.properties ?? {}), `${path}.${name}: unknown property`);
+      }
       for(const [name, child] of Object.entries(rule.properties ?? {}))
       {
          if(name in value) validate(value[name], child, `${path}.${name}`);
@@ -42,7 +53,16 @@ function validate(value, rule, path)
    {
       assert(Array.isArray(value), `${path}: expected array`);
       if(rule.minItems !== undefined) assert(value.length >= rule.minItems, path);
+      if(rule.maxItems !== undefined) assert(value.length <= rule.maxItems, path);
       if(rule.uniqueItems) assert.equal(new Set(value.map(item => JSON.stringify(item))).size, value.length, path);
+      if(rule.contains)
+      {
+         assert(value.some(item =>
+         {
+            try { validate(item, rule.contains, path); return true; }
+            catch { return false; }
+         }), `${path}: required array member missing`);
+      }
       value.forEach((item, index) => validate(item, rule.items, `${path}[${index}]`));
    }
    if(rule.type === 'string')
@@ -81,4 +101,22 @@ assert.deepEqual(fixtures['job.response.json'], job);
 assert.throws(() => validate({ copies: 0 }, schema.$defs.PrintOptions, 'invalidCopies'));
 assert.throws(() => validate({ paperWidthMm: 100 }, schema.$defs.PrintOptions, 'missingHeight'));
 assert.throws(() => validate({ eventId: 'test', status: 'PRINTED' }, schema.$defs.JobEvent, 'invalidStatus'));
+assert.throws(() => validate({ name: 'x'.repeat(513) }, schema.$defs.DeviceProfile, 'oversizedName'));
+assert.throws(() => validate({ description: 'x'.repeat(4097) }, schema.$defs.DeviceProfile, 'oversizedDescription'));
+assert.throws(() => validate({ location: 'x'.repeat(513) }, schema.$defs.DeviceProfile, 'oversizedLocation'));
+validate({ name: '', description: null }, schema.$defs.DeviceProfile, 'clearAndPreserve');
+const brandedTest = fixtures['device-test-profile.request.json'];
+assert.throws(() => validate({ ...brandedTest, testProfile: 'LETTER' }, schema.$defs.DeviceTestPrintRequest, 'incompatibleLabelMedia'));
+assert.throws(() => validate({ ...brandedTest, testProfile: 'UNKNOWN' }, schema.$defs.DeviceTestPrintRequest, 'unknownTestProfile'));
+assert.throws(() => validate({ ...brandedTest, testProfile: null }, schema.$defs.DeviceTestPrintRequest, 'nullTestProfile'));
+assert.throws(() => validate({ format: 'PDF' }, schema.$defs.DeviceTestPrintRequest, 'missingTestIdentity'));
+validate({ ...brandedTest, format: 'PDF', testProfile: 'A4' }, schema.$defs.DeviceTestPrintRequest, 'a4TestPage');
+const clear = fixtures['action-clear-queue.request.json'];
+assert.throws(() => validate({ ...clear, issuedAt: undefined }, schema.$defs.AdminDeviceActionRequest, 'missingIssuedAt'));
+assert.throws(() => validate({ ...clear, jobId: 'job-example-1' }, schema.$defs.AdminDeviceActionRequest, 'clearCannotTargetSpool'));
+assert.throws(() => validate({ ...clear, action: 'RESTART_SERVICE' }, schema.$defs.AdminDeviceActionRequest, 'arbitraryServiceControl'));
+assert.throws(() => validate({ ...clear, command: 'shell' }, schema.$defs.AdminDeviceActionRequest, 'unknownCommandProperty'));
+assert.throws(() => validate({ ...clear, action: 'CANCEL_SPOOL' }, schema.$defs.AdminDeviceActionRequest, 'cancelRequiresJobIdentity'));
+assert.throws(() => validate({ ...fixtures['control-poll.request.json'], capabilities: ['CANCEL_SPOOL', 'CANCEL_SPOOL'] }, schema.$defs.DeviceControlPollRequest, 'duplicateCapability'));
+assert.throws(() => validate({ ...fixtures['control-cancel-requested.receipt.json'], outcome: 'PRINT_RECALLED' }, schema.$defs.DeviceCommandReceipt, 'unsupportedPaperClaim'));
 console.log(`Validated ${Object.keys(fixtures).length} protocol fixtures, content integrity, and invalid-input checks.`);

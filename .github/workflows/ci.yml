@@ -1,3 +1,6 @@
+# Copyright 2026 Kingsrook, LLC
+# SPDX-License-Identifier: Apache-2.0
+
 name: Protocol CI and release
 
 on:
@@ -21,8 +24,12 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
-          cache: npm
+          package-manager-cache: false
       - run: npm ci --ignore-scripts
+      - name: Verify owned source notices and rejection paths
+        run: |
+          python3 .github/scripts/test-source-headers.py
+          python3 .github/scripts/check-source-headers.py
       - run: npm run check
       - run: npm run bundle
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -31,24 +38,44 @@ jobs:
           path: dist/*
           if-no-files-found: error
 
+  release-security:
+    if: startsWith(github.ref, 'refs/tags/v')
+    uses: ./.github/workflows/security.yml
+    permissions:
+      contents: read
+      security-events: write
+
+  release-codeql:
+    if: startsWith(github.ref, 'refs/tags/v')
+    uses: ./.github/workflows/codeql.yml
+    permissions:
+      contents: read
+      security-events: write
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: verify
+    needs: [verify, release-security, release-codeql]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: write
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          node-version: '24'
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm run check
-      - run: npm run bundle
+          name: protocol-bundle
+          path: dist
+      - name: Verify packaged checksums
+        working-directory: dist
+        run: sha256sum --check --strict SHA256SUMS
+      - name: Attest verified release artifacts
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: dist/*
       - name: Publish versioned GitHub release assets
         env:
           GH_TOKEN: ${{ github.token }}
