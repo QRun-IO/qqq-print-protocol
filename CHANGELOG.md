@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0
+
+Distribution version 1.0.0 of the contract and fixtures from 0.4.0-rc.1. The wire
+protocol stays **v1** and the printing extension stays **2.3.0** with the client-initiated
+realtime transport; no schema or fixture changes. 1.0.0 is a distribution version, not a
+wire change.
+
 ## 0.4.0-rc.1 — unreleased
 
 - Add bounded machine-default media profiles and exact job profile/revision
