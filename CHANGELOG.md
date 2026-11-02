@@ -8,9 +8,12 @@
   recovery contracts, including stable actor-scoped request keys.
 - Add `printer-media-v1` capability negotiation; selected-profile jobs require
   a supporting current client, including after capability downgrade/reconnect.
-- Retain wire version 1 and the realtime transport. Printing extension 2.2.0
-  advertises the additive native routes. Consumer runtime, installed and physical
+- Retain wire version 1 and the realtime transport. Printing extension 2.3.0
+  advertises the additive native routes; 2.2.0 is the separate rendering extension
+  and carries no media negotiation. Consumer runtime, installed and physical
   acceptance remain required before a coordinated release.
+- Add the [extension version registry](docs/VERSIONS.md). No schema or fixture shape
+  changed for the 2.2 to 2.3 reservation.
 
 ## 0.3.0-rc.1 — 2026-10-31
 

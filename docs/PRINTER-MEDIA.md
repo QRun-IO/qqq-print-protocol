@@ -2,9 +2,12 @@
 
 This additive contract is under implementation for the Echo integration. It is
 not advertised by the installed 0.3.2 client. Existing wire version 1 and the
-WebSocket subprotocol remain unchanged. The server extension is 2.2.0 in the
-implementation branch; immutable consumer artifacts must be qualified together
-before publication. Older 2.x deployments do not promise the operator routes.
+WebSocket subprotocol remain unchanged. The feature minimum is printing extension
+2.3.0 (see [VERSIONS.md](VERSIONS.md)); immutable consumer artifacts must be
+qualified together before publication. A client must offer `printer-media-v1` only
+after discovering a stable 2.3+ extension within major two, so a 2.2 (rendering)
+server keeps it a three-capability peer. Older 2.x deployments do not promise the
+operator routes.
 
 A client advertising `printer-media-v1` reports optional `mediaProfiles` in each
 exposed printer's inventory. The initial implementation reports at most one
