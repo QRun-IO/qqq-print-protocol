@@ -13,7 +13,8 @@
     "test": "npm run check",
     "bundle": "node tools/bundle.mjs",
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "quality": "uv sync --locked && uv run --locked --no-sync python .github/scripts/test-script-quality.py && uv run --locked --no-sync python .github/scripts/check-script-quality.py && uv run --locked --no-sync python .github/scripts/test-source-headers.py && uv run --locked --no-sync python .github/scripts/check-source-headers.py"
   },
   "devDependencies": {
     "ajv": "8.20.0",
