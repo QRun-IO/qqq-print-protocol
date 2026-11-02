@@ -1,0 +1,12 @@
+{
+  "type": "COMMAND_RECEIPT",
+  "messageId": "receipt-cancel-1",
+  "payload": {
+    "commandId": "command-cancel-1",
+    "receipt": {
+      "receiptId": "receipt-cancel-1",
+      "outcome": "CANCEL_REQUESTED",
+      "completedAt": "2026-10-31T22:00:01Z"
+    }
+  }
+}
