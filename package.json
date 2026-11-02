@@ -10,10 +10,25 @@
   },
   "scripts": {
     "check": "node tools/verify-schema.mjs && node tools/verify-fixtures.mjs",
-    "bundle": "node tools/bundle.mjs"
+    "test": "npm run check",
+    "bundle": "node tools/bundle.mjs",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "quality": "uv sync --locked && uv run --locked --no-sync python .github/scripts/test-script-quality.py && uv run --locked --no-sync python .github/scripts/check-script-quality.py && uv run --locked --no-sync python .github/scripts/test-source-headers.py && uv run --locked --no-sync python .github/scripts/check-source-headers.py"
   },
   "devDependencies": {
     "ajv": "8.20.0",
-    "ajv-formats": "3.0.1"
-  }
+    "ajv-formats": "3.0.1",
+    "@eslint/js": "10.0.1",
+    "typescript": "6.0.3",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@types/node": "24.10.1",
+    "typescript-eslint": "8.72.1",
+    "eslint": "10.14.0",
+    "pyright": "1.1.414"
+  },
+  "overrides": {
+    "minimatch": "11.0.1"
+  },
+  "packageManager": "npm@11.19.1"
 }

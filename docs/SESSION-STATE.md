@@ -1,6 +1,25 @@
 # Session state — 2026-11-01
 
-## Echo printer media contract in progress
+## Release-cohort integration (branch `release/printing-cohort-20261101`)
+
+Unreleased cohort: protocol package `0.4.0-rc.1`, wire v1, native printing extension
+2.3.0. This branch integrates the script-quality tooling (locked Ruff/Pyright,
+ESLint/Stylistic, strict `checkJs`, the `uri-js` license guard) with the short-label
+test profiles. Short labels add `LABEL_4X2_*` and `LABEL_4X1_*` (203/300/600 dpi)
+for ZPL and PDF, a `device-test-profile-4x1.request.json` fixture, and explicit
+actual-size job paper (101.6 × 50.8 or 25.4 mm) for the 4 × 2 and 4 × 1 PDFs, which
+is never combined with `mediaProfile`. The strictly typed tools keep every existing
+invalid-input check and add the short-label positive, unsupported-height and
+job-paper assertions. Expected totals are 76 schema definitions and 79 fixtures.
+
+State: implemented and locally verified on the merged tree. `npm run check` passed
+76 schema definitions and 79 fixtures, and `npm run typecheck`, `npm run lint` and
+`npm run bundle` all exited 0. Hosted Gitea CI, consumer pin updates, installed-client
+acceptance and physical output are pending; nothing here claims them. The consumer
+repositories pin this protocol by immutable commit after the final protocol commit
+exists.
+
+## Echo printer media contract in progress (earlier checkpoint)
 
 Isolated branch `feat/echo-media-contract-20261101` adds configured Windows
 queue-default profiles and an exact ID/revision job selection. See

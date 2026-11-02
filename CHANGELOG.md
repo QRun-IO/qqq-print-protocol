@@ -14,6 +14,9 @@
   acceptance remain required before a coordinated release.
 - Add the [extension version registry](docs/VERSIONS.md). No schema or fixture shape
   changed for the 2.2 to 2.3 reservation.
+- Add `LABEL_4X2_*` and `LABEL_4X1_*` test profiles (203/300/600 dpi) with a 4 × 1
+  fixture; the 4 × 2 and 4 × 1 PDFs carry explicit actual-size job paper and never a
+  `mediaProfile`. Both consumers must come from this cohort.
 
 ## 0.3.0-rc.1 — 2026-10-31
 
