@@ -1,3 +1,6 @@
+# Copyright 2026 Kingsrook, LLC
+# SPDX-License-Identifier: Apache-2.0
+
 name: Protocol CI and release
 
 on:
@@ -23,6 +26,10 @@ jobs:
           node-version: '24'
           package-manager-cache: false
       - run: npm ci --ignore-scripts
+      - name: Verify owned source notices and rejection paths
+        run: |
+          python3 .github/scripts/test-source-headers.py
+          python3 .github/scripts/check-source-headers.py
       - run: npm run check
       - run: npm run bundle
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

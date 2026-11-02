@@ -1,0 +1,8 @@
+{
+  "type": "STATE_APPLIED",
+  "messageId": "applied-connection-1",
+  "payload": {
+    "lastAppliedRevision": 0,
+    "lastSettingsRevision": 1
+  }
+}

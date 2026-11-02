@@ -1,0 +1,20 @@
+{
+  "deviceId": "device-example-1",
+  "deviceName": "Synthetic workstation",
+  "facilityId": "facility-example",
+  "agentVersion": "0.2.0-rc.1",
+  "control": {
+    "supported": true,
+    "capabilities": [
+      "REFRESH_INVENTORY",
+      "CANCEL_SPOOL"
+    ],
+    "lastPollAt": "2026-10-31T16:00:00Z",
+    "lastAppliedRevision": 0,
+    "desiredState": {
+      "revision": 1,
+      "dispatchPaused": true,
+      "connectionState": "CONNECTED"
+    }
+  }
+}

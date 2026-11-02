@@ -1,0 +1,11 @@
+{
+  "controlVersion": 1,
+  "serverTime": "2026-10-31T16:00:00Z",
+  "pollIntervalSeconds": 5,
+  "desiredState": {
+    "revision": 2,
+    "dispatchPaused": false,
+    "connectionState": "DISCONNECTED"
+  },
+  "commands": []
+}

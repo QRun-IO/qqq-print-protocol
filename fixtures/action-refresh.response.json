@@ -1,0 +1,10 @@
+{
+  "commandId": "command-refresh-1",
+  "requestId": "action-refresh-inventory-1",
+  "action": "REFRESH_INVENTORY",
+  "createdAt": "2026-10-31T16:00:00Z",
+  "expiresAt": "2026-10-31T16:15:00Z",
+  "issuedAt": "2026-10-31T16:00:00Z",
+  "deviceId": "device-example-1",
+  "status": "PENDING"
+}
