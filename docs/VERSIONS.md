@@ -1,9 +1,11 @@
 # Extension version registry
 
-Three version numbers are independent. Do not compare them.
+Distribution, native API, wire and subprotocol versions are independent. Do not
+compare them as if they were one version sequence. See the [stable cohort](INTEGRATION.md#stable-printing-release).
 
 | Number | Meaning | Current |
 | --- | --- | --- |
+| Protocol distribution | Version of the specification and fixture archive | 1.0.0 |
 | Wire payload version | Shape of the JSON messages in this repository | 1 |
 | WebSocket subprotocol | Framing and message envelope | `qqq-printing.v1` |
 | Printing semantic extension | Server feature level discovered at `/qqq/v1/version` | see below |
@@ -18,7 +20,7 @@ additive and keeps the earlier behavior.
 | 2.0.0 | Authenticated realtime channel is required for native claims; no polling fallback | [REALTIME.md](REALTIME.md) |
 | 2.1.0 | Record, table-list and text print processes | server documentation |
 | 2.2.0 | Render-to-PDF process, header and footer values, content sections. No media negotiation | server documentation |
-| 2.3.0 (unreleased, reserved) | Least-privilege operator catalog, submission and request lookup; reported queue-default media and `printer-media-v1`; opt-in retained-source facade | [PRINTER-MEDIA.md](PRINTER-MEDIA.md) |
+| 2.3.0 | Least-privilege operator catalog, submission and request lookup; reported queue-default media and `printer-media-v1`; opt-in retained-source facade | [PRINTER-MEDIA.md](PRINTER-MEDIA.md) |
 
 ## Negotiation rules
 
@@ -36,6 +38,5 @@ additive and keeps the earlier behavior.
 - Pre-release, ambiguous or malformed versions (`2.3.0-rc.1`, `2.3`, `02.3.0`,
   four-part values) never enable a feature.
 
-The 2.3.0 number is reserved for the unreleased operator, media and retained-source
-feature set. It is not a published release until consumer artifacts are qualified
-together.
+QBit 1.0.0 advertises native printing extension 2.3.0. Windows 1.0.1 is the paired
+stable client; their product versions do not replace capability discovery.

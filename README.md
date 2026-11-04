@@ -1,17 +1,33 @@
 # QQQ Print Protocol v1
 
-Shared contract for the [QQQ 4.1+ printing QBit](https://github.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://github.com/QRun-IO/qqq-print-agent). The coordinated [realtime extension 2.0](docs/REALTIME.md) uses a client-initiated authenticated WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. This contract is authoritative for wire names; language types may use their idiomatic naming.
+Shared contract for the [QQQ 4.1+ printing QBit](https://git.kof22.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://git.kof22.com/QRun-IO/qqq-print-agent). The [realtime transport](docs/REALTIME.md) uses a client-initiated authenticated two-way WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. No inbound connection to the facility is required. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Distribution version: **1.0.0**. Earlier release candidates: [0.4.0-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.4.0-rc.1) and [0.3.0-rc.1](https://github.com/QRun-IO/qqq-print-protocol/releases/tag/v0.3.0-rc.1). Wire protocol: **v1**. This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Published distribution: [**1.0.0**](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0). Wire protocol: **v1**. The stable cohort pairs [Windows 1.0.1](https://git.kof22.com/QRun-IO/qqq-print-agent/releases/tag/v1.0.1) with [QBit 1.0.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.0.0), printing semantic API **2.3.0**, and QQQ **4.1.0-RC.21**. See [release and fixture provenance](docs/INTEGRATION.md#stable-printing-release). This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
-Version **0.4.0-rc.1** added the [printer media and operator
+The stable release includes the [printer media and operator
 contract](docs/PRINTER-MEDIA.md) for printing semantic extension **2.3.0** (see the
-[extension version registry](docs/VERSIONS.md); 2.2 is rendering only), which 1.0.0
-carries unchanged. Media profiles
+[extension version registry](docs/VERSIONS.md); 2.2 is rendering only). Media profiles
 represent configured Windows queue defaults with exact revision binding;
 operator access uses normal current-user and tenant authorization without
-granting device management. The installed 0.3.2 client does not support these
-profiles. Wire version 1 and the client-initiated realtime transport stay the same.
+granting device management. Use the stable cohort above for these profiles;
+older 0.3.2 clients do not support them. Wire version 1 and the client-initiated
+realtime transport stay the same.
+
+## Current connection and delivery
+
+1. Configure the QQQ server origin in the Windows app. Discover its UI/UX API and sign in using the server's configured authentication method.
+2. Enroll the computer under that user and select which local Windows queues to expose. Approve the intended queues in QQQ.
+3. The client opens the authenticated WebSocket, synchronizes settings and desired state, then listens for committed job and control events.
+4. A job notification starts an authenticated HTTPS claim and streamed document download. Controls remain responsive during large transfers.
+5. The client verifies the document, journals submission and sends durable status receipts over the socket. A lost connection automatically reconnects and reconciles pending work without blindly printing it again.
+
+QQQ user, tenant, table, process and record permissions remain authoritative.
+Document limits are configurable: the realtime defaults are 100 MiB for PDF and
+20 MiB for ZPL. See [authentication](docs/QQQ-AUTHENTICATION.md),
+[operational settings](docs/REALTIME.md#operational-settings-and-client-ceilings),
+and [printer media selection](docs/PRINTER-MEDIA.md).
+
+## Development
 
 Use Node.js 24+ to run the development checks:
 
@@ -40,7 +56,7 @@ Use `Content-Type: application/json` except the content-download response. The e
 
 The host application authenticates management requests and determines authorized tenant/facility scope. A standalone local test host may use a configured administrative bearer credential. Device ownership, tenant and facility are taken from server records, not trusted request fields.
 
-## Endpoints
+## Historical compatibility endpoints
 
 | Method/path | Request | Successful response |
 | --- | --- | --- |
@@ -58,14 +74,14 @@ The host application authenticates management requests and determines authorized
 | GET `/admin/jobs` | none | 200 `{ "jobs": [PrintJob] }` |
 | GET `/admin/jobs/{jobId}` | none | 200 `PrintJob` |
 
-Device lists and job lists are scoped by host authorization. Listing pagination and destination/profile CRUD are beyond this first wire contract. Native application code may submit through the QBit service rather than the management HTTP API.
+Device lists and job lists are scoped by host authorization. Bounded job/printer pagination is described below; destination/profile CRUD is outside this wire contract. Native application code may submit through the QBit service or the authorized [operator API](docs/PRINTER-MEDIA.md).
 
 The additive [device-control contract](docs/DEVICE-CONTROLS.md) defines capability
 discovery, dispatch pause/resume, operational disconnect/reconnect, permanent
 credential revocation, inventory refresh, queued-job clearing, and exact owned
-Windows spool cancellation. It uses durable request identities, bounded command
-polling, and explicit receipts. These additions are included in the
-`0.2.0-rc.1` distribution, with 42 definitions and 54 validated fixtures.
+Windows spool cancellation. It uses durable request identities and explicit
+receipts over the realtime channel. Historical command-polling DTOs remain for
+explicit compatibility; they are not the stable client's transport.
 
 ## DTOs
 
@@ -97,7 +113,7 @@ Formats: `PDF` (`application/pdf`) and `ZPL` (`application/vnd.zebra-zpl`). Cont
 6. Connector persists the job locally, reports RECEIVED, downloads `/device/jobs/{jobId}/content`, verifies byte length/hash, and validates the format/printer mapping.
 7. Connector records SUBMITTING locally and reports it before invoking Windows. After success it records and reports SPOOLED, including a spooler reference when available. Submission must not be presented as physical print confirmation.
 
-Content downloads derive authorization from the authenticated device and job assignment. They never accept arbitrary URLs. Default decoded document limit is 20 MiB. Copies range from 1 to 100. Reject empty documents, unsupported formats and unsupported printer capabilities before queuing.
+Content downloads derive authorization from the authenticated device and job assignment. They never accept arbitrary URLs. The historical HTTP defaults were 20 MiB and 100 copies; current native limits are the configurable policy in [REALTIME.md](docs/REALTIME.md). Reject empty documents, unsupported formats and unsupported printer capabilities before queuing.
 
 ## Minimal delivery rules
 
@@ -157,11 +173,11 @@ Error body: `{ "code": "ERROR_CODE", "message": "Human-readable explanation" }`.
 
 `npm run check` compiles every JSON Schema 2020-12 definition with Ajv and validates all shared fixtures, then checks ZPL bytes/hash/base64 and representative invalid inputs. The two pinned development dependencies are solely for standards-compliant schema validation; they do not enter either printing implementation's runtime.
 
-`node tools/verify-fixtures.mjs` remains a dependency-free subset check. Java and .NET implementations should consume these exact fixtures in protocol tests, pinned to a reviewed immutable protocol commit. The Java HTTP round trip and .NET fixture compatibility checks passed during initial development. CI configuration is included; a local check does not imply that GitHub CI has run.
+`node tools/verify-fixtures.mjs` remains a dependency-free subset check. Java and .NET implementations consume shared fixtures pinned to a reviewed immutable protocol commit. The Java HTTP round trip and .NET fixture compatibility checks passed during initial development. Gitea is the primary CI and release service; the protocol repository's GitHub Actions were retired on 2026-11-04. See [release and fixture provenance](docs/INTEGRATION.md#stable-printing-release) for the retained Windows fixture bridge and the scope of release evidence.
 
 ## Branded test-document profiles
 
-`DeviceTestPrintRequest` optionally includes `testProfile`. PDF accepts `LETTER`, `A4`, or a `LABEL_4X6_*`, `LABEL_4X2_*` or `LABEL_4X1_*` profile (all profiles of one height produce the same PDF: 101.6 × 152.4, 50.8 or 25.4 mm). ZPL accepts those label profiles with `_203`, `_300` or `_600`; the suffix selects the printer resolution in dots per inch. For the 4 × 2 and 4 × 1 PDFs the server also submits `options.paperWidthMm`/`paperHeightMm` (101.6 × 50.8 or 25.4) so the client sets actual-size job paper; they are never combined with `mediaProfile`. The 4 × 6 PDF and all ZPL labels carry no job paper. These profiles require an agent and server from the same unreleased 0.4 cohort; older agents reject job paper. Use possible-value selectors in operator interfaces and match the loaded stock and device resolution. The profile defines document layout; it does not reconfigure Windows paper stock.
+`DeviceTestPrintRequest` optionally includes `testProfile`. PDF accepts `LETTER`, `A4`, or a `LABEL_4X6_*`, `LABEL_4X2_*` or `LABEL_4X1_*` profile (all profiles of one height produce the same PDF: 101.6 × 152.4, 50.8 or 25.4 mm). ZPL accepts those label profiles with `_203`, `_300` or `_600`; the suffix selects the printer resolution in dots per inch. For the 4 × 2 and 4 × 1 PDFs the server also submits `options.paperWidthMm`/`paperHeightMm` (101.6 × 50.8 or 25.4) so the client sets actual-size job paper; they are never combined with `mediaProfile`. The 4 × 6 PDF and all ZPL labels carry no job paper. These profiles are included in the stable cohort above; older agents may reject job paper. Use possible-value selectors in operator interfaces and match the loaded stock and device resolution. The profile defines document layout; it does not reconfigure Windows paper stock.
 
 Requests that omit the field retain compatible defaults: PDF uses Letter, ZPL uses 4 × 6 at 203 dpi. An explicit null, unknown profile, or Letter/A4 with ZPL is invalid. A stable requestId protects transport retries; changing document media is a new operator request. Each action queues one test on each explicitly selected destination, subject to the existing exposure and approval checks. No discovery or connection event automatically prints.
 

@@ -1,6 +1,6 @@
 # Device controls — additive wire v1
 
-For the coordinated printing extension 2.0 implementation, these domain state,
+For the stable printing cohort (native extension 2.3.0), these domain state,
 command and receipt semantics use [direct realtime frames](REALTIME.md).
 The HTTP polling routes below describe the earlier 1.0/explicit compatibility
 transport and are never a fallback for a realtime client.
@@ -8,13 +8,14 @@ transport and are never a fallback for a realtime client.
 This extension provides server dispatch controls and two bounded Windows agent
 commands. Its additive payloads preserve existing print job states and old
 request bodies. These domain controls were published in package `0.2.0-rc.1`;
-their realtime transport is part of release candidate `0.3.0-rc.1`. This contract does
-not establish deployment or production readiness.
+their realtime transport was introduced in `0.3.0-rc.1` and is included in
+[stable protocol 1.0.0](INTEGRATION.md#stable-printing-release). Deployment and physical output evidence
+belong to the implementation repositories.
 
 ## Discovery and routes
 
 The primary transport is the discovered QQQ semantic extension at
-`/qqq/v1/qbit/printing`, extension version `1.0.0`, using channel
+`/qqq/v1/qbit/printing`, extension version `>=2.0.0 <3.0.0`, using channel
 `api/qqq-print-agent`. Standard QQQ session authentication and current user,
 tenant, table, process and record permissions apply. Device calls additionally
 send `X-QQQ-Device-Id` and `X-QQQ-Device-Token`; that secondary proof does not
@@ -51,7 +52,7 @@ a missing capability or 404 is a failure, never permission to bypass saved state
 Native printing extension `1.0.0` includes these controls; a native-route 404 is
 always a configuration or compatibility failure, never legacy discovery.
 
-The new poll reports `controlVersion:1`, `agentVersion`, `capabilities`, and
+The historical compatibility poll reports `controlVersion:1`, `agentVersion`, `capabilities`, and
 `lastAppliedRevision`. The two capability names are `REFRESH_INVENTORY` and
 `CANCEL_SPOOL`; an empty list is valid for a state-only agent. A successful poll
 establishes state-control support independently of these command capabilities.
@@ -73,19 +74,20 @@ and `CONNECTED`. Changes are committed atomically with their action record and
 advance the revision. Revisions are nonnegative JSON-safe integers, at most
 9007199254740991. A device reports a revision only after applying and durably
 retaining that state; it cannot acknowledge a future server revision. The agent
-must not replace newer persisted state with an older poll response.
+must not replace newer persisted state with an older received revision.
 
 The control loop runs independently of printing. Pausing or disconnecting gates
 new claims and dispatch. It does not cancel CLAIMED or later work, erase local
 journals, withdraw exposure selections, or discard in-flight job events. Claims
 and server state changes are serialized so work claimed before the change remains
 in flight. Before first synchronization or after restart, the agent retains the
-last state and withholds new claims until valid state or explicit legacy support
-has been established.
+last state and withholds new claims until authenticated realtime synchronization
+has completed. Historical clients instead used explicit legacy support discovery.
 
 `DISCONNECTED` stops ordinary heartbeat, inventory publication, and new claims.
-Authenticated control polling, command receipts, and in-flight job events remain
-available, so `RECONNECT` can reach the device. `REFRESH_INVENTORY` waits for
+The authenticated socket, command receipts, and in-flight job events remain
+available, so `RECONNECT` can reach the device; historical clients used control
+polling for this purpose. `REFRESH_INVENTORY` waits for
 `CONNECTED` or expires; it must not report success without publishing inventory.
 Explicit `CANCEL_SPOOL` remains available over the control path while disconnected.
 Reconnecting does not clear `dispatchPaused`; resuming does not change connection
@@ -150,10 +152,11 @@ history or document retention.
 
 Remote actions initially return `PENDING`. `DeviceCommand` carries stable
 `commandId`, `requestId`, `action`, `createdAt`, `expiresAt`, and, for spool cancel,
-`jobId`. Server-created expiry is 15 minutes after creation. One poll returns at
-most 20 commands and `serverTime`, `pollIntervalSeconds` (1–300), and the full
-desired state. Pending commands may be delivered repeatedly until a receipt or
-expiry; they are not new commands on every poll. Do not deliver expired commands.
+`jobId`. Server-created expiry is 15 minutes after creation. The realtime server
+delivers `COMMAND` frames and replays unexpired pending commands after reconnect.
+The historical poll returns at most 20 commands and `serverTime`,
+`pollIntervalSeconds` (1–300), and the full desired state. Repeated delivery does
+not create a new command. Do not deliver expired commands.
 
 The agent journals command identity and execution state before a side effect.
 Use the current enrollment/connection scope. It checks expiry before beginning,

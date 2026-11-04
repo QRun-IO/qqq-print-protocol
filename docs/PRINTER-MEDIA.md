@@ -1,10 +1,9 @@
 # Printer media contract
 
-This additive contract is under implementation for the Echo integration. It is
-not advertised by the installed 0.3.2 client. Existing wire version 1 and the
+This additive contract is included in [protocol 1.0.0, Windows 1.0.1 and QBit 1.0.0](INTEGRATION.md#stable-printing-release).
+Older 0.3.2 clients do not advertise it. Existing wire version 1 and the
 WebSocket subprotocol remain unchanged. The feature minimum is printing extension
-2.3.0 (see [VERSIONS.md](VERSIONS.md)); immutable consumer artifacts must be
-qualified together before publication. A client must offer `printer-media-v1` only
+2.3.0 (see [VERSIONS.md](VERSIONS.md)). A client must offer `printer-media-v1` only
 after discovering a stable 2.3+ extension within major two, so a 2.2 (rendering)
 server keeps it a three-capability peer. Older 2.x deployments do not promise the
 operator routes.
@@ -51,7 +50,7 @@ length, initiating actor, request and destination with the durable acceptance
 receipt. Acceptance means a committed queue entry; it does not prove paper output.
 Lost responses reconcile the same request key rather than issuing a new request.
 
-The draft native routes below are relative to the discovered printing extension
+The native routes below are relative to the discovered printing extension
 path, behind the standard QQQ authentication and authorization layers:
 
 | Operation | Contract |

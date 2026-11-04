@@ -1,10 +1,11 @@
 # Standard QQQ authentication
 
-The new Windows client uses the QQQ semantic UI/UX API. Package versions, wire
+The Windows client uses the QQQ semantic UI/UX API. Package versions, wire
 payload version `1` and the printing extension semantic version are separate
-contracts. The standard-session contract was published in `0.2.0-rc.1`; realtime
-transport is part of release candidate `0.3.0-rc.1`. This document does not establish an
-accepted Authentik deployment.
+contracts. The standard-session contract was introduced in `0.2.0-rc.1` and
+realtime transport in `0.3.0-rc.1`; both are included in the [stable cohort](INTEGRATION.md#stable-printing-release).
+Provider configuration and server session policy still determine the supported
+sign-in and renewal behavior of each deployment.
 
 ## Discovery and sign-in
 
@@ -36,11 +37,11 @@ Missing native grants require server configuration, not a fallback local login.
 
 The desktop callback must match the shared grant and installer registration.
 Windows uses the exact private callback
-`io.qrun.qqq-print-agent:/oauth/callback`; current central candidate policy rejects
+`io.qrun.qqq-print-agent:/oauth/callback`; the shared native grant rejects
 HTTP callbacks. The installer registers the callback to a non-elevated forwarding
 helper, which delivers it only to an active sign-in attempt in the same Windows
 user/session. State and PKCE validation remain mandatory. The implementation,
-shared grant and provider deployment must be qualified before Authentik acceptance.
+shared grant and provider configuration must agree for Authentik sign-in to work.
 
 ## User and device authority
 

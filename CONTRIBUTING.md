@@ -2,13 +2,13 @@
 
 Use Node.js 24 or newer. Install the locked development dependencies with `npm ci`, then run `npm run check` (`npm test` is the standard entry point for the same check). The runtime protocol has no JavaScript dependency; Ajv and ajv-formats are development-only JSON Schema validators.
 
-Make changes through a pull request. Describe the client/server behavior affected and update README, schema, fixtures and changelog together. Keep credentials, customer documents, printer addresses and machine-specific data out of fixtures. Samples must remain synthetic.
+Make changes through a pull request to `main` on the [primary Gitea repository](https://git.kof22.com/QRun-IO/qqq-print-protocol). GitHub is a readable shadow; do not open ordinary development PRs or publish releases there. Describe the client/server behavior affected and update README, schema, fixtures and changelog together. Keep credentials, customer documents, printer addresses and machine-specific data out of fixtures. Samples must remain synthetic.
 
 Run both the Java and .NET consumers' protocol tests for a contract change. Check out sibling `qbit-printing`, `qqq-print-agent` and this repository; see [integration notes](docs/INTEGRATION.md). Coordinate consumer changes before merging a breaking change.
 
-Keep wire names stable within `/printing/v1`. Optional response fields may be added; clients ignore unknown response fields. Removing/renaming a field, changing its type or changing an existing field's meaning requires a new protocol version. A prerelease package version is not permission to silently break an already deployed connector.
+Keep wire-v1 payload names stable for native `/qqq/v1/qbit/printing` and explicit legacy `/printing/v1` routes. Optional response fields may be added; clients ignore unknown response fields. Removing/renaming a field, changing its type or changing an existing field's meaning requires explicit versioned compatibility design. Package, printing extension, wire and WebSocket subprotocol versions are independent; see [the version registry](docs/VERSIONS.md). A package version is not permission to silently break an already deployed connector.
 
-`npm run bundle` produces the release archive and checksum in `dist/`. Do not hand-edit generated checksums. Release tags must match the version in package.json, prefixed with `v`. Commits and releases are made by maintainers after review.
+`npm run bundle` produces the release archive and checksum in `dist/`. Do not hand-edit generated checksums. Release tags must match the version in package.json, prefixed with `v`. Maintainers publish reviewed artifacts on [Gitea releases](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases). GitHub Actions for this repository were retired on 2026-11-04; retained `.github/scripts` remain local/shared-CI tooling. See [current release provenance](docs/INTEGRATION.md#stable-printing-release) before updating consumer fixture pins.
 
 ## Script quality
 

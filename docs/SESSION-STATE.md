@@ -1,6 +1,28 @@
-# Session state — 2026-11-01
+# Session state — 2026-11-04
 
-## Release-cohort integration (branch `release/printing-cohort-20261101`)
+## Current stable release
+
+Protocol [1.0.0](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0)
+is published on primary Gitea (release 1344), from tagged source
+`d652fba1317aec7f25c5a464bac15e97d6094e67`. It pairs with Windows 1.0.1 and QBit 1.0.0,
+native printing API 2.3.0, wire v1 and QQQ dependency baseline 4.1.0-RC.21.
+Consumer fixtures remain pinned to `42c0d249f81395f00408ec0f92638dcbbf5deb03`,
+a separate reviewed source commit. See [release details](INTEGRATION.md#stable-printing-release).
+
+The current transport is client-initiated authenticated two-way WebSocket with
+independent streamed HTTPS documents and automatic reconnect; no polling fallback.
+Protocol GitHub Actions were retired at 2026-11-04 01:11 UTC. The readable shadow
+and immutable fixture commit remain for the Windows fixture bridge.
+
+This documentation-only closeout updates release guidance, primary links,
+authentication/media wording and historical status labels. No schema, fixture,
+runtime or workflow changed; no new build, hosted attestation or hardware test is
+claimed. Earlier checkpoint statements below retain their original dates and
+statuses and are not the current backlog.
+
+## Historical checkpoints
+
+### Release-cohort integration — 2026-11-01 (branch `release/printing-cohort-20261101`)
 
 Cohort: protocol package `1.0.0` (source prepared, not yet published; `0.4.0-rc.1` is the
 latest published), wire v1, native printing extension 2.3.0. This branch integrates the script-quality tooling (locked Ruff/Pyright,

@@ -1,6 +1,7 @@
 # Realtime printing — semantic extension 2.0
 
-This is the contract for the `0.3.0-rc.1` realtime release candidate.
+This transport was introduced in `0.3.0-rc.1` and is included in the
+[stable 1.0.0 contract](INTEGRATION.md#stable-printing-release), whose paired server advertises printing 2.3.0.
 Contract publication does not establish installed acceptance. Existing job states, command outcomes,
 current-user authorization and durable idempotency rules remain authoritative.
 
@@ -8,7 +9,7 @@ Native printing extension **2.0.0** makes an authenticated synchronized WebSocke
 a prerequisite for claiming jobs. Published extension 1.0 clients could claim
 over HTTP alone, so this changes existing behavior and requires a major version
 under [Semantic Versioning](https://semver.org/#spec-item-8). A coordinated upgrade
-does not make that change backward compatible. Product `0.3.0-rc.1`, framework
+does not make that change backward compatible. Product releases, framework
 `/qqq/v1`, wire payload v1 and subprotocol `qqq-printing.v1` remain independent.
 
 ## Discovery and connection
