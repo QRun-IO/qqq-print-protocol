@@ -1,18 +1,34 @@
 # TODO
 
-## Script quality gates
+## Current protocol closeout — 2026-11-04
+
+- [x] Publish stable protocol 1.0.0 on primary Gitea (release 1344).
+- [x] Document the Windows 1.0.1 / QBit 1.0.0 cohort, native API 2.3.0, wire v1,
+  current realtime/authentication/media behavior and separate immutable fixture pin.
+- [x] Retire protocol GitHub Actions; retain the readable shadow and Windows fixture bridge.
+
+No protocol implementation or publication item remains for this stable release.
+Consumer installation and hardware evidence remain in their repositories.
+Documentation review and publication are coordinated by the release owner.
+
+## Historical task ledger
+
+The original checkpoint statuses below are preserved as history, not as open
+tasks for the published stable release. See [current release details](INTEGRATION.md#stable-printing-release).
+
+### Script quality gates
 
 - [x] Pin Ruff, strict Pyright, ESLint/Stylistic and strict checkJs with locked restores; reject untracked-scope Python/JavaScript and zero-file Pyright runs; negative tool probes pass locally.
 - [ ] Observe the new `verify` job steps pass on hosted CI before relying on them.
 
-## Release cohort integration (0.4.0-rc.1, unreleased)
+### Release cohort integration (0.4.0-rc.1, unreleased at this checkpoint)
 
 - [x] Integrate short-label (4 × 2 / 4 × 1) test profiles, fixture and job-paper assertions with the strictly typed tools in source.
 - [x] Pass the merged-tree `npm run check` (76 definitions / 79 fixtures), `npm run typecheck`, `npm run lint` and `npm run bundle`.
 - [ ] Pin the final protocol commit in both consumers, then observe hosted Gitea CI.
 - [ ] Complete installed client and physical short-label acceptance separately; schema checks do not establish them.
 
-## Echo media integration
+### Echo media integration
 
 - [x] Define bounded queue-default profile and exact revision selection schemas.
 - [x] Validate positive fixtures and reject invalid/ambiguous options.
@@ -21,7 +37,7 @@
 - [ ] Qualify atomic retained-source acceptance and lost-response reconciliation.
 - [ ] Publish the reviewed immutable contract and compatible consumer tuple.
 
-## Realtime 0.3.0-rc.1 release candidate
+### Realtime 0.3.0-rc.1 release candidate
 
 - [x] Freeze printing extension 2.0, authenticated realtime frames and independent
   streamed HTTPS documents with no polling fallback.
@@ -35,7 +51,7 @@
   authorization acceptance before release; schema checks do not establish them.
 - [ ] Complete installed UI and physical output acceptance separately.
 
-## Historical 0.2 and earlier implementation checkpoints
+### Historical 0.2 and earlier implementation checkpoints
 
 The entries below retain their original checkpoint status. They do not describe
 the current realtime release's completion or publication.
