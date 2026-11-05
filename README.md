@@ -13,6 +13,13 @@ granting device management. Use the stable cohort above for these profiles;
 older 0.3.2 clients do not support them. Wire version 1 and the client-initiated
 realtime transport stay the same.
 
+Source version **1.1.0** (unreleased) adds printing semantic extension **2.4.0**:
+the `printer-approval-v1` HELLO capability and the server → client `PRINTERS`
+frame, which reports each exposed printer's server approval over the
+[realtime channel](docs/REALTIME.md#printer-approval). Clients advertise it only
+after discovering a stable 2.4+ extension; a 2.3.0 server or a client without the
+capability keeps the 2.3.0 wire unchanged.
+
 ## Current connection and delivery
 
 1. Configure the QQQ server origin in the Windows app. Discover its UI/UX API and sign in using the server's configured authentication method.

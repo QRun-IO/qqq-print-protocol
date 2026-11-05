@@ -27,6 +27,10 @@ for(const version of ["1.0.0", "1.1.0", "3.0.0", "2.0", "2.01.0", "2.0.0-rc.1", 
 }
 assert(!valid("PrintingRealtimeExtensionDiscovery", { ...extension, name: "another-extension" }));
 assert(!valid("PrintingRealtimeExtensionDiscovery", { ...extension, pathPrefix: "/printing/v1" }));
+const approvalExtension = fixture("printing-realtime-extension-240.discovery.json");
+assert(valid("PrintingRealtimeExtensionDiscovery", approvalExtension), ajv.errorsText());
+assert.equal(approvalExtension["version"], "2.4.0", "printer-approval-v1 has feature minimum 2.4.0.");
+assert.deepEqual({ ...approvalExtension, version: extension["version"] }, extension, "2.4.0 keeps the 2.x descriptor name and path prefix.");
 
 /*******************************************************************************
  ** Cross-field policy relationships require semantic checks beyond JSON Schema.
@@ -91,8 +95,23 @@ assert(!valid("RealtimeHello", { ...hello, messageId: "hello:unsafe-prefix" }));
 assert(!valid("RealtimeHello", { ...hello, token: "not-a-real-token" }));
 assert(!valid("RealtimeClientMessage", { type: "RUN_SHELL", messageId: "unsupported-1", payload: {} }));
 
+/*******************************************************************************
+ ** Capability hellos: the 2.3.0 four-capability and 2.4.0 five-capability peers
+ ** both remain valid; the list is bounded, unique and closed.
+ *******************************************************************************/
+const mediaHello = /** @type {typeof hello} */ (/** @type {unknown} */ (fixture("realtime-media-hello.message.json")));
+const approvalHello = /** @type {typeof import("../fixtures/realtime-approval-hello.message.json")} */ (/** @type {unknown} */ (fixture("realtime-approval-hello.message.json")));
+assert(valid("RealtimeHello", mediaHello), ajv.errorsText());
+assert(valid("RealtimeHello", approvalHello), ajv.errorsText());
+assert.equal(approvalHello.payload.capabilities.length, 5);
+assert(approvalHello.payload.capabilities.includes("printer-approval-v1"));
+assert.deepEqual(approvalHello.payload.limits, hello.payload.limits, "Approval negotiation does not change declared ceilings.");
+assert(!valid("RealtimeHello", { ...approvalHello, payload: { ...approvalHello.payload, capabilities: [...approvalHello.payload.capabilities, "printer-approval-v1"] } }), "Duplicate capability accepted");
+assert(!valid("RealtimeHello", { ...approvalHello, payload: { ...approvalHello.payload, capabilities: [...approvalHello.payload.capabilities, "printer-approval-v2"] } }), "Unknown sixth capability accepted");
+assert(!valid("RealtimeHello", { ...hello, payload: { ...hello.payload, capabilities: ["printer-approval-v1"] } }), "realtime-v1 remains mandatory");
+
 const clientFixtures = ["hello", "state-applied", "job-event", "command-receipt", "heartbeat", "inventory", "ping"];
-const serverFixtures = ["welcome", "desired-state", "job-available", "command", "settings", "ack", "error", "pong"];
+const serverFixtures = ["welcome", "desired-state", "job-available", "printers", "command", "settings", "ack", "error", "pong"];
 for(const [files, accepted, rejected] of /** @type {[string[],string,string][]} */ ([
    [clientFixtures, "RealtimeClientMessage", "RealtimeServerMessage"],
    [serverFixtures, "RealtimeServerMessage", "RealtimeClientMessage"],
@@ -110,6 +129,26 @@ for(const [files, accepted, rejected] of /** @type {[string[],string,string][]} 
       assert(!valid(accepted, { ...message, contentUrl: "https://unrelated.invalid/document" }));
    }
 }
+/*******************************************************************************
+ ** PRINTERS carries the complete approval state of the latest accepted inventory;
+ ** entries are bounded, both fields are required and the envelope stays closed.
+ *******************************************************************************/
+const printers = /** @type {typeof import("../fixtures/realtime-printers.message.json")} */ (/** @type {unknown} */ (fixture("realtime-printers.message.json")));
+assert.equal(printers.payload.printers.length, 2);
+assert.deepEqual(printers.payload.printers.map(printer => printer.enabled), [true, false], "Fixture shows one approved and one awaiting printer.");
+assert(valid("RealtimePrinters", { ...printers, payload: { printers: [] } }), "An empty inventory yields an empty approval list.");
+assert(valid("RealtimePrinters", { ...printers, payload: { printers: Array(200).fill(printers.payload.printers[0]) } }));
+assert(!valid("RealtimePrinters", { ...printers, payload: { printers: Array(201).fill(printers.payload.printers[0]) } }));
+assert(valid("RealtimePrinters", { ...printers, payload: { ...printers.payload, futureField: true } }), "Additive payload fields remain compatible.");
+assert(valid("RealtimePrinters", { ...printers, payload: { printers: [{ ...printers.payload.printers[0], futureField: true }] } }));
+assert(!valid("RealtimePrinters", { ...printers, payload: { printers: [{ printerId: "laser-example" }] } }), "enabled is required");
+assert(!valid("RealtimePrinters", { ...printers, payload: { printers: [{ enabled: true }] } }), "printerId is required");
+assert(!valid("RealtimePrinters", { ...printers, payload: { printers: [{ printerId: "laser-example", enabled: "true" }] } }), "enabled must be boolean");
+assert(!valid("RealtimePrinters", { ...printers, payload: { printers: [{ printerId: "", enabled: true }] } }));
+assert(!valid("RealtimePrinters", { ...printers, payload: {} }), "printers list is required");
+assert(!valid("RealtimePrinters", { ...printers, type: "JOB_AVAILABLE" }));
+assert(!valid("RealtimeJobAvailable", { ...printers, type: "JOB_AVAILABLE" }), "PRINTERS payload is not the empty wake-up");
+
 const event = fixture("realtime-job-event.message.json");
 assert.deepEqual(fixture("realtime-job-event-replay.message.json"), event, "Lost ACK replay preserves the exact envelope.");
 assert.equal((/** @type {typeof import("../fixtures/realtime-ack.message.json")} */ (/** @type {unknown} */ (fixture("realtime-ack.message.json")))).payload.acknowledgedMessageId, event["messageId"]);

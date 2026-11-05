@@ -32,7 +32,9 @@ The client opens one persistent WebSocket to the configured QQQ origin:
   `X-QQQ-Device-Id`, `X-QQQ-Device-Token`, `X-QQQ-Client: api/qqq-print-agent`
   and the canonical same-origin `Origin`.
 - Capability: `realtime-v1` is mandatory in `HELLO`. Optional command capabilities
-  are the existing `REFRESH_INVENTORY` and `CANCEL_SPOOL`.
+  are the existing `REFRESH_INVENTORY` and `CANCEL_SPOOL`; optional feature
+  capabilities are `printer-media-v1` (extension 2.3.0) and `printer-approval-v1`
+  (extension 2.4.0), each gated by [discovery](VERSIONS.md#negotiation-rules).
 
 Do not add credentials to URLs, subprotocols, logs or frame payloads. Refuse
 cross-origin redirects and arbitrary content URLs. The existing session is
@@ -68,6 +70,7 @@ compression that could bypass decoded-size limits are not supported.
 | Server → client | DESIRED_STATE | Existing `DeviceDesiredState` directly |
 | Server → client | SETTINGS | `RealtimeSettings` directly |
 | Server → client | JOB_AVAILABLE | Empty object; a coalescible wake-up, not a job or claim |
+| Server → client | PRINTERS | `printers`: complete `printerId`/`enabled` approval of the latest accepted inventory; only after `printer-approval-v1` |
 | Server → client | COMMAND | Existing `DeviceCommand` directly |
 | Client → server | JOB_EVENT | `jobId`, existing `JobEvent` as `event` |
 | Client → server | COMMAND_RECEIPT | `commandId`, existing `DeviceCommandReceipt` as `receipt` |
@@ -96,6 +99,26 @@ command; it is not an HTTP polling loop. PING/PONG may maintain liveness without
 refreshing inventory or querying jobs/controls. Only one serialized writer owns
 socket sends; the receive/control path must not await document download,
 rendering, printer submission or UI work.
+
+### Printer approval
+
+Extension 2.4.0 adds `printer-approval-v1`. A client advertises it only after
+discovering a stable 2.4+ extension within major two. The server then sends
+PRINTERS (`RealtimePrinters`) on that connection, through the same serialized
+writer, after it has processed an accepted INVENTORY from that connection
+(after that INVENTORY's ACK) and whenever the approval of any printer belonging
+to the device changes by any server-side path. Nothing else triggers it; there
+is no timer and the client does not acknowledge it.
+
+The payload lists every printer in the device's latest accepted inventory, for
+this device only, as `printerId` plus boolean `enabled`, at most 200 entries.
+`enabled:false` means the server knows the printer and has not approved it. A
+printer the device no longer exposes is not listed; an empty inventory yields
+`{ "printers": [] }`. Each frame replaces the previous one entirely, so frames
+are idempotent and coalescible like JOB_AVAILABLE. The frame is not a durable
+event and carries no job or document data. A client that did not advertise the
+capability never receives it and keeps reading its existing authorized catalog
+for approval; a server never sends it to a connection that did not advertise it.
 
 ## Ordering, synchronization and replay
 

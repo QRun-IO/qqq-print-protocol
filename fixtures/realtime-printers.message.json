@@ -1,0 +1,16 @@
+{
+  "type": "PRINTERS",
+  "messageId": "printers-connection-1",
+  "payload": {
+    "printers": [
+      {
+        "printerId": "laser-example",
+        "enabled": true
+      },
+      {
+        "printerId": "label-example",
+        "enabled": false
+      }
+    ]
+  }
+}

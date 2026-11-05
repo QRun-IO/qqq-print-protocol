@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.1.0 — unreleased
+
+Additive contract for printing semantic extension **2.4.0**. Wire payload stays
+**v1** and the subprotocol stays `qqq-printing.v1`; every 2.3.0 fixture is unchanged.
+
+- Add the `printer-approval-v1` capability to `RealtimeHelloPayload` (`maxItems` 5)
+  and `ControlCapability`; the historical control poll and management
+  `Device.control` accept four non-realtime capabilities.
+- Add the server → client `PRINTERS` frame (`RealtimePrinters`,
+  `RealtimePrintersPayload`, `PrinterApprovalState`) carrying the complete approval
+  state of the device's latest accepted inventory; sent only to connections that
+  advertised `printer-approval-v1`, after each accepted INVENTORY and on every
+  approval change. Not acknowledged, not durable, no job or document data.
+- Add `realtime-printers.message.json`, a five-capability hello and a 2.4.0
+  discovery fixture; the verifiers cover the directional frame, bounds and
+  required fields. See [REALTIME.md](docs/REALTIME.md#printer-approval) and the
+  [version registry](docs/VERSIONS.md).
+
 ## 1.0.0
 
 Distribution version 1.0.0 of the contract and fixtures from 0.4.0-rc.1. The wire

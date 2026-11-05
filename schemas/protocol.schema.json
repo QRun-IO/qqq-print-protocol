@@ -993,7 +993,8 @@
       "enum": [
         "REFRESH_INVENTORY",
         "CANCEL_SPOOL",
-        "printer-media-v1"
+        "printer-media-v1",
+        "printer-approval-v1"
       ]
     },
     "ProtocolVersionResponse": {
@@ -1060,7 +1061,7 @@
           "items": {
             "$ref": "#/$defs/ControlCapability"
           },
-          "maxItems": 3,
+          "maxItems": 4,
           "uniqueItems": true
         },
         "lastPollAt": {
@@ -1099,7 +1100,7 @@
           "items": {
             "$ref": "#/$defs/ControlCapability"
           },
-          "maxItems": 3,
+          "maxItems": 4,
           "uniqueItems": true
         },
         "lastAppliedRevision": {
@@ -1718,11 +1719,12 @@
               "realtime-v1",
               "REFRESH_INVENTORY",
               "CANCEL_SPOOL",
-              "printer-media-v1"
+              "printer-media-v1",
+              "printer-approval-v1"
             ]
           },
           "minItems": 1,
-          "maxItems": 4,
+          "maxItems": 5,
           "uniqueItems": true,
           "contains": {
             "const": "realtime-v1"
@@ -2068,6 +2070,61 @@
       },
       "additionalProperties": false
     },
+    "PrinterApprovalState": {
+      "description": "Server approval of one printer in the device's latest accepted inventory; enabled:false means known but not approved.",
+      "type": "object",
+      "required": [
+        "printerId",
+        "enabled"
+      ],
+      "properties": {
+        "printerId": {
+          "$ref": "#/$defs/Id"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "RealtimePrintersPayload": {
+      "description": "Complete approval state of every printer the device currently exposes; each frame replaces the previous one.",
+      "type": "object",
+      "required": [
+        "printers"
+      ],
+      "properties": {
+        "printers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PrinterApprovalState"
+          },
+          "maxItems": 200
+        }
+      },
+      "additionalProperties": true
+    },
+    "RealtimePrinters": {
+      "description": "Sent only on connections whose HELLO advertised printer-approval-v1; not acknowledged.",
+      "type": "object",
+      "required": [
+        "type",
+        "messageId",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "PRINTERS"
+        },
+        "messageId": {
+          "$ref": "#/$defs/Id"
+        },
+        "payload": {
+          "$ref": "#/$defs/RealtimePrintersPayload"
+        }
+      },
+      "additionalProperties": false
+    },
     "RealtimeCommand": {
       "type": "object",
       "required": [
@@ -2183,6 +2240,9 @@
         },
         {
           "$ref": "#/$defs/RealtimeJobAvailable"
+        },
+        {
+          "$ref": "#/$defs/RealtimePrinters"
         },
         {
           "$ref": "#/$defs/RealtimeCommand"

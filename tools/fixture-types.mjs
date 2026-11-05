@@ -4,6 +4,7 @@
 // Shared correspondence between wire examples and schema definitions.
 export const fixtureTypes = {
    "printing-realtime-extension.discovery.json": "PrintingRealtimeExtensionDiscovery",
+   "printing-realtime-extension-240.discovery.json": "PrintingRealtimeExtensionDiscovery",
    "version-legacy.response.json": "ProtocolVersionResponse",
    "version-controls.response.json": "ProtocolVersionResponse",
    "control-poll.request.json": "DeviceControlPollRequest",
@@ -82,4 +83,6 @@ export const fixtureTypes = {
    "operator-printers.response.json": "OperatorPrinterList",
    "operator-submit.request.json": "OperatorSubmitJobRequest",
    "realtime-media-hello.message.json": "RealtimeHello",
+   "realtime-approval-hello.message.json": "RealtimeHello",
+   "realtime-printers.message.json": "RealtimePrinters",
 };
