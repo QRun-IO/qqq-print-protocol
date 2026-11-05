@@ -77,6 +77,8 @@ const poll = control("control-poll.request.json");
 assert(!validControl("DeviceControlPollRequest", { ...poll, controlVersion: 2 }));
 assert(!validControl("DeviceControlPollRequest", { ...poll, capabilities: ["CANCEL_SPOOL", "CANCEL_SPOOL"] }));
 assert(!validControl("DeviceControlPollRequest", { ...poll, capabilities: ["RESTART_SERVICE"] }));
+assert(validControl("DeviceControlPollRequest", { ...poll, capabilities: ["REFRESH_INVENTORY", "CANCEL_SPOOL", "printer-media-v1", "printer-approval-v1"] }), "Historical control poll accepts every non-realtime capability.");
+assert(!validControl("DeviceControlPollRequest", { ...poll, capabilities: ["REFRESH_INVENTORY", "CANCEL_SPOOL", "printer-media-v1", "printer-approval-v1", "printer-approval-v1"] }));
 assert(!validControl("DeviceControlPollRequest", { ...poll, lastAppliedRevision: -1 }));
 assert(!validControl("DeviceControlPollRequest", { ...poll, lastAppliedRevision: 9007199254740992 }));
 const pollResult = /** @type {typeof import("../fixtures/control-poll.response.json")} */ (/** @type {unknown} */ (control("control-poll.response.json")));
