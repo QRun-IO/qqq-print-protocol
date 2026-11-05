@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 — unreleased
+## 1.1.0
 
 Additive contract for printing semantic extension **2.4.0**. Wire payload stays
 **v1** and the subprotocol stays `qqq-printing.v1`; every 2.3.0 fixture is unchanged.

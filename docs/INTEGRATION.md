@@ -2,6 +2,8 @@
 
 ## Stable printing release
 
+The current primary release is [protocol 1.1.0](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.1.0) (annotated tag `v1.1.0` at source `5005f3c9e27053b6c327bb923695012832c0fdcc`, bundle `qqq-print-protocol-1.1.0.tar.gz` SHA-256 `541f0f3054cbfe9ce16e7dea58fad01b55a7f0e9246ade8f30df1bb826940703`), adding printing extension 2.4.0's `printer-approval-v1` capability and `PRINTERS` frame. It pairs with [QBit 1.1.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.1.0) and the Windows connector 1.2.0 (pending publication at the time of writing); the 1.0.0 cohort below stays valid for 2.3 peers.
+
 The primary [protocol 1.0.0 release](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0)
 is published on Gitea (release record 1344). This is the specification and fixture
 bundle, not an application installer.
@@ -64,7 +66,7 @@ with native printing API 2.3.0 and QQQ 4.1.0-RC.21 as its dependency baseline.
 
 For local development, clone them as siblings. The Java HTTP test defaults to `../qqq-print-protocol/fixtures` and accepts `-Dprinting.protocol.fixtures=<directory>`. The Windows tests link shared fixtures from the sibling repository. See each consumer README for its build and platform requirements.
 
-CI must check out this repository at an immutable commit reviewed with the consumer change. A checkout path of `qqq-print-protocol` beside `qbit-printing` or `qqq-print-agent` preserves the local layout. Do not pin a moving branch for release qualification. The current consumer fixture pin `42c0d249f81395f00408ec0f92638dcbbf5deb03` is distinct from protocol 1.0.0 release source `d652fba1317aec7f25c5a464bac15e97d6094e67`. Maintainers update the pin through a reviewed consumer change; the readable GitHub shadow retains it for the Windows fixture bridge.
+CI must check out this repository at an immutable commit reviewed with the consumer change. A checkout path of `qqq-print-protocol` beside `qbit-printing` or `qqq-print-agent` preserves the local layout. Do not pin a moving branch for release qualification. The current consumer fixture pins are `ac835f8b9396b641b525669249fdb4a1e2a50c99` (Windows, the PR 11 commit) and `5005f3c9e27053b6c327bb923695012832c0fdcc` (QBit, the 1.1.0 source); both carry the 1.1.0 fixtures. Maintainers update the pin through a reviewed consumer change; the readable GitHub shadow retains it for the Windows fixture bridge.
 
 If a consumer builds outside a multi-checkout workspace, download the release archive, verify `SHA256SUMS`, extract it and point its tests at `fixtures/`. Consume `schemas/protocol.schema.json#/$defs/<Type>` with a JSON Schema 2020-12 validator.
 
