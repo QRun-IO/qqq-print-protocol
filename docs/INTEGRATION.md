@@ -2,7 +2,7 @@
 
 ## Stable printing release
 
-The current primary release is [protocol 1.1.0](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.1.0) (annotated tag `v1.1.0` at source `5005f3c9e27053b6c327bb923695012832c0fdcc`, bundle `qqq-print-protocol-1.1.0.tar.gz` SHA-256 `541f0f3054cbfe9ce16e7dea58fad01b55a7f0e9246ade8f30df1bb826940703`), adding printing extension 2.4.0's `printer-approval-v1` capability and `PRINTERS` frame. It pairs with [QBit 1.1.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.1.0) and the Windows connector 1.2.0 (pending publication at the time of writing); the 1.0.0 cohort below stays valid for 2.3 peers.
+The current primary release is [protocol 1.1.0](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.1.0) (annotated tag `v1.1.0` at source `5005f3c9e27053b6c327bb923695012832c0fdcc`, bundle `qqq-print-protocol-1.1.0.tar.gz` SHA-256 `541f0f3054cbfe9ce16e7dea58fad01b55a7f0e9246ade8f30df1bb826940703`), adding printing extension 2.4.0's `printer-approval-v1` capability and `PRINTERS` frame. It pairs with [QBit 1.1.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.1.0) and the Windows connector 1.2.1; the 1.0.0 cohort below stays valid for 2.3 peers.
 
 The primary [protocol 1.0.0 release](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0)
 is published on Gitea (release record 1344). This is the specification and fixture
