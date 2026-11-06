@@ -47,5 +47,5 @@ additive and keeps the earlier behavior.
 QBit 1.0.0 advertises native printing extension 2.3.0. Windows 1.0.1 is the paired
 stable client; their product versions do not replace capability discovery.
 QBit 1.1.0 advertises 2.4.0 and pairs with Windows 1.2.1; a 2.4.0 server still
-serves 1.0.1/1.1.x clients as four-capability peers, and a 1.2.0 client facing
+serves 1.0.1/1.1.x clients as four-capability peers, and a 1.2.1 client facing
 2.3.0 does not advertise `printer-approval-v1`.
