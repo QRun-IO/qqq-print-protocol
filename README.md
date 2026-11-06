@@ -2,7 +2,7 @@
 
 Shared contract for the [QQQ 4.1+ printing QBit](https://git.kof22.com/QRun-IO/qbit-printing) and [Windows AppKit connector](https://git.kof22.com/QRun-IO/qqq-print-agent). The [realtime transport](docs/REALTIME.md) uses a client-initiated authenticated two-way WebSocket for controls, receipts and job notifications, with separate streamed HTTPS documents and no polling fallback. No inbound connection to the facility is required. This contract is authoritative for wire names; language types may use their idiomatic naming.
 
-Published distribution: [**1.0.0**](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0). Wire protocol: **v1**. The stable cohort pairs [Windows 1.0.1](https://git.kof22.com/QRun-IO/qqq-print-agent/releases/tag/v1.0.1) with [QBit 1.0.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.0.0), printing semantic API **2.3.0**, and QQQ **4.1.0-RC.21**. See [release and fixture provenance](docs/INTEGRATION.md#stable-printing-release). This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
+Published distribution: [**1.1.0**](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.1.0). Wire protocol: **v1**. The stable cohort pairs [Windows 1.2.1](https://git.kof22.com/QRun-IO/qqq-print-agent/releases/tag/v1.2.1) with [QBit 1.1.0](https://git.kof22.com/QRun-IO/qbit-printing/releases/tag/v1.1.0), printing semantic API **2.4.0**, and QQQ **4.1.0-RC.21**; the [1.0.0 cohort](https://git.kof22.com/QRun-IO/qqq-print-protocol/releases/tag/v1.0.0) (Windows 1.0.1, QBit 1.0.0, API 2.3.0) stays compatible. See [release and fixture provenance](docs/INTEGRATION.md#stable-printing-release). This repository supplies specification, JSON Schema and synthetic compatibility fixtures; install the Windows connector and integrate the QBit from their own repositories to print documents.
 
 The stable release includes the [printer media and operator
 contract](docs/PRINTER-MEDIA.md) for printing semantic extension **2.3.0** (see the
@@ -13,7 +13,7 @@ granting device management. Use the stable cohort above for these profiles;
 older 0.3.2 clients do not support them. Wire version 1 and the client-initiated
 realtime transport stay the same.
 
-Source version **1.1.0** (unreleased) adds printing semantic extension **2.4.0**:
+Distribution **1.1.0** adds printing semantic extension **2.4.0**:
 the `printer-approval-v1` HELLO capability and the server → client `PRINTERS`
 frame, which reports each exposed printer's server approval over the
 [realtime channel](docs/REALTIME.md#printer-approval). Clients advertise it only
