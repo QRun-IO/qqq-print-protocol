@@ -6,7 +6,7 @@ on:
   push:
 jobs:
   node:
-    uses: self:KofTwentyTwo/ci-workflows/.gitea/workflows/node.yaml@main
+    uses: self:KofTwentyTwo/ci-workflows/.gitea/workflows/node.yaml@v1
     with:
       node-version: '24'
       install: npm ci --ignore-scripts
