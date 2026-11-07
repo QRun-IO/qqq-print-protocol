@@ -3,6 +3,7 @@
   "includes": [
     ".github/*.yml",
     ".github/*.yaml",
+    ".gitea/*.yaml",
     ".github/scripts/*.py",
     "tools/*.mjs"
   ],
