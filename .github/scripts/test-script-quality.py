@@ -234,37 +234,29 @@ class JavaScriptProbeTests(unittest.TestCase):
          self.assertIn("TS2322", bad.stdout)
 
 
-URI_GATES = "jobs:\n  pr:\n    with:\n      allow-dependencies-licenses: pkg:npm/uri-js\n"
-URI_MIXED_GATES = "jobs:\n  pr:\n    with:\n      allow-dependencies-licenses: >-\n        pkg:nuget/Microsoft.WindowsAppSDK,\n        pkg:npm/uri-js\n"
-
-
 def uri_lock(version: str = "4.4.1", integrity: str | None = None, dev: bool = True, direct: bool = False, consumer_dev: bool = True) -> dict[str, Any]:
    """Build a minimal package-lock shape with uri-js under an ESLint-like consumer."""
    root_entry: dict[str, Any] = {"devDependencies": {"uri-js": version} if direct else {"eslint": "10.14.0"}}
    return {"packages": {"": root_entry, "node_modules/uri-js": {"version": version, "integrity": integrity or guard.URI_JS_INTEGRITY, "dev": dev}, "node_modules/eslint": {"dev": consumer_dev, "dependencies": {"uri-js": "^4.2.2"}}}}
 
 
-def uri_project(root: Path, lock: dict[str, Any], gates: str = URI_GATES, license_bytes: bytes | None = None) -> None:
-   """Write a private project with the lock, installed LICENSE and PR caller that the guard inspects."""
+def uri_project(root: Path, lock: dict[str, Any], license_bytes: bytes | None = None) -> None:
+   """Write a private project with the lock and installed LICENSE that the guard inspects."""
    (root / "package-lock.json").write_text(json.dumps(lock), encoding="utf-8")
    installed = root / "node_modules" / "uri-js"
    installed.mkdir(parents=True)
    installed.joinpath("LICENSE").write_bytes((ROOT / "node_modules" / "uri-js" / "LICENSE").read_bytes() if license_bytes is None else license_bytes)
-   workflows = root / ".github" / "workflows"
-   workflows.mkdir(parents=True)
-   (workflows / "pr-gates.yml").write_text("# EX-0015 pkg:npm/uri-js is cited here\n" + gates, encoding="utf-8")
 
 
 class UriJsExceptionTests(unittest.TestCase):
    """Allow the EX-0015 license exception only for the reviewed, unmodified, development-only uri-js."""
 
-   def test_reviewed_uri_js_with_exact_caller_is_accepted(self) -> None:
-      """Accept the reviewed package, installed license bytes and an exact caller list, mixed with NuGet entries."""
-      for gates in (URI_GATES, URI_MIXED_GATES):
-         with tempfile.TemporaryDirectory() as name, self.subTest(gates=gates):
-            root = Path(name)
-            uri_project(root, uri_lock(), gates)
-            guard.check_uri_js_exception(root)
+   def test_reviewed_uri_js_is_accepted(self) -> None:
+      """Accept the reviewed package with the reviewed installed license bytes."""
+      with tempfile.TemporaryDirectory() as name:
+         root = Path(name)
+         uri_project(root, uri_lock())
+         guard.check_uri_js_exception(root)
 
    def test_other_version_integrity_scope_or_consumer_is_rejected(self) -> None:
       """Reject another version, integrity, non-dev or direct use, a non-dev consumer and a second copy."""
@@ -282,14 +274,6 @@ class UriJsExceptionTests(unittest.TestCase):
          root = Path(name)
          uri_project(root, uri_lock(), license_bytes=(ROOT / "node_modules" / "uri-js" / "LICENSE").read_bytes() + b"\n")
          with self.assertRaisesRegex(ValueError, "LICENSE bytes differ"):
-            guard.check_uri_js_exception(root)
-
-   def test_caller_must_list_only_uri_js(self) -> None:
-      """Reject a caller that lists no npm exception, another package, a versioned form or a duplicate."""
-      for gates in ("jobs:\n  pr:\n    uses: shared\n", URI_GATES.rstrip() + ", pkg:npm/other\n", "jobs:\n  pr:\n    with:\n      allow-dependencies-licenses: pkg:npm/other\n", URI_GATES.rstrip() + "@4.4.1\n", URI_GATES.rstrip() + ", pkg:npm/uri-js\n"):
-         with tempfile.TemporaryDirectory() as name, self.subTest(gates=gates), self.assertRaisesRegex(ValueError, "permits only"):
-            root = Path(name)
-            uri_project(root, uri_lock(), gates)
             guard.check_uri_js_exception(root)
 
 

@@ -1,0 +1,23 @@
+# Copyright 2026 Kingsrook, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+name: build
+on:
+  push:
+jobs:
+  node:
+    uses: self:KofTwentyTwo/ci-workflows/.gitea/workflows/node.yaml@main
+    with:
+      node-version: '24'
+      install: npm ci --ignore-scripts
+      uv: true
+      commands: |
+        uv sync --locked
+        uv run --locked --no-sync python .github/scripts/test-script-quality.py
+        uv run --locked --no-sync python .github/scripts/check-script-quality.py
+        uv run --locked --no-sync python .github/scripts/test-source-headers.py
+        uv run --locked --no-sync python .github/scripts/check-source-headers.py
+        npm run typecheck
+        npm run lint
+        npm run check
+        npm run bundle

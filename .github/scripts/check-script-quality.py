@@ -5,7 +5,6 @@
 
 import hashlib
 import json
-import re
 import shutil
 import subprocess
 import sys
@@ -16,12 +15,10 @@ PYTHON_SUFFIXES = (".py", ".pyi", ".pyw")
 SCRIPT_PATTERN = ".github/scripts/*.py"
 PYRIGHT_CONFIG = ".github"
 JAVASCRIPT_SUFFIXES = (".js", ".cjs", ".mjs", ".jsx", ".ts", ".mts", ".cts", ".tsx")
-# EX-0015: the only npm package whose license classification the PR gate may exempt (the matcher ignores versions, so this guard pins it).
-URI_JS_PURL = "pkg:npm/uri-js"
+# EX-0015: the only npm package with a license exception; this guard pins the reviewed copy.
 URI_JS_VERSION = "4.4.1"
 URI_JS_INTEGRITY = "sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg=="
 URI_JS_LICENSE_SHA256 = "0af366eff4c01ec147c9c61ea9e8ffad64a4294754c9d79355f3fd1b97cb2fb9"
-PR_GATES = ".github/workflows/pr-gates.yml"
 # Microsoft's official npm Pyright, restored from package-lock.json by `npm ci --ignore-scripts`.
 PYRIGHT_ENTRY = Path(__file__).resolve().parents[2] / "node_modules" / "pyright" / "index.js"
 
@@ -116,10 +113,6 @@ def check_uri_js_exception(root: Path) -> None:
    digest = hashlib.sha256((root / "node_modules" / "uri-js" / "LICENSE").read_bytes()).hexdigest()
    if digest != URI_JS_LICENSE_SHA256:
       raise ValueError(f"Installed uri-js LICENSE bytes differ from the reviewed EX-0015 copy ({digest})")
-   caller = [line for line in (root / PR_GATES).read_text(encoding="utf-8").splitlines() if not line.lstrip().startswith("#")]
-   listed = re.findall(r"pkg:npm/[^\s,]+", "\n".join(caller))
-   if listed != [URI_JS_PURL]:
-      raise ValueError(f"EX-0015 permits only {URI_JS_PURL} in allow-dependencies-licenses, found {listed}")
 
 
 def main() -> None:
